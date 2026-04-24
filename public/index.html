@@ -188,18 +188,18 @@
     background: var(--fb-text-mute);
     transition: all var(--fb-t-fast);
   }
-  body.hp-verbose .hp-toggle__dot {
+  body.hp-verbose-on .hp-toggle__dot {
     background: var(--fb-signal);
     box-shadow: 0 0 8px var(--fb-signal-glow);
   }
-  body.hp-verbose .hp-toggle {
+  body.hp-verbose-on .hp-toggle {
     color: var(--fb-signal);
     border-color: color-mix(in srgb, var(--fb-signal) 40%, var(--fb-hairline));
   }
   .hp-toggle__label::after {
     content: "off";
   }
-  body.hp-verbose .hp-toggle__label::after {
+  body.hp-verbose-on .hp-toggle__label::after {
     content: "on";
   }
 
@@ -210,7 +210,7 @@
     border-top: 1px solid var(--fb-hairline);
     margin-top: var(--fb-s-10);
   }
-  body.hp-verbose .hp-verbose { display: block; }
+  body.hp-verbose-on .hp-verbose { display: block; }
 
   .hp-verbose__head {
     display: flex; align-items: center; justify-content: space-between;
@@ -616,16 +616,20 @@
     var body = document.body;
 
     function apply(on) {
-      body.classList.toggle('hp-verbose', on);
+      body.classList.toggle('hp-verbose-on', on);
       btn.setAttribute('aria-pressed', on ? 'true' : 'false');
       try { localStorage.setItem(KEY, on ? '1' : '0'); } catch(_) {}
       if (on) loadVerboseData();
+    }
+    /* Escape hatch: add ?reset to the URL to clear any stuck preference */
+    if (location.search.indexOf('reset') > -1) {
+      try { localStorage.removeItem(KEY); } catch(_) {}
     }
     try {
       if (localStorage.getItem(KEY) === '1') apply(true);
     } catch(_) {}
     btn.addEventListener('click', function(){
-      apply(!body.classList.contains('hp-verbose'));
+      apply(!body.classList.contains('hp-verbose-on'));
     });
 
     /* ========================================================================
