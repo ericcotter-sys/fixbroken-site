@@ -57,7 +57,7 @@
 
   .hp-status {
     display: grid;
-    grid-template-columns: 56px 1fr;
+    grid-template-columns: 72px 1fr;
     gap: var(--fb-s-5);
     align-items: center;
     padding: var(--fb-s-5) var(--fb-s-6);
@@ -66,23 +66,16 @@
     border-radius: var(--fb-r-3);
     box-shadow: var(--fb-lift), 0 0 48px rgba(255, 62, 201, 0.04);
   }
-  .hp-status__cone { width: 56px; height: 72px; flex-shrink: 0; }
+  .hp-status__cone { width: 72px; height: 100px; flex-shrink: 0; }
   .hp-status__body { min-width: 0; transition: opacity 240ms ease; }
+  /* Tag line: static label. No pulsing dot, no animation. */
   .hp-status__tag {
-    display: flex; align-items: center; gap: var(--fb-s-2);
     font-family: var(--fb-font-mono);
     font-size: var(--fb-fs-11);
     letter-spacing: var(--fb-tracking-extra);
     text-transform: uppercase;
     color: var(--fb-text-mute);
     margin-bottom: var(--fb-s-2);
-  }
-  .hp-status__tag::before {
-    content: ""; width: 6px; height: 6px;
-    background: var(--fb-matrix);
-    border-radius: 50%;
-    box-shadow: 0 0 8px var(--fb-matrix-glow);
-    animation: fb-pulse 2s ease-in-out infinite;
   }
   .hp-status__line {
     font-family: var(--fb-font-mono);
@@ -139,14 +132,36 @@
     100% { background-position: -140% 50%; }
   }
 
+  /* Meta line: types in char-by-char like a CLI progress output.
+     Reserve a min-height so the layout doesn't jump on empty/short strings.
+     A blinking block cursor trails the typed text. */
   .hp-status__meta {
     font-family: var(--fb-font-mono);
     font-size: var(--fb-fs-12);
     color: var(--fb-text-mute);
     margin-top: var(--fb-s-1);
+    min-height: 1.35em;
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+  }
+  .hp-status__meta-cursor {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    background: var(--fb-signal);
+    margin-left: 2px;
+    vertical-align: -0.12em;
+    animation: hp-meta-blink 1s steps(1) infinite;
+    box-shadow: 0 0 8px var(--fb-signal-glow);
+  }
+  @keyframes hp-meta-blink {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
   }
 
-  /* Reduced-motion: kill shimmer + glyph animation, keep text readable */
+  /* Reduced-motion: kill shimmer + glyph animation + cursor blink,
+     keep all text fully readable */
   @media (prefers-reduced-motion: reduce) {
     .hp-status__phrase {
       animation: none;
@@ -159,6 +174,7 @@
       opacity: 1;
       transform: none;
     }
+    .hp-status__meta-cursor { animation: none; opacity: 1; }
   }
 
   /* ----- Verbose toggle --------------------------------------------------- */
@@ -273,6 +289,152 @@
   .hp-wx-dot--rain   { background: var(--fb-signal); box-shadow: 0 0 8px var(--fb-signal-glow); }
   .hp-wx-dot--fog    { background: var(--fb-text-mute); box-shadow: none; }
 
+  /* ==========================================================================
+     TOKENZ — Usage Arena (TRON light-cycles racing across windows)
+     ========================================================================== */
+  .hp-arena {
+    padding: var(--fb-s-6);
+    background: var(--fb-ink);
+    border: 1px solid var(--fb-hairline);
+    border-radius: var(--fb-r-3);
+    font-family: var(--fb-font-mono);
+    position: relative;
+    overflow: hidden;
+    /* Grid arena floor */
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .hp-arena__head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: var(--fb-s-4);
+    font-size: var(--fb-fs-11);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+  }
+  .hp-arena__head strong {
+    color: var(--fb-signal);
+    font-weight: 500;
+    text-shadow: 0 0 8px var(--fb-signal-glow);
+  }
+
+  /* One light cycle per time window */
+  .hp-cycle {
+    display: grid;
+    grid-template-columns: 54px 1fr 110px;
+    align-items: center;
+    gap: var(--fb-s-3);
+    padding-block: var(--fb-s-2);
+    font-size: var(--fb-fs-12);
+  }
+
+  .hp-cycle__label {
+    color: var(--fb-text-dim);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    font-size: var(--fb-fs-11);
+  }
+
+  /* The track — where the cycle leaves its trail */
+  .hp-cycle__track {
+    position: relative;
+    height: 10px;
+    background: rgba(42, 52, 66, 0.4);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  /* The trail — animated fill, color-coded per cycle */
+  .hp-cycle__trail {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      var(--cycle-color, var(--fb-signal)) 20%,
+      var(--cycle-color, var(--fb-signal)) 80%,
+      var(--cycle-head, var(--fb-signal-bright)) 100%);
+    box-shadow: 0 0 12px var(--cycle-glow, var(--fb-signal-glow));
+    transition: width 900ms cubic-bezier(.2,.7,.2,1);
+    border-radius: 999px;
+  }
+
+  /* The cycle head — leading dot with halo */
+  .hp-cycle__head {
+    position: absolute;
+    top: 50%;
+    right: -2px;
+    transform: translateY(-50%);
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--cycle-head, var(--fb-signal-bright));
+    box-shadow: 0 0 16px var(--cycle-glow, var(--fb-signal-glow)),
+                0 0 32px var(--cycle-glow, var(--fb-signal-glow));
+    animation: hp-cycle-pulse 1s ease-in-out infinite;
+  }
+  @keyframes hp-cycle-pulse {
+    0%, 100% { transform: translateY(-50%) scale(1); }
+    50% { transform: translateY(-50%) scale(1.35); }
+  }
+
+  .hp-cycle__meta {
+    text-align: right;
+    color: var(--fb-text-loud);
+    font-size: var(--fb-fs-13);
+    white-space: nowrap;
+  }
+  .hp-cycle__meta small {
+    color: var(--fb-text-mute);
+    font-size: var(--fb-fs-11);
+    margin-left: 4px;
+  }
+
+  /* Color per cycle */
+  .hp-cycle--8s    { --cycle-color: var(--fb-signal); --cycle-head: var(--fb-signal-bright); --cycle-glow: var(--fb-signal-glow); }
+  .hp-cycle--80s   { --cycle-color: var(--fb-matrix); --cycle-head: #7dffb7;              --cycle-glow: var(--fb-matrix-glow); }
+  .hp-cycle--800s  { --cycle-color: var(--fb-pink);   --cycle-head: var(--fb-pink-bright);   --cycle-glow: var(--fb-pink-glow); }
+  .hp-cycle--8000s { --cycle-color: var(--fb-amber);  --cycle-head: #ffd17a;              --cycle-glow: rgba(255,182,74,0.45); }
+
+  /* Status row at bottom of arena */
+  .hp-arena__foot {
+    margin-top: var(--fb-s-4);
+    padding-top: var(--fb-s-3);
+    border-top: 1px dashed var(--fb-hairline);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--fb-s-3);
+    font-size: var(--fb-fs-11);
+    color: var(--fb-text-mute);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+  }
+  .hp-arena__foot strong {
+    color: var(--fb-text-loud);
+    font-weight: 500;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .hp-arena__foot .hp-arena__rate {
+    color: var(--fb-signal);
+    text-shadow: 0 0 8px var(--fb-signal-glow);
+  }
+
+  /* Reduced-motion: no pulsing head */
+  @media (prefers-reduced-motion: reduce) {
+    .hp-cycle__head { animation: none; }
+    .hp-cycle__trail { transition: width 0ms; }
+  }
+
+  @media (max-width: 540px) {
+    .hp-arena { padding: var(--fb-s-4); background-size: 16px 16px; }
+    .hp-cycle { grid-template-columns: 44px 1fr 86px; gap: var(--fb-s-2); }
+    .hp-cycle__meta { font-size: var(--fb-fs-12); }
+  }
+
   @media (max-width: 540px) {
     .hp-status { grid-template-columns: 1fr; gap: var(--fb-s-3); padding: var(--fb-s-4); }
     .hp-status__cone { width: 48px; height: 64px; }
@@ -308,7 +470,7 @@
 
         <div class="hp-kicker">consulting · product · brand</div>
 
-        <h1 class="hp-h1 fb-rise">Fix broken <em>AI.</em></h1>
+        <h1 class="hp-h1 fb-rise">Fix broken <em>AI.</em><span class="fb-cursor fb-cursor--pink" aria-hidden="true"></span></h1>
 
         <p class="hp-body fb-rise fb-rise--d1">
           Ship clearer, more human AI products. I work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.
@@ -327,93 +489,125 @@
           <div class="hp-status" aria-live="polite">
 
             <!-- ==========================================================
-                 MCP Cone v2 — TRON wireframe with light-cycle trails
+                 MCP Cone v3 — Authentic TRON arcade MCP
+                 - Rainbow-striped cylinder (spinning via gradient shift)
+                 - Particle fountain erupting UPWARD from cylinder top
+                 - Black background showing through
                  ========================================================== -->
-            <svg class="hp-status__cone" viewBox="0 0 64 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <!-- Grid floor in perspective (light-cycle arena hint) -->
-              <g stroke="#2a3442" stroke-width="0.5" fill="none" opacity="0.7">
-                <path d="M 4 66 L 60 66"/>
-                <path d="M 10 72 L 54 72"/>
-                <path d="M 16 78 L 48 78"/>
-                <!-- Vertical grid lines receding -->
-                <path d="M 16 78 L 4 66" stroke-dasharray="1 1" opacity="0.5"/>
-                <path d="M 48 78 L 60 66" stroke-dasharray="1 1" opacity="0.5"/>
-              </g>
+            <svg class="hp-status__cone" viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
 
-              <!-- Cone wireframe — two visible edges + perspective base -->
-              <g fill="none" stroke-linejoin="round" stroke-linecap="round">
-                <!-- Back base edge (dashed, receding) -->
-                <path d="M 18 56 Q 32 50 46 56" stroke="#00d4ff" stroke-width="0.8" stroke-dasharray="1.5 1.5" opacity="0.45"/>
-                <!-- Left edge -->
-                <path d="M 32 8 L 18 56" stroke="#00d4ff" stroke-width="1.1" opacity="0.85"/>
-                <!-- Right edge -->
-                <path d="M 32 8 L 46 56" stroke="#00d4ff" stroke-width="1.1" opacity="0.85"/>
-                <!-- Front base edge (bright — faces viewer) -->
-                <path d="M 18 56 Q 32 62 46 56" stroke="#00d4ff" stroke-width="1.4"/>
-                <!-- Central spine (dashed — implied depth) -->
-                <path d="M 32 8 L 32 58" stroke="#00d4ff" stroke-width="0.5" stroke-dasharray="1 2" opacity="0.3"/>
-              </g>
-
-              <!-- Pink source node at apex (signal entering) -->
-              <circle cx="32" cy="8" r="2.6" fill="#ff3ec9">
-                <animate attributeName="r" values="2.6;3.4;2.6" dur="2.2s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="1;0.65;1" dur="2.2s" repeatCount="indefinite"/>
-              </circle>
-              <!-- Glow halo around apex -->
-              <circle cx="32" cy="8" r="5" fill="#ff3ec9" opacity="0.18">
-                <animate attributeName="r" values="5;7;5" dur="2.2s" repeatCount="indefinite"/>
-              </circle>
-
-              <!-- Light-cycle trail: LEFT edge (top-to-base, repeating) -->
-              <circle r="1.6" fill="#00d4ff" filter="url(#hp-glow)">
-                <animateMotion path="M 32 8 L 18 56" dur="2.4s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.75;1" dur="2.4s" repeatCount="indefinite"/>
-              </circle>
-
-              <!-- Light-cycle trail: RIGHT edge (staggered) -->
-              <circle r="1.6" fill="#00d4ff" filter="url(#hp-glow)">
-                <animateMotion path="M 32 8 L 46 56" dur="2.8s" begin="1.1s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.15;0.75;1" dur="2.8s" begin="1.1s" repeatCount="indefinite"/>
-              </circle>
-
-              <!-- Inner falling particle (chaos → clarity through the middle) -->
-              <circle r="0.9" fill="#00d4ff">
-                <animate attributeName="cy" values="14;56" dur="2.5s" repeatCount="indefinite"/>
-                <animate attributeName="cx" values="28;32" dur="2.5s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0.8;0.8;0" keyTimes="0;0.7;1" dur="2.5s" repeatCount="indefinite"/>
-              </circle>
-              <circle r="0.9" fill="#00d4ff">
-                <animate attributeName="cy" values="14;56" dur="2.7s" begin="1.3s" repeatCount="indefinite"/>
-                <animate attributeName="cx" values="36;32" dur="2.7s" begin="1.3s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0.8;0.8;0" keyTimes="0;0.7;1" dur="2.7s" begin="1.3s" repeatCount="indefinite"/>
-              </circle>
-
-              <!-- Apex-of-base bright node (signal converged) -->
-              <circle cx="32" cy="59" r="1.8" fill="#00d4ff">
-                <animate attributeName="opacity" values="1;0.6;1" dur="1.6s" repeatCount="indefinite"/>
-              </circle>
-
-              <!-- Matrix green output line — clean signal leaves base -->
-              <line x1="10" y1="68" x2="54" y2="68" stroke="#00ff88" stroke-width="1.4" stroke-linecap="round" opacity="0.9">
-                <animate attributeName="opacity" values="0.9;0.45;0.9" dur="2s" repeatCount="indefinite"/>
-              </line>
-              <!-- Traveling output particle -->
-              <circle r="1.2" fill="#00ff88">
-                <animate attributeName="cx" values="10;54" dur="3s" repeatCount="indefinite"/>
-                <animate attributeName="cy" values="68;68" dur="3s" repeatCount="indefinite"/>
-                <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.9;1" dur="3s" repeatCount="indefinite"/>
-              </circle>
-
-              <!-- SVG glow filter (for light-cycle trails) -->
               <defs>
-                <filter id="hp-glow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="1.2" result="blur"/>
-                  <feMerge>
-                    <feMergeNode in="blur"/>
-                    <feMergeNode in="SourceGraphic"/>
-                  </feMerge>
+                <!-- Rainbow gradient — looped so horizontal shift reads as rotation -->
+                <linearGradient id="mcp-stripes" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%"    stop-color="#ff0044"/>
+                  <stop offset="12%"   stop-color="#ff7700"/>
+                  <stop offset="24%"   stop-color="#ffdd00"/>
+                  <stop offset="36%"   stop-color="#22ee44"/>
+                  <stop offset="48%"   stop-color="#00ffee"/>
+                  <stop offset="60%"   stop-color="#2288ff"/>
+                  <stop offset="72%"   stop-color="#8822ff"/>
+                  <stop offset="84%"   stop-color="#ff22cc"/>
+                  <stop offset="100%"  stop-color="#ff0044"/>
+                </linearGradient>
+
+                <!-- Cylinder clip: flat sides, curved top (ellipse) + curved bottom -->
+                <clipPath id="mcp-cyl-clip">
+                  <path d="M 10 58
+                           Q 40 50 70 58
+                           L 70 96
+                           Q 40 104 10 96 Z"/>
+                </clipPath>
+
+                <!-- Subtle glow for particles -->
+                <filter id="mcp-glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="0.6"/>
                 </filter>
               </defs>
+
+              <!-- ==== Particle fountain: UPWARD spray from cylinder top ==== -->
+              <!-- Each particle starts at top-center of cylinder (40, 56), travels up
+                   with slight horizontal fan-out. Staggered begins + colors for density. -->
+              <g filter="url(#mcp-glow)">
+                <circle r="1.1" fill="#ff2244">
+                  <animate attributeName="cy" values="56;4"   dur="1.6s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="40;24"  dur="1.6s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0.6;0" keyTimes="0;0.2;0.85;1" dur="1.6s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="1.1" fill="#ff7700">
+                  <animate attributeName="cy" values="56;6"   dur="1.8s" begin="0.2s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="40;32"  dur="1.8s" begin="0.2s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0.6;0" keyTimes="0;0.2;0.85;1" dur="1.8s" begin="0.2s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="1.1" fill="#ffdd00">
+                  <animate attributeName="cy" values="56;3"   dur="1.5s" begin="0.4s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="40;40"  dur="1.5s" begin="0.4s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0.6;0" keyTimes="0;0.2;0.85;1" dur="1.5s" begin="0.4s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="1.1" fill="#22ff44">
+                  <animate attributeName="cy" values="56;6"   dur="1.7s" begin="0.6s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="40;48"  dur="1.7s" begin="0.6s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0.6;0" keyTimes="0;0.2;0.85;1" dur="1.7s" begin="0.6s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="1.1" fill="#00ffee">
+                  <animate attributeName="cy" values="56;4"   dur="1.9s" begin="0.8s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="40;56"  dur="1.9s" begin="0.8s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0.6;0" keyTimes="0;0.2;0.85;1" dur="1.9s" begin="0.8s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="1.1" fill="#2288ff">
+                  <animate attributeName="cy" values="56;8"   dur="1.6s" begin="1.0s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="40;20"  dur="1.6s" begin="1.0s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0.6;0" keyTimes="0;0.2;0.85;1" dur="1.6s" begin="1.0s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="1.1" fill="#8822ff">
+                  <animate attributeName="cy" values="56;4"   dur="2.0s" begin="1.2s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="40;60"  dur="2.0s" begin="1.2s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0.6;0" keyTimes="0;0.2;0.85;1" dur="2.0s" begin="1.2s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="1.1" fill="#ff22cc">
+                  <animate attributeName="cy" values="56;10"  dur="1.7s" begin="1.4s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="40;36"  dur="1.7s" begin="1.4s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0.6;0" keyTimes="0;0.2;0.85;1" dur="1.7s" begin="1.4s" repeatCount="indefinite"/>
+                </circle>
+                <!-- Second ring of particles for density -->
+                <circle r="0.9" fill="#ff7700">
+                  <animate attributeName="cy" values="56;6"   dur="1.4s" begin="0.1s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="38;28"  dur="1.4s" begin="0.1s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.3;0.9;1" dur="1.4s" begin="0.1s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="0.9" fill="#22ff44">
+                  <animate attributeName="cy" values="56;8"   dur="1.6s" begin="0.5s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="42;52"  dur="1.6s" begin="0.5s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.3;0.9;1" dur="1.6s" begin="0.5s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="0.9" fill="#00ffee">
+                  <animate attributeName="cy" values="56;5"   dur="1.5s" begin="0.9s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="38;44"  dur="1.5s" begin="0.9s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.3;0.9;1" dur="1.5s" begin="0.9s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="0.9" fill="#ff2244">
+                  <animate attributeName="cy" values="56;8"   dur="1.9s" begin="1.3s" repeatCount="indefinite"/>
+                  <animate attributeName="cx" values="42;52"  dur="1.9s" begin="1.3s" repeatCount="indefinite"/>
+                  <animate attributeName="opacity" values="0;1;0;0" keyTimes="0;0.3;0.9;1" dur="1.9s" begin="1.3s" repeatCount="indefinite"/>
+                </circle>
+              </g>
+
+              <!-- ==== Rainbow cylinder (MCP body) — rotating ==== -->
+              <g clip-path="url(#mcp-cyl-clip)">
+                <!-- Wide rect: 3x viewport width so animated shift never reveals a seam -->
+                <rect x="-80" y="50" width="240" height="60" fill="url(#mcp-stripes)">
+                  <animate attributeName="x" from="-80" to="-160" dur="2.4s" repeatCount="indefinite"/>
+                </rect>
+                <!-- Second rect offset + on top of first for richer texture -->
+              </g>
+
+              <!-- Cylinder top rim (bright highlight) -->
+              <path d="M 10 58 Q 40 50 70 58" stroke="#ffffff" stroke-width="0.6" fill="none" opacity="0.7"/>
+
+              <!-- Cylinder bottom rim (shadow) -->
+              <path d="M 10 96 Q 40 104 70 96" stroke="#000000" stroke-width="1" fill="none" opacity="0.6"/>
+
+              <!-- Ground shadow -->
+              <ellipse cx="40" cy="106" rx="26" ry="1.6" fill="#000000" opacity="0.5"/>
             </svg>
 
             <div class="hp-status__body" id="hp-status-body">
@@ -422,7 +616,10 @@
                 <span class="hp-status__glyph" id="hp-glyph">⟡</span>
                 <span class="hp-status__phrase" id="hp-verb">Untangling interface debt…</span>
               </div>
-              <div class="hp-status__meta" id="hp-meta">9s · 4 trust gaps mapped</div>
+              <div class="hp-status__meta">
+                <span id="hp-meta"></span>
+                <span class="hp-status__meta-cursor" aria-hidden="true"></span>
+              </div>
             </div>
           </div>
 
@@ -504,6 +701,60 @@
 
       </div>
 
+      <!-- Tokenz Usage Arena — TRON light cycles racing across time windows -->
+      <div class="hp-arena" id="hp-arena" style="margin-bottom: var(--fb-s-10);">
+        <div class="hp-arena__head">
+          <span>tokenz · <strong>claude runtime</strong> · light cycles</span>
+          <span id="hp-arena-stamp">awaiting signal…</span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--8s" data-cycle="0">
+          <span class="hp-cycle__label">8s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--80s" data-cycle="1">
+          <span class="hp-cycle__label">80s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--800s" data-cycle="2">
+          <span class="hp-cycle__label">800s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--8000s" data-cycle="3">
+          <span class="hp-cycle__label">8000s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+        </div>
+
+        <div class="hp-arena__foot">
+          <span>lifetime <strong id="hp-tkn-lifetime">—</strong></span>
+          <span>proj/day <strong id="hp-tkn-projday">—</strong></span>
+          <span>rate <span class="hp-arena__rate" id="hp-tkn-rate">—</span></span>
+        </div>
+      </div>
+
       <!-- Operations (the "flex" part — full services) -->
       <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
         <div class="fb-stack fb-stack--tight">
@@ -580,7 +831,15 @@
 
 <script>
   /* ==========================================================================
-     1. Status rotation (always running)
+     1. Status cycle
+     ---------------------------------------------------------------------------
+     Behavior:
+       - Tag line: static. Never animates.
+       - Verb: swaps whole (shimmer sweep is continuous on the class).
+       - Meta: TYPES in character-by-character with a blinking cursor, like a
+         CLI progress line. Cycle advances ONLY after the meta finishes typing
+         and a hold period elapses.
+       - Reduced-motion: show full content, no typing, no fade.
      ========================================================================== */
   (function(){
     var states = [
@@ -590,21 +849,67 @@
       { glyph: "⌁", verb: "Hardening trust paths…",       meta: "14s · 5 failure states surfaced" },
       { glyph: "⬡", verb: "Reducing user confusion…",     meta: "7s · 1 clearer path shipped" }
     ];
+
     var body = document.getElementById('hp-status-body');
     var vE = document.getElementById('hp-verb');
     var mE = document.getElementById('hp-meta');
     var gE = document.getElementById('hp-glyph');
-    var i = 1;
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    setInterval(function(){
+
+    var TYPE_MS    = 28;    // ms per character
+    var HOLD_MS    = 2200;  // dwell after typing completes
+    var FADE_MS    = 220;   // swap-transition duration
+    var SETTLE_MS  = 140;   // breath before typing begins
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Reduced-motion: render first state fully, no rotation.
+    if (reduced) {
+      var s0 = states[0];
+      gE.textContent = s0.glyph;
+      vE.textContent = s0.verb;
+      mE.textContent = s0.meta;
+      return;
+    }
+
+    function typeMeta(text, done) {
+      mE.textContent = '';
+      var pos = 0;
+      (function step(){
+        if (pos > text.length) { done(); return; }
+        mE.textContent = text.slice(0, pos++);
+        setTimeout(step, TYPE_MS);
+      })();
+    }
+
+    function renderState(s, onSettled) {
+      gE.textContent = s.glyph;
+      vE.textContent = s.verb;
+      mE.textContent = '';               // cursor shows, no characters yet
+      body.style.opacity = '1';
+      setTimeout(function(){
+        typeMeta(s.meta, function(){
+          setTimeout(onSettled, HOLD_MS); // hold fully-rendered state
+        });
+      }, SETTLE_MS);
+    }
+
+    var i = 0;
+    function next() {
+      // Fade out, then swap and type
       body.style.opacity = '0.3';
       setTimeout(function(){
-        var s = states[i % states.length];
-        gE.textContent = s.glyph; vE.textContent = s.verb; mE.textContent = s.meta;
-        body.style.opacity = '1';
-        i++;
-      }, 220);
-    }, 3200);
+        renderState(states[i % states.length], function(){
+          i++;
+          next();
+        });
+      }, FADE_MS);
+    }
+
+    // Kick off with state 0 (no initial fade — page is freshly loaded)
+    renderState(states[0], function(){
+      i = 1;
+      next();
+    });
   })();
 
   /* ==========================================================================
@@ -644,6 +949,69 @@
       loadWeather('sjc', 37.3382, -121.8863);   // San Jose, CA
       measureLatency();
       setInterval(measureLatency, 15000);
+      loadArena();
+      setInterval(loadArena, 30000);  // poll tokenz every 30s
+    }
+
+    /* ========================================================================
+       Tokenz arena — fetch /api/usage (proxied through fixbroken nginx),
+       compute per-window trail length, render cycles.
+       ======================================================================== */
+    function fmtTokens(n) {
+      if (!n) return '0';
+      if (n >= 1e9) return (n/1e9).toFixed(2) + 'B';
+      if (n >= 1e6) return (n/1e6).toFixed(2) + 'M';
+      if (n >= 1e3) return (n/1e3).toFixed(1) + 'k';
+      return String(Math.round(n));
+    }
+    function loadArena() {
+      fetch('/api/usage', { cache: 'no-store' }).then(function(r){ return r.json(); }).then(function(data){
+        if (!data || !data.windows) throw new Error('no data');
+
+        /* Normalize trail widths across cycles:
+           - use log scale so small values still show a trail head
+           - cap 8000s at 98% so it's visible it's the longest trail */
+        var windows = data.windows;
+        var maxTotal = Math.max.apply(null, windows.map(function(w){ return w.total || 0; }));
+
+        windows.forEach(function(w, i){
+          var row = document.querySelector('[data-cycle="' + i + '"]');
+          if (!row) return;
+          var trail = row.querySelector('.hp-cycle__trail');
+          var valEl = row.querySelector('.hp-val');
+          var msgEl = row.querySelector('.hp-msg');
+
+          /* Width: log-scaled vs max, with a 4% floor so head is always visible */
+          var pct;
+          if (!w.total || maxTotal === 0) {
+            pct = 4;
+          } else {
+            var r = Math.log10(w.total + 1) / Math.log10(maxTotal + 1);
+            pct = Math.max(4, Math.min(98, r * 98));
+          }
+          trail.style.width = pct + '%';
+
+          valEl.textContent = fmtTokens(w.total) + ' tok';
+          msgEl.textContent = (w.messages || 0) + ' msg · ' +
+            (w.rate_per_sec ? Math.round(w.rate_per_sec) : 0) + ' t/s';
+        });
+
+        /* Footer aggregates — pull from longest window (8000s) */
+        var big = windows[windows.length - 1] || {};
+        document.getElementById('hp-tkn-rate').textContent =
+          (big.rate_per_sec ? Math.round(big.rate_per_sec) : 0) + ' tok/s';
+        document.getElementById('hp-tkn-projday').textContent = fmtTokens(big.proj_day || 0);
+        document.getElementById('hp-tkn-lifetime').textContent = fmtTokens(
+          (data.lifetime && data.lifetime.total) ||
+          windows.reduce(function(s, w){ return s + (w.total||0); }, 0)
+        );
+
+        var secAgo = data.now ? Math.round((Date.now() - data.now) / 1000) : 0;
+        document.getElementById('hp-arena-stamp').textContent =
+          'polled ' + (secAgo < 60 ? secAgo + 's' : Math.round(secAgo/60) + 'm') + ' ago';
+      }).catch(function(){
+        document.getElementById('hp-arena-stamp').textContent = 'signal unreachable';
+      });
     }
 
     // Open-Meteo returns wmo weather codes; map a few to display dots + labels
