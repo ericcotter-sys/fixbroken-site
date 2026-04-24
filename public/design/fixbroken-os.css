@@ -1070,8 +1070,8 @@ hr {
 
   .fb-nav__inner { gap: var(--fb-s-3); }
   /* On mobile, nav links scroll horizontally if they overflow — terminal-native,
-     no hamburger. The -webkit-mask-image fades the right edge so the cut-off
-     looks intentional. */
+     no hamburger. Add .fb-nav__links--fade on pages with enough links to
+     actually overflow if you want the right-edge fade cue. */
   .fb-nav__links {
     gap: var(--fb-s-3);
     overflow-x: auto;
@@ -1079,6 +1079,8 @@ hr {
     -ms-overflow-style: none;
     white-space: nowrap;
     min-width: 0;
+  }
+  .fb-nav__links--fade {
     mask-image: linear-gradient(90deg, black 85%, transparent);
     -webkit-mask-image: linear-gradient(90deg, black 85%, transparent);
     padding-right: var(--fb-s-4);
