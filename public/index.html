@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fix broken ai</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #3A3948;
+  --deep-ink:   #2F2D3A;
+  --coral:      #E46B53;
+  --coral-dim:  #d45c44;
+  --peach:      #EEB49B;
+  --canvas:     #FCF8F3;
+  --wash:       #F6EFE8;
+  --stone:      #D9D2CA;
+  --slate:      #7A7589;
+  --r-btn:  16px;
+  --r-card: 24px;
+  --f-head: "Manrope", "Inter Display", sans-serif;
+  --f-body: "Inter", system-ui, sans-serif;
+  --f-mono: "JetBrains Mono", monospace;
+  --max-w: 1100px;
+  --px: 40px;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--canvas);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+main { max-width: var(--max-w); margin: 0 auto; padding: 96px var(--px); }
+h1 {
+  font-family: var(--f-head);
+  font-weight: 800;
+  font-size: clamp(48px, 7vw, 88px);
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  color: var(--deep-ink);
+  margin: 0 0 24px;
+}
+h1 span { color: var(--coral); }
+p.lede {
+  font-size: clamp(18px, 1.6vw, 22px);
+  color: var(--slate);
+  max-width: 640px;
+  margin: 0 0 40px;
+}
+.tag {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--coral);
+  margin-bottom: 24px;
+}
+.cta {
+  display: inline-block;
+  background: var(--coral);
+  color: var(--canvas);
+  font-family: var(--f-head);
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: var(--r-btn);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+.cta:hover { background: var(--coral-dim); }
+footer {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  color: var(--slate);
+  padding: 40px var(--px);
+  border-top: 1px solid var(--stone);
+  max-width: var(--max-w);
+  margin: 0 auto;
+  text-align: center;
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="tag">consulting · product · brand</div>
+  <h1>Fix broken <span>AI.</span></h1>
+  <p class="lede">Ship clearer, more human AI products. I work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.</p>
+  <a class="cta" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">Start a conversation</a>
+</main>
+<footer>fixbroken.ai · Eric Cotter</footer>
+</body>
+</html>
