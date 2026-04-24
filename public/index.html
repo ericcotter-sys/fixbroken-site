@@ -262,7 +262,8 @@
     opacity: 0;
     pointer-events: none;
     box-shadow: 0 0 16px rgba(0, 212, 255, 0.15);
-    z-index: 50;
+    /* Above nav (100) and overlay (500), below modal (1000). */
+    z-index: 600;
     transition: opacity var(--fb-nudge-fade, 500ms) ease,
                 color 180ms ease,
                 border-color 180ms ease,
@@ -1413,13 +1414,13 @@
        stay = [min, max] ms it sits visible before fading.
        weight = relative frequency. */
     var personalities = prefersReduced ? [
-      { fadeIn: 150, stay: [800, 1200], fadeOut: 150, weight: 1 }
+      { fadeIn: 150, stay: [1000, 1500], fadeOut: 150, weight: 1 }
     ] : [
-      { fadeIn: 90,   stay: [250, 500],   fadeOut: 90,   weight: 1.5 }, // FLASH
-      { fadeIn: 220,  stay: [700, 1300],  fadeOut: 220,  weight: 3   }, // pop
-      { fadeIn: 1100, stay: [900, 1600],  fadeOut: 1200, weight: 1.5 }, // drift
-      { fadeIn: 150,  stay: [500, 900],   fadeOut: 500,  weight: 1.5 }, // tease
-      { fadeIn: 500,  stay: [400, 800],   fadeOut: 200,  weight: 1.5 }  // shy
+      { fadeIn: 90,   stay: [400, 700],    fadeOut: 90,   weight: 1.5 }, // FLASH
+      { fadeIn: 220,  stay: [1000, 1700],  fadeOut: 220,  weight: 3   }, // pop
+      { fadeIn: 1100, stay: [1300, 2200],  fadeOut: 1200, weight: 1.5 }, // drift
+      { fadeIn: 150,  stay: [800, 1300],   fadeOut: 500,  weight: 1.5 }, // tease
+      { fadeIn: 500,  stay: [700, 1200],   fadeOut: 200,  weight: 1.5 }  // shy
     ];
 
     function pickPersonality() {
@@ -1593,13 +1594,15 @@
         cycleTimer = setTimeout(showNudgeOnce, 2000);
         return;
       }
-      // First appearance is forced to verbose (when live + in view).
-      // Everything else goes through normal random rotation.
+      /* First appearance is forced to verbose whenever it's live (anchor
+         exists in DOM and isn't already retired). Don't gate on in-view -
+         the verbose toggle is in the hero, top of page is the default
+         scroll position, and waiting for retries delays the first impression. */
       var anchor = null;
       if (!firstShowDone) {
         var verboseAnchor = null;
         ANCHORS.forEach(function(a){ if (a.id === 'verbose') verboseAnchor = a; });
-        if (verboseAnchor && !verboseAnchor.retired && verboseAnchor.el && isAnchorInView(verboseAnchor.el)) {
+        if (verboseAnchor && !verboseAnchor.retired && verboseAnchor.el) {
           anchor = verboseAnchor;
         }
       }
