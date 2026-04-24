@@ -426,6 +426,38 @@
   .hp-wx-dot--fog    { background: var(--fb-text-mute); box-shadow: none; }
 
   /* ==========================================================================
+     CONTACT section — always visible, between hero and verbose.
+     ========================================================================== */
+  .hp-contact {
+    padding-block: var(--fb-s-16);
+    scroll-margin-top: 80px;
+  }
+  .hp-contact__panel {
+    max-width: 760px;
+    margin-inline: auto;
+    padding: var(--fb-s-8);
+  }
+  /* Custom select arrow to match the terminal aesthetic */
+  .hp-contact select.fb-input {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--fb-text-dim) 50%),
+                      linear-gradient(135deg, var(--fb-text-dim) 50%, transparent 50%);
+    background-position: calc(100% - 16px) 50%, calc(100% - 11px) 50%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: 32px;
+  }
+  .hp-contact select.fb-input:focus {
+    background-image: linear-gradient(45deg, transparent 50%, var(--fb-signal) 50%),
+                      linear-gradient(135deg, var(--fb-signal) 50%, transparent 50%);
+  }
+  @media (max-width: 640px) {
+    .hp-contact { padding-block: var(--fb-s-10); }
+    .hp-contact__panel { padding: var(--fb-s-5); }
+  }
+
+  /* ==========================================================================
      TOKENZ — Usage Arena (TRON light-cycles racing across windows)
      ========================================================================== */
   .hp-arena {
@@ -1576,6 +1608,84 @@
         document.getElementById('hp-uptime').textContent = 'unreachable';
       });
     }
+  })();
+
+  /* ==========================================================================
+     Contact form — POSTs JSON to /contact, shows terminal-style success state
+     ========================================================================== */
+  (function(){
+    var form = document.getElementById('hp-contact-form');
+    if (!form) return;
+    var submitBtn = document.getElementById('hp-cf-submit');
+    var statusEl  = document.getElementById('hp-cf-status');
+    var successEl = document.getElementById('hp-cf-success');
+    var refEl     = document.getElementById('hp-cf-ref');
+
+    function setStatus(text, color) {
+      statusEl.textContent = text || '';
+      statusEl.style.color = color || 'var(--fb-text-mute)';
+    }
+
+    form.addEventListener('submit', function(ev){
+      ev.preventDefault();
+      setStatus('');
+
+      var data = {
+        name:    (document.getElementById('hp-cf-name').value || '').trim(),
+        email:   (document.getElementById('hp-cf-email').value || '').trim(),
+        company: (document.getElementById('hp-cf-company').value || '').trim(),
+        type:    (document.getElementById('hp-cf-type').value || ''),
+        message: (document.getElementById('hp-cf-message').value || '').trim()
+      };
+
+      // Client-side validation
+      if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) {
+        setStatus('email looks off — try again', 'var(--fb-amber)');
+        return;
+      }
+      if (data.message.length < 4) {
+        setStatus('give me a sentence to work with', 'var(--fb-amber)');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.6';
+      var originalText = submitBtn.firstChild && submitBtn.firstChild.nodeType === 3
+        ? submitBtn.firstChild : null;
+      submitBtn.textContent = 'sending…';
+
+      fetch('/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      .then(function(r){ return r.json().then(function(j){ return { status: r.status, body: j }; }); })
+      .then(function(r){
+        if (r.body && r.body.ok) {
+          form.hidden = true;
+          successEl.hidden = false;
+          refEl.textContent = r.body.ref;
+          // Scroll the success into view in case the form was long on mobile
+          successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        } else {
+          var err = r.body && r.body.err;
+          var msg = r.status === 429 ? 'easy there. try again in 30s.' :
+                    err === 'bad_email'   ? 'that email doesn\'t look right' :
+                    err === 'bad_message' ? 'need a message to work with' :
+                    'something broke on my end. try again or email directly.';
+          setStatus(msg, 'var(--fb-amber)');
+          submitBtn.disabled = false;
+          submitBtn.style.opacity = '1';
+          submitBtn.textContent = 'Send the signal';
+        }
+      })
+      .catch(function(){
+        setStatus('connection failed — try again', 'var(--fb-red)');
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.textContent = 'Send the signal';
+      });
+    });
   })();
 </script>
 
