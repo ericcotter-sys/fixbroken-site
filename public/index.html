@@ -132,9 +132,12 @@
     100% { background-position: -140% 50%; }
   }
 
-  /* Meta line: types in char-by-char like a CLI progress output.
-     Reserve a min-height so the layout doesn't jump on empty/short strings.
-     A blinking block cursor trails the typed text. */
+  /* Context/status line — live ticker. Calm. Accumulates.
+     Three parts:
+       - elapsed seconds (updates every 1s)
+       - count (updates every ~4s)
+       - metric noun (tied to active phrase)
+     A brief opacity flash marks the moment the count increments. */
   .hp-status__meta {
     font-family: var(--fb-font-mono);
     font-size: var(--fb-fs-12);
@@ -143,21 +146,26 @@
     min-height: 1.35em;
     display: flex;
     align-items: baseline;
-    gap: 2px;
+    gap: 6px;
+    transition: opacity 200ms ease;
   }
-  .hp-status__meta-cursor {
-    display: inline-block;
-    width: 0.55em;
-    height: 1em;
-    background: var(--fb-signal);
-    margin-left: 2px;
-    vertical-align: -0.12em;
-    animation: hp-meta-blink 1s steps(1) infinite;
-    box-shadow: 0 0 8px var(--fb-signal-glow);
+  .hp-status__meta .hp-count {
+    color: var(--fb-text);            /* slightly brighter than the rest */
+    font-weight: 500;
+    transition: color 300ms ease;
   }
-  @keyframes hp-meta-blink {
-    0%, 49% { opacity: 1; }
-    50%, 100% { opacity: 0; }
+  .hp-status__meta.hp-pulse .hp-count {
+    color: var(--fb-signal);
+    text-shadow: 0 0 8px var(--fb-signal-glow);
+  }
+  .hp-status__meta.hp-pulse {
+    /* brief opacity bump on count change — barely perceptible */
+    animation: hp-meta-pulse 520ms ease;
+  }
+  @keyframes hp-meta-pulse {
+    0%   { opacity: 0.6; }
+    40%  { opacity: 1; }
+    100% { opacity: 0.85; }
   }
 
   /* Reduced-motion: kill shimmer + glyph animation + cursor blink,
@@ -202,7 +210,8 @@
     transition: all var(--fb-t-fast);
   }
 
-  /* Hint: fades in after a random delay, gently bobs toward the button.
+  /* Hint: a cheeky little nudge that fades in after a random delay,
+     gently bobs toward the button, gets happy when you hover it.
      Dismissed on first click or after 10s; remembered via localStorage. */
   .hp-hint {
     position: absolute;
@@ -218,12 +227,16 @@
     font-size: var(--fb-fs-11);
     color: var(--fb-signal);
     letter-spacing: var(--fb-tracking-wide);
-    text-transform: uppercase;
+    text-transform: lowercase;   /* playful copy reads nicer lowercase */
     white-space: nowrap;
     opacity: 0;
     pointer-events: none;
     box-shadow: 0 0 16px rgba(0, 212, 255, 0.15);
-    transition: opacity 500ms ease;
+    transition: opacity 500ms ease,
+                transform 320ms cubic-bezier(.25,.9,.3,1.4),
+                color 180ms ease,
+                border-color 180ms ease,
+                box-shadow 180ms ease;
   }
   .hp-hint::before {
     content: "←";
@@ -234,14 +247,34 @@
   }
   .hp-hint--show {
     opacity: 1;
+    pointer-events: auto;   /* allow hover once visible */
   }
   .hp-hint--show::before {
-    /* re-apply animation when shown */
     animation: hp-hint-arrow 1.4s ease-in-out infinite;
+  }
+  /* Happy on hover — little bounce + pink blush + stronger glow.
+     Desktop only (touch devices shouldn't fire this from a stray tap). */
+  @media (hover: hover) {
+    .hp-hint:hover {
+      color: var(--fb-pink);
+      border-color: color-mix(in srgb, var(--fb-pink) 50%, var(--fb-hairline));
+      box-shadow: 0 0 20px var(--fb-pink-glow);
+      transform: translateY(-50%) translateX(0) scale(1.08) rotate(-1.5deg);
+      cursor: pointer;
+    }
+    .hp-hint:hover::before {
+      color: var(--fb-pink);
+      animation: hp-hint-arrow-happy 0.6s ease-in-out infinite;
+    }
   }
   @keyframes hp-hint-arrow {
     0%, 100% { transform: translateX(0); }
     50%      { transform: translateX(-4px); }
+  }
+  @keyframes hp-hint-arrow-happy {
+    0%, 100% { transform: translateX(0) rotate(0deg); }
+    25%      { transform: translateX(-5px) rotate(-8deg); }
+    75%      { transform: translateX(-2px) rotate(4deg); }
   }
 
   /* On mobile, hint sits BELOW the toggle with a down-pointing arrow */
@@ -684,21 +717,23 @@
                 <span class="hp-status__glyph" id="hp-glyph">⟡</span>
                 <span class="hp-status__phrase" id="hp-verb">Untangling interface debt…</span>
               </div>
-              <div class="hp-status__meta">
-                <span id="hp-meta"></span>
-                <span class="hp-status__meta-cursor" aria-hidden="true"></span>
+              <div class="hp-status__meta" id="hp-meta">
+                <span id="hp-elapsed">0s</span>
+                <span>·</span>
+                <span class="hp-count" id="hp-count">1</span>
+                <span id="hp-label">trust gaps mapped</span>
               </div>
             </div>
           </div>
 
-          <!-- Verbose toggle + delayed "try this" hint -->
+          <!-- Verbose toggle + delayed cheeky hint -->
           <div class="hp-toggle-wrap">
             <button class="hp-toggle" id="hp-toggle-btn" aria-pressed="false">
               <span class="hp-toggle__dot"></span>
               <span>verbose</span>
               <span class="hp-toggle__label"></span>
             </button>
-            <span class="hp-hint" id="hp-hint" role="tooltip">see what's inside</span>
+            <span class="hp-hint" id="hp-hint" role="tooltip" tabindex="0"></span>
           </div>
         </div>
 
@@ -879,7 +914,11 @@
         <div class="fb-context-rail">
           <div class="fb-row fb-row--between"><span class="fb-label">OPERATOR</span><span class="fb-text-loud">Eric Cotter</span></div>
           <div class="fb-row fb-row--between"><span class="fb-label">ROLE</span><span>CPO · brand · repair</span></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">BASED</span><span>Ohio · remote</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">BASED</span><span>San Jose · Carmel Valley · CA</span></div>
+          <div class="fb-context-rail__divider"></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">HOST</span><span>AWS Lightsail</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">REGION</span><span>us-east-2a · Ohio</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">NETWORK</span><span>dual-stack · IPv4 + IPv6</span></div>
           <div class="fb-context-rail__divider"></div>
           <div class="fb-row fb-row--between"><span class="fb-label">SYSTEM</span><span class="fb-text-loud">FixBroken OS v0.1</span></div>
           <div class="fb-row fb-row--between"><span class="fb-label">TENANTS</span><span>vumo.fixbroken.ai</span></div>
@@ -902,85 +941,68 @@
 
 <script>
   /* ==========================================================================
-     1. Status cycle
+     1. Status module — three-layer terminal pattern
      ---------------------------------------------------------------------------
-     Behavior:
-       - Tag line: static. Never animates.
-       - Verb: swaps whole (shimmer sweep is continuous on the class).
-       - Meta: TYPES in character-by-character with a blinking cursor, like a
-         CLI progress line. Cycle advances ONLY after the meta finishes typing
-         and a hold period elapses.
-       - Reduced-motion: show full content, no typing, no fade.
+       Line 1 (system label):     static
+       Line 2 (active phrase):    rotates every 5s, shimmer runs continuously
+       Line 3 (context/counter):  live-ticks elapsed seconds; count accumulates
+                                  every ~4s; metric noun follows active phrase
+     Reduced-motion: everything still updates, but no shimmer/pulse effects.
      ========================================================================== */
   (function(){
     var states = [
-      { glyph: "⟡", verb: "Untangling interface debt…",   meta: "9s · 4 trust gaps mapped" },
-      { glyph: "✦", verb: "Humanizing the workflow…",     meta: "11s · 3 rough edges removed" },
-      { glyph: "◇", verb: "Translating model output…",    meta: "8s · 2 product decisions clarified" },
-      { glyph: "⌁", verb: "Hardening trust paths…",       meta: "14s · 5 failure states surfaced" },
-      { glyph: "⬡", verb: "Reducing user confusion…",     meta: "7s · 1 clearer path shipped" }
+      { glyph: "⟡", phrase: "Untangling interface debt", metricNoun: "trust gaps mapped" },
+      { glyph: "✦", phrase: "Humanizing the workflow",   metricNoun: "rough edges removed" },
+      { glyph: "◇", phrase: "Translating model output",  metricNoun: "product decisions clarified" },
+      { glyph: "⌁", phrase: "Hardening trust paths",     metricNoun: "failure states surfaced" },
+      { glyph: "⬡", phrase: "Reducing user confusion",   metricNoun: "clearer paths shipped" }
     ];
 
-    var body = document.getElementById('hp-status-body');
-    var vE = document.getElementById('hp-verb');
-    var mE = document.getElementById('hp-meta');
-    var gE = document.getElementById('hp-glyph');
+    var glyphEl    = document.getElementById('hp-glyph');
+    var phraseEl   = document.getElementById('hp-verb');
+    var elapsedEl  = document.getElementById('hp-elapsed');
+    var countEl    = document.getElementById('hp-count');
+    var labelEl    = document.getElementById('hp-label');
+    var contextEl  = document.getElementById('hp-meta');
 
-    var TYPE_MS    = 28;    // ms per character
-    var HOLD_MS    = 2200;  // dwell after typing completes
-    var FADE_MS    = 220;   // swap-transition duration
-    var SETTLE_MS  = 140;   // breath before typing begins
-
+    var startedAt = Date.now();
+    var lastPhraseIdx = -1;
+    var lastCount     = -1;
     var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Reduced-motion: render first state fully, no rotation.
-    if (reduced) {
-      var s0 = states[0];
-      gE.textContent = s0.glyph;
-      vE.textContent = s0.verb;
-      mE.textContent = s0.meta;
-      return;
+    function tick() {
+      var elapsed    = Math.floor((Date.now() - startedAt) / 1000);
+      var phraseIdx  = Math.floor(elapsed / 5) % states.length;  // rotate every 5s
+      var count      = Math.min(99, Math.max(1, Math.floor(elapsed / 4))); // bump every 4s
+
+      // Line 3: elapsed always updates (even at t=0).
+      elapsedEl.textContent = elapsed + 's';
+
+      // Line 2: update phrase + glyph + metric noun only when the state changes.
+      if (phraseIdx !== lastPhraseIdx) {
+        var s = states[phraseIdx];
+        glyphEl.textContent  = s.glyph;
+        phraseEl.textContent = s.phrase + '…';
+        labelEl.textContent  = s.metricNoun;
+        lastPhraseIdx = phraseIdx;
+      }
+
+      // Line 3: count updates less often; pulse the line briefly when it does.
+      if (count !== lastCount) {
+        countEl.textContent = count;
+        lastCount = count;
+        if (!reduced) {
+          contextEl.classList.remove('hp-pulse');
+          /* Reflow so the animation restarts on re-add */
+          void contextEl.offsetWidth;
+          contextEl.classList.add('hp-pulse');
+        }
+      }
     }
 
-    function typeMeta(text, done) {
-      mE.textContent = '';
-      var pos = 0;
-      (function step(){
-        if (pos > text.length) { done(); return; }
-        mE.textContent = text.slice(0, pos++);
-        setTimeout(step, TYPE_MS);
-      })();
-    }
-
-    function renderState(s, onSettled) {
-      gE.textContent = s.glyph;
-      vE.textContent = s.verb;
-      mE.textContent = '';               // cursor shows, no characters yet
-      body.style.opacity = '1';
-      setTimeout(function(){
-        typeMeta(s.meta, function(){
-          setTimeout(onSettled, HOLD_MS); // hold fully-rendered state
-        });
-      }, SETTLE_MS);
-    }
-
-    var i = 0;
-    function next() {
-      // Fade out, then swap and type
-      body.style.opacity = '0.3';
-      setTimeout(function(){
-        renderState(states[i % states.length], function(){
-          i++;
-          next();
-        });
-      }, FADE_MS);
-    }
-
-    // Kick off with state 0 (no initial fade — page is freshly loaded)
-    renderState(states[0], function(){
-      i = 1;
-      next();
-    });
+    /* Prime the display at t=0 so the user sees state 0 on load, not a blank. */
+    tick();
+    setInterval(tick, 1000);
   })();
 
   /* ==========================================================================
@@ -1009,13 +1031,38 @@
     try {
       if (localStorage.getItem(KEY) === '1') apply(true);
     } catch(_) {}
-    /* ------ Hint: appears after a random 4-6s delay the first time ------
-       Only shows if verbose is off AND never been dismissed.
-       Auto-hides after 10s or when the user clicks the toggle. */
+    /* ------ Hint: a cheeky nudge that appears after a 4-6s delay -------
+       - Copy is randomized from a playful set (picked once per page load)
+       - Gets happy on hover (CSS handles the bounce)
+       - If user hovers, rotate to a new cheeky line to reward curiosity
+       - Dismissed on click (persists) or after 10s (doesn't persist) */
     var hintShown = false;
     var hintTimer = null;
     var hintDismissed = false;
     try { hintDismissed = localStorage.getItem(HINT_KEY) === '1'; } catch(_) {}
+
+    var hintMessages = [
+      "peek a boo",
+      "hey…",
+      "look at me",
+      "psst",
+      "there's more",
+      "over here",
+      "wanna see?",
+      "the good stuff",
+      "open me",
+      "nudge nudge",
+      "curious?",
+      "don't be shy",
+      "i dare you",
+      "c'mon",
+      "flex alert"
+    ];
+
+    function pickHintMessage(avoid) {
+      var pool = hintMessages.filter(function(m){ return m !== avoid; });
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
 
     function dismissHint(persist) {
       if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; }
@@ -1030,15 +1077,27 @@
       dismissHint(true);   // persist: once user interacts, never show again
     });
 
+    /* Hover swap: when the user hovers the hint, reward them with a new line */
+    if (hint) {
+      hint.addEventListener('mouseenter', function(){
+        hint.textContent = pickHintMessage(hint.textContent);
+      });
+      /* Clicking the hint itself should also toggle verbose (feels natural) */
+      hint.addEventListener('click', function(){
+        apply(true);
+        dismissHint(true);
+      });
+    }
+
     if (!hintDismissed && !body.classList.contains('hp-verbose-on')) {
-      var delay = 4000 + Math.floor(Math.random() * 2000); // 4000-6000ms
+      var delay = 4000 + Math.floor(Math.random() * 2000); // 4-6s
       hintTimer = setTimeout(function(){
         hintTimer = null;
         if (!body.classList.contains('hp-verbose-on') && !hintShown) {
           hintShown = true;
+          hint.textContent = pickHintMessage(null);   // pick on first show
           hint.classList.add('hp-hint--show');
-          // Auto-dismiss after 10s. Do NOT persist — user may have been AFK;
-          // let the hint try again on next visit. Only clicking persists.
+          // Auto-dismiss after 10s. Not persisted — user may have been AFK.
           setTimeout(function(){ dismissHint(false); }, 10000);
         }
       }, delay);
