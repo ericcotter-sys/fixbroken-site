@@ -3,95 +3,246 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>fix broken ai</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root {
-  --ink:        #3A3948;
-  --deep-ink:   #2F2D3A;
-  --coral:      #E46B53;
-  --coral-dim:  #d45c44;
-  --peach:      #EEB49B;
-  --canvas:     #FCF8F3;
-  --wash:       #F6EFE8;
-  --stone:      #D9D2CA;
-  --slate:      #7A7589;
-  --r-btn:  16px;
-  --r-card: 24px;
-  --f-head: "Manrope", "Inter Display", sans-serif;
-  --f-body: "Inter", system-ui, sans-serif;
-  --f-mono: "JetBrains Mono", monospace;
-  --max-w: 1100px;
-  --px: 40px;
-}
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; }
-body {
-  background: var(--canvas);
-  color: var(--ink);
-  font-family: var(--f-body);
-  font-weight: 400;
-  line-height: 1.55;
-  -webkit-font-smoothing: antialiased;
-}
-main { max-width: var(--max-w); margin: 0 auto; padding: 96px var(--px); }
-h1 {
-  font-family: var(--f-head);
-  font-weight: 800;
-  font-size: clamp(48px, 7vw, 88px);
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-  color: var(--deep-ink);
-  margin: 0 0 24px;
-}
-h1 span { color: var(--coral); }
-p.lede {
-  font-size: clamp(18px, 1.6vw, 22px);
-  color: var(--slate);
-  max-width: 640px;
-  margin: 0 0 40px;
-}
-.tag {
-  font-family: var(--f-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--coral);
-  margin-bottom: 24px;
-}
-.cta {
-  display: inline-block;
-  background: var(--coral);
-  color: var(--canvas);
-  font-family: var(--f-head);
-  font-weight: 600;
-  padding: 14px 28px;
-  border-radius: var(--r-btn);
-  text-decoration: none;
-  transition: background 0.15s ease;
-}
-.cta:hover { background: var(--coral-dim); }
-footer {
-  font-family: var(--f-mono);
-  font-size: 12px;
-  color: var(--slate);
-  padding: 40px var(--px);
-  border-top: 1px solid var(--stone);
-  max-width: var(--max-w);
-  margin: 0 auto;
-  text-align: center;
-}
-</style>
+<title>fixbroken.ai · operator for broken AI systems</title>
+<meta name="description" content="Consulting and product work for teams shipping AI that needs to actually work for humans. Product, brand, and system clarity.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
 </head>
 <body>
-<main>
-  <div class="tag">consulting · product · brand</div>
-  <h1>Fix broken <span>AI.</span></h1>
-  <p class="lede">Ship clearer, more human AI products. I work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.</p>
-  <a class="cta" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">Start a conversation</a>
-</main>
-<footer>fixbroken.ai · Eric Cotter</footer>
+
+<div class="fb-grid-bg"></div>
+<div class="fb-scanline"></div>
+
+<div class="fb-shell">
+
+  <!-- ======================================================================
+       NAV
+       ====================================================================== -->
+  <nav class="fb-nav">
+    <div class="fb-nav__inner">
+      <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+      <div class="fb-nav__links">
+        <a class="fb-nav__link fb-nav__link--active" href="/">System</a>
+        <a class="fb-nav__link" href="/design/">Design</a>
+        <a class="fb-nav__link" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">Signal</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ====================================================================
+         HERO — MCP cone sits behind the hero
+         ==================================================================== -->
+    <section class="fb-section fb-section--loose" style="position:relative; overflow:hidden;">
+      <div class="fb-mcp-cone fb-mcp-cone--pink" style="--cone-h: 560px;"></div>
+
+      <div class="fb-container" style="position:relative;">
+        <div class="fb-stack fb-stack--loose">
+
+          <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-3);">
+            <span class="fb-status">System online</span>
+            <span class="fb-chip fb-chip--pink">consulting · operator · repair</span>
+          </div>
+
+          <h1 class="fb-display fb-display--pink fb-rise">
+            Fix broken <em>AI.</em><span class="fb-cursor fb-cursor--pink" aria-hidden="true"></span>
+          </h1>
+
+          <p class="fb-lede fb-rise fb-rise--d1">
+            Most AI products feel broken to the humans using them. I work with teams to make the signal legible — clearer product, sharper brand, systems that earn trust instead of demanding it.
+          </p>
+
+          <div class="fb-row fb-row--wrap fb-rise fb-rise--d2" style="gap: var(--fb-s-3);">
+            <a class="fb-cta fb-cta--solid" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">
+              Open the console
+            </a>
+            <a class="fb-cta fb-cta--ghost" href="#operations">
+              Read signal
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         CONTEXT — what broken AI actually looks like in the wild
+         ==================================================================== -->
+    <section class="fb-section">
+      <div class="fb-container">
+        <div class="fb-stack">
+
+          <div class="fb-row fb-row--between fb-row--wrap" style="align-items:flex-end;">
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-kicker">Context · The pattern</span>
+              <h2>Most AI doesn't ship. It leaks.</h2>
+            </div>
+            <span class="fb-label fb-label--signal">Trace · 01</span>
+          </div>
+
+          <div class="fb-terminal">
+            <div class="fb-terminal__bar">
+              <span class="fb-terminal__dots">
+                <span class="fb-terminal__dot fb-terminal__dot--red"></span>
+                <span class="fb-terminal__dot fb-terminal__dot--amber"></span>
+                <span class="fb-terminal__dot fb-terminal__dot--matrix"></span>
+              </span>
+              signal / trace / broken-ai.log
+            </div>
+            <div class="fb-terminal__body">
+              <div class="fb-command">the model works · the product doesn't</div>
+              <div class="fb-output">users don't trust the output. confidence is invisible. the "AI" feels like a black box nobody signed up for.</div>
+
+              <div class="fb-command fb-command--matrix">the copy lies about capability</div>
+              <div class="fb-output">oversold in the hero. under-documented in the app. customers feel tricked before value lands.</div>
+
+              <div class="fb-command">the brand mimics every other AI brand</div>
+              <div class="fb-output">purple gradients, sparkle icon, a noun + "GPT." nothing memorable, nothing credible, nothing human.</div>
+
+              <div class="fb-command fb-command--matrix">the human-in-the-loop is theater</div>
+              <div class="fb-output">staff, operators, and end users have no real intervention points. corrections disappear into silence.</div>
+
+              <div class="fb-command fb-command--none"><span class="fb-label fb-label--amber">STATUS ·</span> <span style="color:var(--fb-amber);">BROKEN. USABLE. FIXABLE.</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         OPERATIONS — the three things I actually do
+         ==================================================================== -->
+    <section class="fb-section" id="operations">
+      <div class="fb-container">
+        <div class="fb-stack fb-stack--loose">
+
+          <div class="fb-stack fb-stack--tight">
+            <span class="fb-kicker">Output · Operations</span>
+            <h2>Three operations, one system.</h2>
+            <p class="fb-lede" style="margin-top: var(--fb-s-2);">
+              I don't deliver decks. I work in the actual product, brand, and system until it behaves.
+            </p>
+          </div>
+
+          <div class="fb-grid">
+
+            <article class="fb-signal-card">
+              <span class="fb-signal-card__label">Op · 01 · Product</span>
+              <h3 class="fb-signal-card__title">Unfuck the flow.</h3>
+              <p class="fb-signal-card__body">
+                AI-native UX. Confidence signals, human checkpoints, recovery paths. Make the product feel like a tool, not a demo.
+              </p>
+              <span class="fb-signal-card__cta">Trace the pattern</span>
+            </article>
+
+            <article class="fb-signal-card">
+              <span class="fb-signal-card__label">Op · 02 · Brand</span>
+              <h3 class="fb-signal-card__title">Earn the room.</h3>
+              <p class="fb-signal-card__body">
+                Positioning, language, visual system. Replace generic AI gloss with voice that reads as credible to operators, customers, and investors.
+              </p>
+              <span class="fb-signal-card__cta">Build the signal</span>
+            </article>
+
+            <article class="fb-signal-card">
+              <span class="fb-signal-card__label">Op · 03 · System</span>
+              <h3 class="fb-signal-card__title">Make it shippable.</h3>
+              <p class="fb-signal-card__body">
+                Pilot structure, commercialization, dealer / operator / customer interface. Translate technical capability into sellable workflow.
+              </p>
+              <span class="fb-signal-card__cta">Open the room</span>
+            </article>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         SIGNAL — live status / what's running
+         ==================================================================== -->
+    <section class="fb-section">
+      <div class="fb-container">
+        <div class="fb-grid fb-grid--2">
+
+          <div class="fb-panel fb-panel--signal">
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-kicker">Signal · Current engagements</span>
+              <h3>What's running.</h3>
+              <p class="fb-text-dim" style="font-size: var(--fb-fs-15);">
+                Current and recent consulting work — clients on the roster get a subsite, a brief, and a direct line.
+              </p>
+              <div class="fb-divider fb-divider--signal"></div>
+              <div class="fb-stack fb-stack--tight fb-mono" style="font-size: var(--fb-fs-13); color: var(--fb-text-dim);">
+                <div class="fb-row fb-row--between">
+                  <span>VUMO · walkaround + brand</span>
+                  <span class="fb-status">active</span>
+                </div>
+                <div class="fb-row fb-row--between">
+                  <span>(roster open)</span>
+                  <span class="fb-label">intake: 1/qtr</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fb-context-rail">
+            <div class="fb-row fb-row--between"><span class="fb-label">OPERATOR</span><span class="fb-text-loud">Eric Cotter</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">ROLE</span><span>CPO · brand · repair</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">BASED</span><span>Ohio · remote</span></div>
+            <div class="fb-context-rail__divider"></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">SYSTEM</span><span class="fb-text-loud">FixBroken OS v0.1</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">TENANTS</span><span>vumo.fixbroken.ai</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">UPTIME</span><span class="fb-glow--matrix" style="color: var(--fb-matrix);">100%</span></div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         CTA — command to enter the room
+         ==================================================================== -->
+    <section class="fb-section fb-section--loose">
+      <div class="fb-container fb-container--narrow">
+        <div class="fb-panel fb-panel--pink fb-panel--lifted" style="text-align:center;">
+          <div class="fb-stack" style="align-items:center; gap: var(--fb-s-5);">
+            <span class="fb-kicker fb-kicker--pink">Run · Contact</span>
+            <h2 class="fb-glow--pink">Something broken?</h2>
+            <p class="fb-lede" style="max-width: 52ch;">
+              One email. Tell me the system, the pattern, and what you've tried. If it's the right shape of problem, we'll get on a call.
+            </p>
+            <div class="fb-row fb-row--wrap" style="justify-content:center; gap: var(--fb-s-3);">
+              <a class="fb-cta fb-cta--pink-solid" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai%20·%20something%20broke">
+                Send the signal
+              </a>
+              <a class="fb-cta fb-cta--ghost" href="/design/">
+                Read the system
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================
+       FOOTER
+       ====================================================================== -->
+  <footer class="fb-footer">
+    <div class="fb-footer__row">
+      <span>◢ fixbroken.ai</span>
+      <span>© 2026 Eric Cotter · all signals reserved</span>
+      <span class="fb-status">system online</span>
+    </div>
+  </footer>
+
+</div>
+
 </body>
 </html>

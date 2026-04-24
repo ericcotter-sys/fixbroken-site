@@ -1,0 +1,130 @@
+# CLAUDE.md — vumo-fixbroken-site
+
+**What this repo is:** the source for https://fixbroken.ai — Eric Cotter's consulting site and the home of **FixBroken OS**, the global design system used by every tenant subsite (vumo.fixbroken.ai today; others later).
+
+**Repo naming note:** the repo is prefixed `vumo-` for historical reasons (it was the first client engagement site). It will likely be renamed to `fixbroken-site` once the brand is stable. Don't let the name mislead — this IS the flagship.
+
+---
+
+## Stack
+
+- Node 20 + Express (static file server with a signup endpoint)
+- Nginx reverse proxy on Ubuntu 24.04 Lightsail instance
+- Let's Encrypt SSL via Certbot
+- GitHub webhook → `deploy.sh` on push to `main` (prod) or `staging`
+
+## Layout
+
+```
+vumo-fixbroken-site/
+├── server.js              Express entry point (port 3000, bound to 127.0.0.1)
+├── package.json
+├── deploy.sh              webhook-triggered deploy script
+├── public/
+│   ├── index.html         fixbroken.ai landing
+│   └── design/
+│       ├── fixbroken-os.css   THE design system — do not fork
+│       ├── index.html         living style guide at /design/
+│       └── brand.md           voice + palette + principles
+├── CLAUDE.md              this file
+└── README.md
+```
+
+## FixBroken OS — the design system
+
+`/public/design/fixbroken-os.css` is the **single source of truth** for the visual system. It is served at:
+
+- `https://fixbroken.ai/design/fixbroken-os.css`
+
+Every subsite in the fixbroken tenant tree imports it:
+
+```html
+<link rel="stylesheet" href="https://fixbroken.ai/design/fixbroken-os.css">
+<!-- optional per-project override AFTER -->
+<link rel="stylesheet" href="/my-project-overrides.css">
+```
+
+### The CSS file is organized in 11 sections, heavily commented:
+
+1. TOKENS — CSS variables (colors, type, spacing, radius, shadows, motion, z-index, layout)
+2. RESET — tight box-sizing, no baggage
+3. FONTS — Google Fonts import (Inter + JetBrains Mono)
+4. BASE — html/body, headings, links, selection
+5. LAYOUT — `.fb-shell`, `.fb-container`, `.fb-section`, `.fb-stack`, `.fb-row`, `.fb-grid`
+6. TYPOGRAPHY CLASSES — `.fb-display`, `.fb-lede`, `.fb-mono`, `.fb-label`, `.fb-kicker`
+7. COMPONENTS — `.fb-nav`, `.fb-panel`, `.fb-terminal`, `.fb-command`, `.fb-cta`, `.fb-chip`, `.fb-status`, `.fb-signal-card`, `.fb-context-rail`, `.fb-input`/`.fb-textarea`, `.fb-footer`, `.fb-divider`
+8. EFFECTS — `.fb-grid-bg`, `.fb-scanline`, `.fb-mcp-cone`, `.fb-beam`, `.fb-cursor`, `.fb-glow`
+9. MOTION — `@keyframes` + `.fb-rise` animation helpers
+10. RESPONSIVE — tablet (`<960px`) and mobile (`<640px`) overrides
+11. ACCESSIBILITY — `prefers-reduced-motion`, `:focus-visible`
+
+---
+
+## Rules for future agents editing this repo
+
+### ✅ Do
+
+- Update `fixbroken-os.css` when a new token or component is truly universal.
+- Add new `.fb-*` components with proper section comments so they're discoverable.
+- Keep every new component responsive — test at 375px before you ship.
+- Update `/design/index.html` to document any new component.
+- Update `brand.md` when voice or palette evolves.
+- Keep the CSS in a single file for now. If it grows past ~2000 lines, revisit.
+
+### ❌ Don't
+
+- Do NOT fork the design system into individual page `<style>` blocks. If you need a token, reference the variable.
+- Do NOT create new non-prefixed global classes. Everything public is `.fb-*`.
+- Do NOT redefine `.fb-*` classes outside of `fixbroken-os.css`. Projects override via wrapper classes (see below).
+- Do NOT introduce a third font family. Inter + JetBrains Mono is the contract.
+- Do NOT use purple, glassmorphism, sparkle icons, emoji decorations, or generic AI tropes. See `brand.md` for the "avoid" list.
+
+### Override pattern (for projects that need a twist)
+
+Projects load their override stylesheet AFTER `fixbroken-os.css` and scope their overrides to a wrapper class. Example:
+
+```html
+<body class="vumo-scope">
+  <link rel="stylesheet" href="https://fixbroken.ai/design/fixbroken-os.css">
+  <link rel="stylesheet" href="/vumo-overrides.css">
+</body>
+```
+
+```css
+/* vumo-overrides.css */
+.vumo-scope {
+  --fb-black: #0d1520;      /* softer base */
+  --fb-signal: #5bb8ff;     /* softer cyan */
+}
+
+.vumo-scope .fb-cta { /* component-level override */
+  text-transform: none;     /* VUMO uses sentence case */
+}
+
+.vumo-walkaround {          /* new project-specific component */
+  /* ... */
+}
+```
+
+### Development workflow
+
+1. Edit files locally on your Mac under `~/Documents/Claude/Projects/VUMO/repos/vumo-fixbroken-site/`.
+2. Test at multiple widths in browser (375, 768, 1440).
+3. Commit + push to `main` → webhook auto-deploys to https://fixbroken.ai within ~10s.
+4. For risky changes: push to `staging` → preview at https://stage.fixbroken.ai (basic auth).
+
+---
+
+## Operational notes
+
+- App listens on `127.0.0.1:3000` (not `0.0.0.0`) — Nginx proxies external traffic.
+- Webhook secret is in `/home/ubuntu/apps/fixbroken-webhook/.secret` on the server.
+- Deploy logs: `/var/log/fixbroken-main-deploy.log` and `/var/log/fixbroken-staging-deploy.log`.
+- If a deploy fails, check `sudo journalctl -u fixbroken-webhook` and `sudo systemctl status fixbroken`.
+
+## Points of contact
+
+- Operator: Eric Cotter (`eric.cotter@gmail.com`)
+- Host: AWS Lightsail us-east-2 (Ohio)
+- Domain: GoDaddy
+- Static IP: `3.140.37.153`

@@ -1,0 +1,1169 @@
+/* ==========================================================================
+   FixBroken OS — Global Design System
+   --------------------------------------------------------------------------
+   Source of truth: fixbroken.ai/design/fixbroken-os.css
+   Imported by:     fixbroken.ai + all tenant subsites (vumo.fixbroken.ai, etc.)
+   Maintained by:   Eric Cotter
+   Last touched:    see git log for vumo-fixbroken-site repo
+
+   RULES FOR FUTURE AGENTS:
+   1. This file is the foundation. Do not fork it into each project.
+   2. Tokens at the top are the contract. Add new tokens by extending, never
+      by renaming existing ones.
+   3. Components are prefixed `.fb-*`. Do not add non-prefixed global classes.
+   4. Project overrides (VUMO, future clients) live in their own stylesheet,
+      loaded AFTER this one. They may override tokens via :root scoping or
+      write component overrides targeting their own wrapper class.
+   5. Mobile rules live at the bottom. Do not introduce width-based rules
+      inside component blocks.
+   ==========================================================================
+   SECTIONS:
+     1. TOKENS               — CSS variables (colors, type, spacing, etc.)
+     2. RESET                — tight reset, no baggage
+     3. FONTS                — Google Fonts import + family stacks
+     4. BASE                 — html/body, typography defaults, links
+     5. LAYOUT               — .fb-shell, .fb-section, .fb-stack, grids
+     6. TYPOGRAPHY CLASSES   — .fb-display, .fb-mono-label, etc.
+     7. COMPONENTS           — .fb-panel, .fb-terminal, .fb-command, .fb-cta...
+     8. EFFECTS              — scanlines, beams, grid, glow, cursor, cone
+     9. MOTION               — keyframes + animation helpers
+    10. RESPONSIVE           — tablet + mobile overrides
+    11. ACCESSIBILITY        — reduced motion, focus rings
+   ========================================================================== */
+
+/* ==========================================================================
+   1. TOKENS
+   ========================================================================== */
+
+:root {
+  /* ------ Color: base surfaces (near-black with slight blue undertone) ---- */
+  --fb-black:        #05070a;  /* body background */
+  --fb-ink:          #0a0e14;  /* default surface */
+  --fb-panel:        #0f151c;  /* lifted panel */
+  --fb-surface:      #141b24;  /* more lifted */
+  --fb-rail:         #1a2330;  /* rails, nav, sub-panels */
+  --fb-hairline:     #2a3442;  /* borders, dividers */
+  --fb-hairline-hot: #3d4a5c;  /* emphasized border */
+
+  /* ------ Color: signal (primary command + state) ------------------------ */
+  --fb-signal:       #00d4ff;  /* electric cyan — primary signal */
+  --fb-signal-dim:   #0099bb;  /* dimmed variant for subtle emphasis */
+  --fb-signal-bright:#6de8ff;  /* highlight / active state */
+  --fb-signal-glow:  rgba(0, 212, 255, 0.35);
+  --fb-signal-wash:  rgba(0, 212, 255, 0.06);
+
+  /* ------ Color: matrix (secondary signal — success, runtime, "alive") --- */
+  --fb-matrix:       #00ff88;  /* Matrix green */
+  --fb-matrix-dim:   #00b868;
+  --fb-matrix-glow:  rgba(0, 255, 136, 0.30);
+  --fb-matrix-wash:  rgba(0, 255, 136, 0.05);
+
+  /* ------ Color: coral (human accent — warmth in a cold system) ---------- */
+  --fb-coral:        #ff7a5a;
+  --fb-coral-dim:    #e56b4f;
+  --fb-coral-glow:   rgba(255, 122, 90, 0.30);
+
+  /* ------ Color: pink (fixbroken signature — the operator's mark) -------- */
+  /* Cyan + pink is the classic TRON/neon pairing. Pink is used sparingly
+     as the brand fingerprint on fixbroken.ai (the flagship). Tenant sites
+     like VUMO should not use pink — it's the operator's color. */
+  --fb-pink:         #ff3ec9;
+  --fb-pink-bright:  #ff6bd8;
+  --fb-pink-dim:     #c4309a;
+  --fb-pink-glow:    rgba(255, 62, 201, 0.35);
+  --fb-pink-wash:    rgba(255, 62, 201, 0.06);
+
+  /* ------ Color: state ---------------------------------------------------- */
+  --fb-amber:        #ffb64a;  /* warning */
+  --fb-red:          #ff4a5a;  /* error */
+  --fb-red-dim:      #c4364a;
+
+  /* ------ Color: text ----------------------------------------------------- */
+  --fb-text:         #e4eaf2;  /* primary — soft white with blue hint */
+  --fb-text-loud:    #ffffff;  /* extreme emphasis */
+  --fb-text-dim:     #8a97a8;  /* secondary copy */
+  --fb-text-mute:    #556070;  /* tertiary / labels */
+  --fb-text-ghost:   #354050;  /* placeholder / disabled */
+
+  /* ------ Typography ------------------------------------------------------ */
+  --fb-font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  --fb-font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --fb-fs-10:  10px;
+  --fb-fs-11:  11px;
+  --fb-fs-12:  12px;
+  --fb-fs-13:  13px;
+  --fb-fs-14:  14px;
+  --fb-fs-15:  15px;
+  --fb-fs-16:  16px;
+  --fb-fs-18:  18px;
+  --fb-fs-20:  20px;
+  --fb-fs-24:  24px;
+  --fb-fs-32:  32px;
+  --fb-fs-40:  40px;
+  --fb-fs-48:  clamp(36px, 5vw, 48px);
+  --fb-fs-64:  clamp(44px, 7vw, 64px);
+  --fb-fs-88:  clamp(52px, 9vw, 88px);
+
+  --fb-lh-tight:   1.1;
+  --fb-lh-snug:    1.25;
+  --fb-lh-normal:  1.5;
+  --fb-lh-relaxed: 1.7;
+
+  --fb-tracking-tight:  -0.02em;
+  --fb-tracking-normal:  0;
+  --fb-tracking-wide:    0.08em;
+  --fb-tracking-extra:   0.16em;
+
+  /* ------ Spacing scale (4px base) --------------------------------------- */
+  --fb-s-1:  4px;
+  --fb-s-2:  8px;
+  --fb-s-3:  12px;
+  --fb-s-4:  16px;
+  --fb-s-5:  20px;
+  --fb-s-6:  24px;
+  --fb-s-8:  32px;
+  --fb-s-10: 40px;
+  --fb-s-12: 48px;
+  --fb-s-16: 64px;
+  --fb-s-20: 80px;
+  --fb-s-24: 96px;
+  --fb-s-32: 128px;
+
+  /* ------ Radius (mostly sharp — this is a console, not a card) ---------- */
+  --fb-r-0: 0px;
+  --fb-r-1: 2px;
+  --fb-r-2: 4px;
+  --fb-r-3: 6px;
+  --fb-r-4: 10px;
+
+  /* ------ Shadows + glows (glow-dominant, not drop-shadow) --------------- */
+  --fb-glow-signal: 0 0 24px var(--fb-signal-glow);
+  --fb-glow-matrix: 0 0 24px var(--fb-matrix-glow);
+  --fb-glow-coral:  0 0 24px var(--fb-coral-glow);
+  --fb-glow-soft:   0 0 64px rgba(0, 212, 255, 0.08);
+  --fb-lift:        0 1px 0 rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.4);
+  --fb-lift-strong: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.6);
+
+  /* ------ Motion ---------------------------------------------------------- */
+  --fb-t-fast:   120ms cubic-bezier(.2,.6,.2,1);
+  --fb-t-normal: 220ms cubic-bezier(.2,.6,.2,1);
+  --fb-t-slow:   380ms cubic-bezier(.2,.6,.2,1);
+
+  /* ------ Z-index layers -------------------------------------------------- */
+  --fb-z-grid:    0;
+  --fb-z-base:    1;
+  --fb-z-panel:   10;
+  --fb-z-nav:     100;
+  --fb-z-overlay: 500;
+  --fb-z-modal:   1000;
+  --fb-z-toast:   2000;
+
+  /* ------ Layout ---------------------------------------------------------- */
+  --fb-max-w:         1200px;
+  --fb-max-w-narrow:  720px;
+  --fb-nav-h:         56px;
+  --fb-px:            clamp(20px, 4vw, 40px);
+}
+
+/* ==========================================================================
+   2. RESET
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure, blockquote, dl, dd {
+  margin: 0;
+  padding: 0;
+}
+
+ul, ol { list-style: none; }
+
+img, svg, video { display: block; max-width: 100%; }
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button { background: none; border: none; cursor: pointer; }
+
+a { color: inherit; text-decoration: none; }
+
+/* ==========================================================================
+   3. FONTS
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+/* ==========================================================================
+   4. BASE
+   ========================================================================== */
+
+html {
+  background: var(--fb-black);
+  color-scheme: dark;
+}
+
+body {
+  background: var(--fb-black);
+  color: var(--fb-text);
+  font-family: var(--fb-font-sans);
+  font-size: var(--fb-fs-16);
+  line-height: var(--fb-lh-normal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--fb-signal);
+  color: var(--fb-black);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--fb-font-sans);
+  font-weight: 600;
+  line-height: var(--fb-lh-tight);
+  letter-spacing: var(--fb-tracking-tight);
+  color: var(--fb-text-loud);
+}
+
+h1 { font-size: var(--fb-fs-88); font-weight: 600; }
+h2 { font-size: var(--fb-fs-48); }
+h3 { font-size: var(--fb-fs-32); }
+h4 { font-size: var(--fb-fs-24); }
+h5 { font-size: var(--fb-fs-20); }
+h6 { font-size: var(--fb-fs-16); }
+
+p { color: var(--fb-text); line-height: var(--fb-lh-normal); }
+
+a { color: var(--fb-signal); transition: color var(--fb-t-fast); }
+a:hover { color: var(--fb-signal-bright); }
+
+code, kbd, samp, pre {
+  font-family: var(--fb-font-mono);
+  font-size: 0.92em;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--fb-hairline);
+  margin: var(--fb-s-8) 0;
+}
+
+/* ==========================================================================
+   5. LAYOUT
+   ========================================================================== */
+
+/* .fb-shell — the outermost wrapper for a full page. Think of it as the
+   chassis of the console. Everything sits inside a shell. */
+.fb-shell {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.fb-shell > main {
+  flex: 1 0 auto;
+}
+
+/* .fb-container — centered content column with consistent max width */
+.fb-container {
+  width: 100%;
+  max-width: var(--fb-max-w);
+  margin-inline: auto;
+  padding-inline: var(--fb-px);
+}
+
+.fb-container--narrow { max-width: var(--fb-max-w-narrow); }
+
+/* .fb-section — vertical rhythm block */
+.fb-section {
+  padding-block: var(--fb-s-16);
+}
+
+.fb-section--tight { padding-block: var(--fb-s-10); }
+.fb-section--loose { padding-block: var(--fb-s-24); }
+
+/* .fb-stack — vertical spacing between children */
+.fb-stack { display: flex; flex-direction: column; gap: var(--fb-s-6); }
+.fb-stack--tight { gap: var(--fb-s-3); }
+.fb-stack--loose { gap: var(--fb-s-10); }
+
+/* .fb-row — horizontal layout */
+.fb-row { display: flex; align-items: center; gap: var(--fb-s-4); }
+.fb-row--between { justify-content: space-between; }
+.fb-row--wrap { flex-wrap: wrap; }
+
+/* .fb-grid — auto-fit grid, great for command dashboards */
+.fb-grid {
+  display: grid;
+  gap: var(--fb-s-4);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.fb-grid--2 { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+.fb-grid--tight { gap: var(--fb-s-2); }
+
+/* ==========================================================================
+   6. TYPOGRAPHY CLASSES
+   ========================================================================== */
+
+/* .fb-display — oversized hero title */
+.fb-display {
+  font-size: var(--fb-fs-88);
+  font-weight: 600;
+  line-height: var(--fb-lh-tight);
+  letter-spacing: var(--fb-tracking-tight);
+  color: var(--fb-text-loud);
+}
+
+.fb-display em {
+  font-style: normal;
+  color: var(--fb-signal);
+  text-shadow: 0 0 32px var(--fb-signal-glow);
+}
+
+/* Pink variant — the fixbroken.ai signature. Apply .fb-display--pink on
+   the flagship site only; tenants keep signal cyan for their hero. */
+.fb-display--pink em {
+  color: var(--fb-pink);
+  text-shadow: 0 0 32px var(--fb-pink-glow);
+}
+
+/* .fb-lede — hero subtitle */
+.fb-lede {
+  font-size: var(--fb-fs-20);
+  line-height: var(--fb-lh-relaxed);
+  color: var(--fb-text-dim);
+  max-width: 58ch;
+}
+
+/* .fb-mono — force monospace */
+.fb-mono { font-family: var(--fb-font-mono); }
+
+/* .fb-label — small uppercase tracking label */
+.fb-label {
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-11);
+  font-weight: 500;
+  letter-spacing: var(--fb-tracking-extra);
+  text-transform: uppercase;
+  color: var(--fb-text-mute);
+}
+
+.fb-label--signal { color: var(--fb-signal); }
+.fb-label--matrix { color: var(--fb-matrix); }
+.fb-label--coral  { color: var(--fb-coral); }
+.fb-label--pink   { color: var(--fb-pink); }
+.fb-label--amber  { color: var(--fb-amber); }
+
+/* .fb-kicker — tag line above a title */
+.fb-kicker {
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-12);
+  letter-spacing: var(--fb-tracking-extra);
+  text-transform: uppercase;
+  color: var(--fb-signal);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fb-s-2);
+}
+
+.fb-kicker::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--fb-signal);
+  box-shadow: 0 0 12px var(--fb-signal-glow);
+  border-radius: 50%;
+  animation: fb-pulse 2s ease-in-out infinite;
+}
+
+/* Pink kicker — flagship signature variant */
+.fb-kicker--pink { color: var(--fb-pink); }
+.fb-kicker--pink::before {
+  background: var(--fb-pink);
+  box-shadow: 0 0 12px var(--fb-pink-glow);
+}
+
+/* .fb-text-dim / -mute / -loud — text color utilities */
+.fb-text-dim  { color: var(--fb-text-dim); }
+.fb-text-mute { color: var(--fb-text-mute); }
+.fb-text-loud { color: var(--fb-text-loud); }
+
+/* ==========================================================================
+   7. COMPONENTS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   .fb-nav — top command bar
+   -------------------------------------------------------------------------- */
+.fb-nav {
+  position: sticky;
+  top: 0;
+  z-index: var(--fb-z-nav);
+  height: var(--fb-nav-h);
+  background: color-mix(in srgb, var(--fb-black) 80%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--fb-hairline);
+}
+
+.fb-nav__inner {
+  height: 100%;
+  max-width: var(--fb-max-w);
+  margin-inline: auto;
+  padding-inline: var(--fb-px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--fb-s-6);
+}
+
+.fb-nav__brand {
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-13);
+  font-weight: 600;
+  letter-spacing: var(--fb-tracking-wide);
+  color: var(--fb-text-loud);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fb-s-2);
+}
+
+.fb-nav__brand::before {
+  content: "◢";
+  color: var(--fb-signal);
+  font-size: 14px;
+  text-shadow: 0 0 12px var(--fb-signal-glow);
+}
+
+.fb-nav__links {
+  display: flex;
+  gap: var(--fb-s-6);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-12);
+  letter-spacing: var(--fb-tracking-wide);
+  text-transform: uppercase;
+}
+
+.fb-nav__link {
+  color: var(--fb-text-mute);
+  transition: color var(--fb-t-fast);
+}
+.fb-nav__link:hover { color: var(--fb-signal); }
+.fb-nav__link--active { color: var(--fb-text-loud); }
+
+/* --------------------------------------------------------------------------
+   .fb-panel — the core container for content. Dark, bordered, hair of glow.
+   -------------------------------------------------------------------------- */
+.fb-panel {
+  position: relative;
+  background: var(--fb-panel);
+  border: 1px solid var(--fb-hairline);
+  border-radius: var(--fb-r-3);
+  padding: var(--fb-s-6);
+  box-shadow: var(--fb-lift);
+}
+
+.fb-panel--lifted { background: var(--fb-surface); box-shadow: var(--fb-lift-strong); }
+.fb-panel--tight  { padding: var(--fb-s-4); }
+.fb-panel--loose  { padding: var(--fb-s-8); }
+
+.fb-panel--signal { border-color: color-mix(in srgb, var(--fb-signal) 40%, var(--fb-hairline)); }
+.fb-panel--matrix { border-color: color-mix(in srgb, var(--fb-matrix) 40%, var(--fb-hairline)); }
+.fb-panel--coral  { border-color: color-mix(in srgb, var(--fb-coral)  40%, var(--fb-hairline)); }
+.fb-panel--pink   { border-color: color-mix(in srgb, var(--fb-pink)   40%, var(--fb-hairline)); }
+
+/* --------------------------------------------------------------------------
+   .fb-terminal — stylized terminal window
+   -------------------------------------------------------------------------- */
+.fb-terminal {
+  background: var(--fb-ink);
+  border: 1px solid var(--fb-hairline);
+  border-radius: var(--fb-r-3);
+  overflow: hidden;
+  box-shadow: var(--fb-lift-strong), var(--fb-glow-soft);
+}
+
+.fb-terminal__bar {
+  display: flex;
+  align-items: center;
+  gap: var(--fb-s-2);
+  padding: var(--fb-s-2) var(--fb-s-4);
+  background: var(--fb-rail);
+  border-bottom: 1px solid var(--fb-hairline);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-11);
+  color: var(--fb-text-mute);
+  letter-spacing: var(--fb-tracking-wide);
+  text-transform: uppercase;
+}
+
+.fb-terminal__dots { display: inline-flex; gap: 6px; margin-right: var(--fb-s-3); }
+.fb-terminal__dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--fb-hairline-hot);
+}
+.fb-terminal__dot--red    { background: var(--fb-red); }
+.fb-terminal__dot--amber  { background: var(--fb-amber); }
+.fb-terminal__dot--matrix { background: var(--fb-matrix); }
+
+.fb-terminal__body {
+  padding: var(--fb-s-5) var(--fb-s-6);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-14);
+  line-height: var(--fb-lh-relaxed);
+  color: var(--fb-text);
+}
+
+/* --------------------------------------------------------------------------
+   .fb-command — a single command line (prompt + text + cursor)
+   -------------------------------------------------------------------------- */
+.fb-command {
+  display: flex;
+  gap: var(--fb-s-2);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-14);
+  color: var(--fb-text);
+  padding-block: 2px;
+}
+
+.fb-command::before {
+  content: "$";
+  color: var(--fb-signal);
+  flex-shrink: 0;
+}
+
+.fb-command--matrix::before { content: "›"; color: var(--fb-matrix); }
+.fb-command--arrow::before  { content: "▸"; color: var(--fb-signal); }
+.fb-command--none::before   { content: ""; }
+
+/* output line — indented, no prompt */
+.fb-output {
+  display: block;
+  padding-left: var(--fb-s-4);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-13);
+  color: var(--fb-text-dim);
+}
+
+/* --------------------------------------------------------------------------
+   .fb-cta — command-style CTA. Feels like a command, not a marketing button.
+   -------------------------------------------------------------------------- */
+.fb-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fb-s-2);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-13);
+  font-weight: 500;
+  letter-spacing: var(--fb-tracking-wide);
+  text-transform: uppercase;
+  padding: 12px 20px;
+  background: transparent;
+  color: var(--fb-signal);
+  border: 1px solid var(--fb-signal);
+  border-radius: var(--fb-r-2);
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--fb-t-fast);
+  position: relative;
+}
+
+.fb-cta::before {
+  content: ">";
+  color: var(--fb-signal);
+  opacity: 0.7;
+  transition: transform var(--fb-t-fast);
+}
+
+.fb-cta:hover {
+  background: var(--fb-signal-wash);
+  box-shadow: var(--fb-glow-signal);
+  color: var(--fb-signal-bright);
+}
+
+.fb-cta:hover::before { transform: translateX(2px); }
+
+.fb-cta--solid {
+  background: var(--fb-signal);
+  color: var(--fb-black);
+  border-color: var(--fb-signal);
+}
+.fb-cta--solid:hover {
+  background: var(--fb-signal-bright);
+  color: var(--fb-black);
+  box-shadow: var(--fb-glow-signal);
+}
+.fb-cta--solid::before { color: var(--fb-black); opacity: 0.6; }
+
+.fb-cta--matrix { color: var(--fb-matrix); border-color: var(--fb-matrix); }
+.fb-cta--matrix::before { color: var(--fb-matrix); }
+.fb-cta--matrix:hover { background: var(--fb-matrix-wash); box-shadow: var(--fb-glow-matrix); color: var(--fb-matrix); }
+
+.fb-cta--coral  { color: var(--fb-coral);  border-color: var(--fb-coral); }
+.fb-cta--coral::before { color: var(--fb-coral); }
+.fb-cta--coral:hover  { background: rgba(255, 122, 90, 0.08); box-shadow: var(--fb-glow-coral); color: var(--fb-coral); }
+
+.fb-cta--pink   { color: var(--fb-pink);   border-color: var(--fb-pink); }
+.fb-cta--pink::before { color: var(--fb-pink); }
+.fb-cta--pink:hover   { background: var(--fb-pink-wash); box-shadow: 0 0 24px var(--fb-pink-glow); color: var(--fb-pink-bright); }
+
+.fb-cta--pink-solid {
+  background: var(--fb-pink);
+  color: var(--fb-black);
+  border-color: var(--fb-pink);
+}
+.fb-cta--pink-solid::before { color: var(--fb-black); opacity: 0.6; }
+.fb-cta--pink-solid:hover {
+  background: var(--fb-pink-bright);
+  color: var(--fb-black);
+  box-shadow: 0 0 24px var(--fb-pink-glow);
+}
+
+.fb-cta--ghost {
+  color: var(--fb-text-dim);
+  border-color: var(--fb-hairline);
+}
+.fb-cta--ghost:hover {
+  color: var(--fb-text);
+  border-color: var(--fb-hairline-hot);
+  background: transparent;
+  box-shadow: none;
+}
+
+/* --------------------------------------------------------------------------
+   .fb-chip — small pill / badge. For statuses, categories, keywords.
+   -------------------------------------------------------------------------- */
+.fb-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fb-s-1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-11);
+  font-weight: 500;
+  letter-spacing: var(--fb-tracking-wide);
+  text-transform: uppercase;
+  color: var(--fb-text-dim);
+  background: var(--fb-rail);
+  border: 1px solid var(--fb-hairline);
+}
+
+.fb-chip--signal { color: var(--fb-signal); border-color: color-mix(in srgb, var(--fb-signal) 30%, var(--fb-hairline)); background: var(--fb-signal-wash); }
+.fb-chip--matrix { color: var(--fb-matrix); border-color: color-mix(in srgb, var(--fb-matrix) 30%, var(--fb-hairline)); background: var(--fb-matrix-wash); }
+.fb-chip--coral  { color: var(--fb-coral);  border-color: color-mix(in srgb, var(--fb-coral)  30%, var(--fb-hairline)); background: rgba(255,122,90,0.06); }
+.fb-chip--pink   { color: var(--fb-pink);   border-color: color-mix(in srgb, var(--fb-pink)   30%, var(--fb-hairline)); background: var(--fb-pink-wash); }
+.fb-chip--amber  { color: var(--fb-amber);  border-color: color-mix(in srgb, var(--fb-amber)  30%, var(--fb-hairline)); background: rgba(255,182,74,0.06); }
+
+/* --------------------------------------------------------------------------
+   .fb-status — live status row with colored dot
+   -------------------------------------------------------------------------- */
+.fb-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--fb-s-2);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-12);
+  letter-spacing: var(--fb-tracking-wide);
+  text-transform: uppercase;
+  color: var(--fb-text-dim);
+}
+
+.fb-status::before {
+  content: "";
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--fb-matrix);
+  box-shadow: 0 0 8px var(--fb-matrix-glow);
+  animation: fb-pulse 2s ease-in-out infinite;
+}
+
+.fb-status--signal::before { background: var(--fb-signal); box-shadow: 0 0 8px var(--fb-signal-glow); }
+.fb-status--pink::before   { background: var(--fb-pink);   box-shadow: 0 0 8px var(--fb-pink-glow); }
+.fb-status--amber::before  { background: var(--fb-amber);  box-shadow: 0 0 8px rgba(255,182,74,0.35); }
+.fb-status--red::before    { background: var(--fb-red);    box-shadow: 0 0 8px rgba(255,74,90,0.35); }
+
+/* --------------------------------------------------------------------------
+   .fb-signal-card — a card for a service, feature, or project. Grid-ready.
+   -------------------------------------------------------------------------- */
+.fb-signal-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fb-s-3);
+  padding: var(--fb-s-6);
+  background: var(--fb-panel);
+  border: 1px solid var(--fb-hairline);
+  border-radius: var(--fb-r-3);
+  text-decoration: none;
+  color: inherit;
+  transition: transform var(--fb-t-fast), border-color var(--fb-t-fast), box-shadow var(--fb-t-fast);
+  position: relative;
+  overflow: hidden;
+}
+
+.fb-signal-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, var(--fb-signal-wash) 50%, transparent 70%);
+  opacity: 0;
+  transition: opacity var(--fb-t-slow);
+  pointer-events: none;
+}
+
+.fb-signal-card:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--fb-signal) 30%, var(--fb-hairline));
+  box-shadow: var(--fb-glow-soft);
+}
+
+.fb-signal-card:hover::after { opacity: 1; }
+
+.fb-signal-card__label {
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-11);
+  color: var(--fb-signal);
+  letter-spacing: var(--fb-tracking-extra);
+  text-transform: uppercase;
+}
+
+.fb-signal-card__title {
+  font-family: var(--fb-font-sans);
+  font-size: var(--fb-fs-20);
+  font-weight: 600;
+  color: var(--fb-text-loud);
+  line-height: var(--fb-lh-snug);
+  letter-spacing: var(--fb-tracking-tight);
+}
+
+.fb-signal-card__body {
+  font-family: var(--fb-font-sans);
+  font-size: var(--fb-fs-14);
+  color: var(--fb-text-dim);
+  line-height: var(--fb-lh-normal);
+}
+
+.fb-signal-card__cta {
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-12);
+  color: var(--fb-signal);
+  letter-spacing: var(--fb-tracking-wide);
+  margin-top: auto;
+}
+
+.fb-signal-card__cta::after {
+  content: " →";
+  transition: transform var(--fb-t-fast);
+  display: inline-block;
+}
+
+.fb-signal-card:hover .fb-signal-card__cta::after { transform: translateX(2px); }
+
+/* --------------------------------------------------------------------------
+   .fb-context-rail — side rail with system context (stats, keys, status)
+   -------------------------------------------------------------------------- */
+.fb-context-rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fb-s-4);
+  padding: var(--fb-s-5);
+  background: var(--fb-ink);
+  border: 1px solid var(--fb-hairline);
+  border-radius: var(--fb-r-3);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-12);
+}
+
+.fb-context-rail__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--fb-s-2);
+  padding-block: var(--fb-s-1);
+}
+
+.fb-context-rail__key { color: var(--fb-text-mute); text-transform: uppercase; letter-spacing: var(--fb-tracking-wide); }
+.fb-context-rail__val { color: var(--fb-text-loud); }
+
+.fb-context-rail__divider {
+  border-top: 1px dashed var(--fb-hairline);
+  margin-block: var(--fb-s-2);
+}
+
+/* --------------------------------------------------------------------------
+   .fb-form — terminal-style form controls
+   -------------------------------------------------------------------------- */
+.fb-input, .fb-textarea, .fb-select {
+  width: 100%;
+  background: var(--fb-ink);
+  color: var(--fb-text);
+  border: 1px solid var(--fb-hairline);
+  border-radius: var(--fb-r-2);
+  padding: 10px 12px;
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-14);
+  transition: border-color var(--fb-t-fast), box-shadow var(--fb-t-fast);
+}
+
+.fb-input:focus, .fb-textarea:focus, .fb-select:focus {
+  outline: none;
+  border-color: var(--fb-signal);
+  box-shadow: 0 0 0 3px var(--fb-signal-wash);
+}
+
+.fb-input::placeholder, .fb-textarea::placeholder { color: var(--fb-text-ghost); }
+
+.fb-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--fb-s-1);
+}
+
+.fb-field__label {
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-11);
+  letter-spacing: var(--fb-tracking-extra);
+  text-transform: uppercase;
+  color: var(--fb-text-mute);
+}
+
+/* --------------------------------------------------------------------------
+   .fb-footer — closing system bar
+   -------------------------------------------------------------------------- */
+.fb-footer {
+  margin-top: var(--fb-s-16);
+  border-top: 1px solid var(--fb-hairline);
+  padding-block: var(--fb-s-6);
+  font-family: var(--fb-font-mono);
+  font-size: var(--fb-fs-11);
+  color: var(--fb-text-mute);
+  letter-spacing: var(--fb-tracking-wide);
+}
+
+.fb-footer__row {
+  max-width: var(--fb-max-w);
+  margin-inline: auto;
+  padding-inline: var(--fb-px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--fb-s-4);
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   .fb-divider — horizontal signal line
+   -------------------------------------------------------------------------- */
+.fb-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--fb-hairline) 20%, var(--fb-hairline) 80%, transparent);
+  margin-block: var(--fb-s-6);
+}
+
+.fb-divider--signal {
+  background: linear-gradient(90deg, transparent, var(--fb-signal) 50%, transparent);
+  opacity: 0.4;
+}
+
+/* ==========================================================================
+   8. EFFECTS
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   .fb-grid-bg — subtle background grid (only on shells, not panels)
+   -------------------------------------------------------------------------- */
+.fb-grid-bg {
+  position: fixed;
+  inset: 0;
+  z-index: var(--fb-z-grid);
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--fb-hairline) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fb-hairline) 1px, transparent 1px);
+  background-size: 64px 64px;
+  opacity: 0.18;
+  mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 75%);
+}
+
+/* --------------------------------------------------------------------------
+   .fb-scanline — horizontal scan line overlay (subtle)
+   -------------------------------------------------------------------------- */
+.fb-scanline {
+  position: fixed;
+  inset: 0;
+  z-index: var(--fb-z-grid);
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 3px,
+    rgba(255, 255, 255, 0.015) 3px,
+    rgba(255, 255, 255, 0.015) 4px
+  );
+}
+
+/* --------------------------------------------------------------------------
+   .fb-mcp-cone — the foundational metaphor. Beam from the top.
+   Used as a hero decoration. Inherit width from parent; height from --cone-h.
+   -------------------------------------------------------------------------- */
+.fb-mcp-cone {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 900px;
+  height: var(--cone-h, 520px);
+  pointer-events: none;
+  z-index: var(--fb-z-base);
+  --cone-color: var(--fb-signal);
+  --cone-glow: var(--fb-signal-glow);
+}
+
+.fb-mcp-cone::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse 30% 60% at 50% 0%,
+    var(--cone-color) 0%,
+    transparent 60%);
+  opacity: 0.18;
+  filter: blur(12px);
+}
+
+.fb-mcp-cone::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 60%;
+  background: linear-gradient(
+    to bottom,
+    var(--cone-color) 0%,
+    transparent 100%
+  );
+  box-shadow: 0 0 24px var(--cone-glow);
+  opacity: 0.6;
+}
+
+.fb-mcp-cone--matrix { --cone-color: var(--fb-matrix); --cone-glow: var(--fb-matrix-glow); }
+.fb-mcp-cone--coral  { --cone-color: var(--fb-coral);  --cone-glow: var(--fb-coral-glow); }
+.fb-mcp-cone--pink   { --cone-color: var(--fb-pink);   --cone-glow: var(--fb-pink-glow); }
+
+/* --------------------------------------------------------------------------
+   .fb-beam — a vertical signal beam (small decorative element)
+   -------------------------------------------------------------------------- */
+.fb-beam {
+  width: 1px;
+  height: var(--beam-h, 48px);
+  background: linear-gradient(to bottom, transparent, var(--fb-signal), transparent);
+  box-shadow: 0 0 8px var(--fb-signal-glow);
+  display: inline-block;
+}
+
+/* --------------------------------------------------------------------------
+   .fb-cursor — blinking terminal cursor
+   -------------------------------------------------------------------------- */
+.fb-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1em;
+  background: var(--fb-signal);
+  margin-left: 2px;
+  vertical-align: -0.12em;
+  animation: fb-blink 1s steps(1) infinite;
+  box-shadow: 0 0 12px var(--fb-signal-glow);
+}
+
+/* Pink cursor — fixbroken signature accent. Use on the flagship only. */
+.fb-cursor--pink {
+  background: var(--fb-pink);
+  box-shadow: 0 0 12px var(--fb-pink-glow);
+}
+
+/* --------------------------------------------------------------------------
+   .fb-glow — apply a subtle glow to any element
+   -------------------------------------------------------------------------- */
+.fb-glow        { text-shadow: 0 0 24px var(--fb-signal-glow); }
+.fb-glow--matrix { text-shadow: 0 0 24px var(--fb-matrix-glow); }
+.fb-glow--coral  { text-shadow: 0 0 24px var(--fb-coral-glow); }
+.fb-glow--pink   { text-shadow: 0 0 24px var(--fb-pink-glow); }
+
+/* ==========================================================================
+   9. MOTION
+   ========================================================================== */
+
+@keyframes fb-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+@keyframes fb-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.55; transform: scale(0.92); }
+}
+
+@keyframes fb-sweep {
+  0% { background-position: -100% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes fb-rise {
+  0% { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.fb-rise { animation: fb-rise var(--fb-t-slow) both; }
+.fb-rise--d1 { animation-delay: 80ms; }
+.fb-rise--d2 { animation-delay: 160ms; }
+.fb-rise--d3 { animation-delay: 240ms; }
+.fb-rise--d4 { animation-delay: 320ms; }
+
+/* ==========================================================================
+   10. RESPONSIVE
+   --------------------------------------------------------------------------
+   Mobile is first-class. No squeezed desktop. Terminal-native at 375px.
+   ========================================================================== */
+
+/* Tablet */
+@media (max-width: 960px) {
+  :root {
+    --fb-s-16: 48px;
+    --fb-s-20: 64px;
+    --fb-s-24: 72px;
+  }
+
+  .fb-grid { gap: var(--fb-s-3); }
+  .fb-panel { padding: var(--fb-s-5); }
+  .fb-panel--loose { padding: var(--fb-s-6); }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  :root {
+    --fb-px: 16px;
+    --fb-fs-88: clamp(40px, 10vw, 56px);
+    --fb-fs-64: clamp(36px, 8vw, 44px);
+    --fb-fs-48: clamp(28px, 7vw, 36px);
+    --fb-fs-32: clamp(22px, 6vw, 26px);
+  }
+
+  body { font-size: var(--fb-fs-15); }
+
+  .fb-section { padding-block: var(--fb-s-10); }
+  .fb-section--loose { padding-block: var(--fb-s-16); }
+
+  .fb-nav__inner { gap: var(--fb-s-3); }
+  /* On mobile, nav links scroll horizontally if they overflow — terminal-native,
+     no hamburger. The -webkit-mask-image fades the right edge so the cut-off
+     looks intentional. */
+  .fb-nav__links {
+    gap: var(--fb-s-3);
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    white-space: nowrap;
+    min-width: 0;
+    mask-image: linear-gradient(90deg, black 85%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, black 85%, transparent);
+    padding-right: var(--fb-s-4);
+  }
+  .fb-nav__links::-webkit-scrollbar { display: none; }
+  .fb-nav__link { flex-shrink: 0; }
+
+  /* Grids collapse to single column */
+  .fb-grid,
+  .fb-grid--2 {
+    grid-template-columns: 1fr;
+    gap: var(--fb-s-3);
+  }
+
+  /* Panels: keep padding generous enough to not feel cramped,
+     but reduce from desktop */
+  .fb-panel { padding: var(--fb-s-5); }
+  .fb-panel--loose { padding: var(--fb-s-6); }
+
+  /* Typography tightens but stays readable */
+  .fb-lede { font-size: var(--fb-fs-16); }
+  .fb-signal-card { padding: var(--fb-s-5); }
+  .fb-signal-card__title { font-size: var(--fb-fs-18); }
+
+  /* Terminal body readable */
+  .fb-terminal__body {
+    padding: var(--fb-s-4);
+    font-size: var(--fb-fs-13);
+  }
+  .fb-command { font-size: var(--fb-fs-13); }
+
+  /* CTA: make sure it's tappable */
+  .fb-cta { padding: 14px 20px; min-height: 48px; }
+
+  /* Context rail becomes horizontal scroll on mobile */
+  .fb-context-rail { padding: var(--fb-s-4); }
+
+  /* MCP cone shorter on mobile */
+  .fb-mcp-cone { --cone-h: 320px; }
+
+  /* Grid BG fades more on small screens (less noise) */
+  .fb-grid-bg {
+    background-size: 48px 48px;
+    opacity: 0.12;
+  }
+
+  /* Footer stacks */
+  .fb-footer__row { justify-content: flex-start; }
+}
+
+/* Narrow mobile */
+@media (max-width: 380px) {
+  :root { --fb-px: 12px; }
+  .fb-panel { padding: var(--fb-s-4); }
+  .fb-signal-card { padding: var(--fb-s-4); }
+}
+
+/* ==========================================================================
+   11. ACCESSIBILITY
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .fb-cursor { animation: none; opacity: 1; }
+  .fb-kicker::before { animation: none; }
+  .fb-status::before { animation: none; }
+}
+
+:focus-visible {
+  outline: 2px solid var(--fb-signal);
+  outline-offset: 2px;
+  border-radius: var(--fb-r-1);
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--fb-signal);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   END — FixBroken OS
+   ========================================================================== */

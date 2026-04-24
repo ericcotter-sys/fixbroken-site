@@ -1,0 +1,538 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FixBroken OS · design system</title>
+<meta name="description" content="Living reference for the FixBroken OS design system — tokens, components, patterns, and rules for every page in the stack.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  /* Style-guide-only helpers */
+  .sg-section { scroll-margin-top: 80px; }
+  .sg-swatch {
+    display: flex; align-items: center; gap: var(--fb-s-3);
+    padding: var(--fb-s-3);
+    background: var(--fb-panel);
+    border: 1px solid var(--fb-hairline);
+    border-radius: var(--fb-r-2);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+  }
+  .sg-chip-color {
+    width: 40px; height: 40px;
+    border-radius: var(--fb-r-2);
+    flex-shrink: 0;
+    border: 1px solid var(--fb-hairline);
+  }
+  .sg-key { color: var(--fb-text-mute); text-transform: uppercase; letter-spacing: var(--fb-tracking-wide); }
+  .sg-val { color: var(--fb-text-loud); margin-left: auto; }
+  .sg-demo {
+    padding: var(--fb-s-6);
+    background: var(--fb-ink);
+    border: 1px dashed var(--fb-hairline);
+    border-radius: var(--fb-r-3);
+  }
+  .sg-demo + .sg-code {
+    margin-top: var(--fb-s-2);
+  }
+  .sg-code {
+    background: var(--fb-panel);
+    border: 1px solid var(--fb-hairline);
+    border-radius: var(--fb-r-2);
+    padding: var(--fb-s-3) var(--fb-s-4);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+    color: var(--fb-text-dim);
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .sg-toc {
+    position: sticky; top: calc(var(--fb-nav-h) + var(--fb-s-4));
+    align-self: start;
+  }
+  .sg-toc a {
+    display: block;
+    padding: 4px 0;
+    color: var(--fb-text-mute);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    border-left: 1px solid var(--fb-hairline);
+    padding-left: var(--fb-s-3);
+    transition: color var(--fb-t-fast), border-color var(--fb-t-fast);
+  }
+  .sg-toc a:hover { color: var(--fb-signal); border-color: var(--fb-signal); }
+  .sg-layout {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: var(--fb-s-8);
+  }
+  @media (max-width: 960px) {
+    .sg-layout { grid-template-columns: 1fr; }
+    .sg-toc { position: static; display: flex; gap: var(--fb-s-2); flex-wrap: wrap; }
+    .sg-toc a { border-left: 0; border: 1px solid var(--fb-hairline); padding: 6px 10px; border-radius: 999px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fb-grid-bg"></div>
+<div class="fb-scanline"></div>
+
+<div class="fb-shell">
+
+  <nav class="fb-nav">
+    <div class="fb-nav__inner">
+      <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+      <div class="fb-nav__links">
+        <a class="fb-nav__link" href="/">System</a>
+        <a class="fb-nav__link fb-nav__link--active" href="/design/">Design</a>
+        <a class="fb-nav__link" href="mailto:eric.cotter@gmail.com">Signal</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ====================================================================
+         HEADER
+         ==================================================================== -->
+    <section class="fb-section fb-section--loose" style="position:relative; overflow:hidden;">
+      <div class="fb-mcp-cone" style="--cone-h: 400px;"></div>
+      <div class="fb-container" style="position:relative;">
+        <div class="fb-stack">
+          <span class="fb-kicker">System · Design OS</span>
+          <h1 class="fb-display">FixBroken <em>OS.</em></h1>
+          <p class="fb-lede">
+            The global visual and UX operating layer for fixbroken.ai and every tenant subsite. Terminal discipline. Command-center clarity. Black canvas, controlled neon.
+          </p>
+          <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-2);">
+            <span class="fb-chip fb-chip--signal">v0.1</span>
+            <span class="fb-chip">tokens · components · effects</span>
+            <span class="fb-chip fb-chip--matrix">active</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         BODY
+         ==================================================================== -->
+    <section class="fb-section">
+      <div class="fb-container">
+        <div class="sg-layout">
+
+          <aside class="sg-toc">
+            <a href="#principles">Principles</a>
+            <a href="#colors">Colors</a>
+            <a href="#typography">Typography</a>
+            <a href="#spacing">Spacing</a>
+            <a href="#layout">Layout</a>
+            <a href="#panels">Panels</a>
+            <a href="#terminal">Terminal</a>
+            <a href="#cta">CTA</a>
+            <a href="#chips">Chips · Status</a>
+            <a href="#cards">Signal cards</a>
+            <a href="#forms">Forms</a>
+            <a href="#effects">Effects</a>
+            <a href="#voice">Voice</a>
+            <a href="#override">Override rules</a>
+          </aside>
+
+          <div class="fb-stack fb-stack--loose">
+
+            <!-- ============================================================
+                 PRINCIPLES
+                 ============================================================ -->
+            <div id="principles" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 01 · Principles</span>
+              <h2>The six rules.</h2>
+              <div class="fb-grid fb-grid--2">
+                <div class="fb-panel">
+                  <span class="fb-label fb-label--signal">01 · Signal over spectacle</span>
+                  <p style="margin-top: var(--fb-s-2);">Every visual element must help the user understand state, hierarchy, command, risk, or next action. If it doesn't carry signal, cut it.</p>
+                </div>
+                <div class="fb-panel">
+                  <span class="fb-label fb-label--signal">02 · Terminal clarity</span>
+                  <p style="margin-top: var(--fb-s-2);">Monospace, command-line structure, compact labels, data panels, prompts, scan rows, subtle system messages.</p>
+                </div>
+                <div class="fb-panel">
+                  <span class="fb-label fb-label--signal">03 · MacOS restraint</span>
+                  <p style="margin-top: var(--fb-s-2);">Spacing, alignment, radius, shadows, typography feel deliberate. No chaotic hacker clutter. No gamer chrome.</p>
+                </div>
+                <div class="fb-panel">
+                  <span class="fb-label fb-label--signal">04 · MCP Cone foundation</span>
+                  <p style="margin-top: var(--fb-s-2);">Central command metaphors — cone, beam, vertical stack, signal tower, grid gate, control node, command aperture.</p>
+                </div>
+                <div class="fb-panel">
+                  <span class="fb-label fb-label--signal">05 · Black canvas, controlled neon</span>
+                  <p style="margin-top: var(--fb-s-2);">Near-black base. Neon indicates signal, action, state, emphasis, intelligence. Never flood the UI with it.</p>
+                </div>
+                <div class="fb-panel">
+                  <span class="fb-label fb-label--signal">06 · Human-readable intelligence</span>
+                  <p style="margin-top: var(--fb-s-2);">Not just dev tooling. Must stay approachable to executives, founders, product people, operators, and customers.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 COLORS
+                 ============================================================ -->
+            <div id="colors" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 02 · Colors</span>
+              <h2>Tokens.</h2>
+
+              <div class="fb-stack fb-stack--tight">
+                <span class="fb-label">Surfaces</span>
+                <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-black);"></span><span class="sg-key">--fb-black</span><span class="sg-val">#05070a</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-ink);"></span><span class="sg-key">--fb-ink</span><span class="sg-val">#0a0e14</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-panel);"></span><span class="sg-key">--fb-panel</span><span class="sg-val">#0f151c</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-surface);"></span><span class="sg-key">--fb-surface</span><span class="sg-val">#141b24</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-rail);"></span><span class="sg-key">--fb-rail</span><span class="sg-val">#1a2330</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-hairline);"></span><span class="sg-key">--fb-hairline</span><span class="sg-val">#2a3442</span></div>
+                </div>
+              </div>
+
+              <div class="fb-stack fb-stack--tight">
+                <span class="fb-label">Signal</span>
+                <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-signal);"></span><span class="sg-key">--fb-signal</span><span class="sg-val">#00d4ff</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-signal-dim);"></span><span class="sg-key">--fb-signal-dim</span><span class="sg-val">#0099bb</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-signal-bright);"></span><span class="sg-key">--fb-signal-bright</span><span class="sg-val">#6de8ff</span></div>
+                </div>
+              </div>
+
+              <div class="fb-stack fb-stack--tight">
+                <span class="fb-label fb-label--pink">Pink · flagship signature (fixbroken.ai only)</span>
+                <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-pink);"></span><span class="sg-key">--fb-pink</span><span class="sg-val">#ff3ec9</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-pink-bright);"></span><span class="sg-key">--fb-pink-bright</span><span class="sg-val">#ff6bd8</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-pink-dim);"></span><span class="sg-key">--fb-pink-dim</span><span class="sg-val">#c4309a</span></div>
+                </div>
+                <p class="fb-text-dim" style="font-size: var(--fb-fs-13); margin-top: var(--fb-s-2);">
+                  Pink is the operator's mark. Use it on fixbroken.ai for hero accents, signature CTAs, and key human moments. Tenant sites (VUMO, future clients) do NOT use pink — it's what makes the flagship feel different.
+                </p>
+              </div>
+
+              <div class="fb-stack fb-stack--tight">
+                <span class="fb-label">Matrix · Coral · State</span>
+                <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-matrix);"></span><span class="sg-key">--fb-matrix</span><span class="sg-val">#00ff88</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-coral);"></span><span class="sg-key">--fb-coral</span><span class="sg-val">#ff7a5a</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-amber);"></span><span class="sg-key">--fb-amber</span><span class="sg-val">#ffb64a</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-red);"></span><span class="sg-key">--fb-red</span><span class="sg-val">#ff4a5a</span></div>
+                </div>
+              </div>
+
+              <div class="fb-stack fb-stack--tight">
+                <span class="fb-label">Text</span>
+                <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text-loud);"></span><span class="sg-key">--fb-text-loud</span><span class="sg-val">#ffffff</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text);"></span><span class="sg-key">--fb-text</span><span class="sg-val">#e4eaf2</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text-dim);"></span><span class="sg-key">--fb-text-dim</span><span class="sg-val">#8a97a8</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text-mute);"></span><span class="sg-key">--fb-text-mute</span><span class="sg-val">#556070</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 TYPOGRAPHY
+                 ============================================================ -->
+            <div id="typography" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 03 · Typography</span>
+              <h2>Two families. No compromise.</h2>
+
+              <div class="fb-panel">
+                <span class="fb-label">Inter · human copy</span>
+                <h1 class="fb-display" style="margin-top: var(--fb-s-4);">Fix broken <em>AI.</em></h1>
+                <p class="fb-lede" style="margin-top: var(--fb-s-4);">Lede copy. This is what reads to executives and humans. Inter, sans-serif, line-height 1.7.</p>
+              </div>
+
+              <div class="fb-panel">
+                <span class="fb-label">JetBrains Mono · system copy</span>
+                <div class="fb-stack fb-stack--tight" style="margin-top: var(--fb-s-4);">
+                  <div class="fb-command">system labels use monospace</div>
+                  <div class="fb-output">output and trace rows use monospace too, slightly dimmer</div>
+                  <div class="fb-label fb-label--signal">.fb-label · kickers · chips · statuses</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 SPACING
+                 ============================================================ -->
+            <div id="spacing" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 04 · Spacing</span>
+              <h2>4px base. No magic numbers.</h2>
+              <div class="fb-panel">
+                <div class="fb-stack fb-stack--tight fb-mono" style="font-size: var(--fb-fs-12);">
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-1</span><span class="sg-val">4px</span></div>
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-2</span><span class="sg-val">8px</span></div>
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-3</span><span class="sg-val">12px</span></div>
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-4</span><span class="sg-val">16px</span></div>
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-6</span><span class="sg-val">24px</span></div>
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-8</span><span class="sg-val">32px</span></div>
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-10</span><span class="sg-val">40px</span></div>
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-16</span><span class="sg-val">64px · default section</span></div>
+                  <div class="fb-row fb-row--between"><span class="sg-key">--fb-s-24</span><span class="sg-val">96px · hero</span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 LAYOUT
+                 ============================================================ -->
+            <div id="layout" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 05 · Layout</span>
+              <h2>Shells, containers, sections.</h2>
+              <p class="fb-text-dim">Every page is wrapped in a <code class="fb-mono" style="color:var(--fb-signal);">.fb-shell</code>. Content inside <code class="fb-mono" style="color:var(--fb-signal);">.fb-container</code> (max 1200px) or <code class="fb-mono" style="color:var(--fb-signal);">.fb-container--narrow</code> (max 720px). Vertical rhythm via <code class="fb-mono" style="color:var(--fb-signal);">.fb-section</code>.</p>
+              <div class="sg-code">&lt;div class="fb-shell"&gt;
+  &lt;nav class="fb-nav"&gt;...&lt;/nav&gt;
+  &lt;main&gt;
+    &lt;section class="fb-section"&gt;
+      &lt;div class="fb-container"&gt;...&lt;/div&gt;
+    &lt;/section&gt;
+  &lt;/main&gt;
+  &lt;footer class="fb-footer"&gt;...&lt;/footer&gt;
+&lt;/div&gt;</div>
+            </div>
+
+            <!-- ============================================================
+                 PANELS
+                 ============================================================ -->
+            <div id="panels" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 06 · Panels</span>
+              <h2>Content lives in panels.</h2>
+              <div class="fb-grid fb-grid--2">
+                <div class="fb-panel">
+                  <span class="fb-label">.fb-panel · default</span>
+                  <p style="margin-top: var(--fb-s-2);">The default container. Subtle border, slight lift shadow.</p>
+                </div>
+                <div class="fb-panel fb-panel--lifted">
+                  <span class="fb-label">.fb-panel--lifted</span>
+                  <p style="margin-top: var(--fb-s-2);">Lifted variant — more prominent, for CTAs or featured content.</p>
+                </div>
+                <div class="fb-panel fb-panel--signal">
+                  <span class="fb-label fb-label--signal">.fb-panel--signal</span>
+                  <p style="margin-top: var(--fb-s-2);">Signal-tinted border for emphasis.</p>
+                </div>
+                <div class="fb-panel fb-panel--matrix">
+                  <span class="fb-label fb-label--matrix">.fb-panel--matrix</span>
+                  <p style="margin-top: var(--fb-s-2);">Matrix-tinted border — use for "alive" or "runtime" content.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 TERMINAL
+                 ============================================================ -->
+            <div id="terminal" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 07 · Terminal</span>
+              <h2>The .fb-terminal block.</h2>
+              <div class="fb-terminal">
+                <div class="fb-terminal__bar">
+                  <span class="fb-terminal__dots">
+                    <span class="fb-terminal__dot fb-terminal__dot--red"></span>
+                    <span class="fb-terminal__dot fb-terminal__dot--amber"></span>
+                    <span class="fb-terminal__dot fb-terminal__dot--matrix"></span>
+                  </span>
+                  demo / system / console
+                </div>
+                <div class="fb-terminal__body">
+                  <div class="fb-command">npm run signal</div>
+                  <div class="fb-output">booting fixbroken-os...</div>
+                  <div class="fb-command fb-command--matrix">signal · online</div>
+                  <div class="fb-command fb-command--arrow">ready<span class="fb-cursor"></span></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 CTA
+                 ============================================================ -->
+            <div id="cta" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 08 · Commands (CTA)</span>
+              <h2>CTAs feel like commands.</h2>
+              <div class="sg-demo">
+                <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-3);">
+                  <a href="#" class="fb-cta fb-cta--solid">Open the console</a>
+                  <a href="#" class="fb-cta">Run the signal</a>
+                  <a href="#" class="fb-cta fb-cta--pink-solid">Send the signal</a>
+                  <a href="#" class="fb-cta fb-cta--pink">Enter the room</a>
+                  <a href="#" class="fb-cta fb-cta--matrix">Trace the pattern</a>
+                  <a href="#" class="fb-cta fb-cta--coral">Soft human CTA</a>
+                  <a href="#" class="fb-cta fb-cta--ghost">Read more</a>
+                </div>
+              </div>
+              <div class="sg-code">&lt;a class="fb-cta fb-cta--solid"&gt;Open the console&lt;/a&gt;
+&lt;a class="fb-cta"&gt;Run the signal&lt;/a&gt;
+&lt;a class="fb-cta fb-cta--ghost"&gt;Read more&lt;/a&gt;</div>
+            </div>
+
+            <!-- ============================================================
+                 CHIPS · STATUS
+                 ============================================================ -->
+            <div id="chips" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 09 · Chips · Status</span>
+              <h2>State, labels, statuses.</h2>
+              <div class="sg-demo">
+                <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-2);">
+                  <span class="fb-chip">default</span>
+                  <span class="fb-chip fb-chip--signal">signal</span>
+                  <span class="fb-chip fb-chip--pink">pink · flagship</span>
+                  <span class="fb-chip fb-chip--matrix">matrix · alive</span>
+                  <span class="fb-chip fb-chip--coral">coral · human</span>
+                  <span class="fb-chip fb-chip--amber">amber · warn</span>
+                </div>
+                <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-4); margin-top: var(--fb-s-4);">
+                  <span class="fb-status">system online</span>
+                  <span class="fb-status fb-status--signal">ready</span>
+                  <span class="fb-status fb-status--amber">pending</span>
+                  <span class="fb-status fb-status--red">failure</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 SIGNAL CARDS
+                 ============================================================ -->
+            <div id="cards" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 10 · Signal cards</span>
+              <h2>Clickable feature / service cards.</h2>
+              <div class="fb-grid">
+                <article class="fb-signal-card">
+                  <span class="fb-signal-card__label">Demo · 01</span>
+                  <h3 class="fb-signal-card__title">First operation.</h3>
+                  <p class="fb-signal-card__body">Body copy explains the operation in one to two short sentences. No marketing fluff.</p>
+                  <span class="fb-signal-card__cta">Enter</span>
+                </article>
+                <article class="fb-signal-card">
+                  <span class="fb-signal-card__label">Demo · 02</span>
+                  <h3 class="fb-signal-card__title">Second operation.</h3>
+                  <p class="fb-signal-card__body">Hover to see the sweep effect + lift. Entire card is the link surface.</p>
+                  <span class="fb-signal-card__cta">Enter</span>
+                </article>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 FORMS
+                 ============================================================ -->
+            <div id="forms" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 11 · Forms</span>
+              <h2>Inputs feel like terminal fields.</h2>
+              <div class="fb-panel">
+                <div class="fb-stack fb-stack--tight">
+                  <div class="fb-field">
+                    <label class="fb-field__label">Name</label>
+                    <input class="fb-input" placeholder="> first . last" type="text">
+                  </div>
+                  <div class="fb-field">
+                    <label class="fb-field__label">Signal (email)</label>
+                    <input class="fb-input" placeholder="> you@domain" type="email">
+                  </div>
+                  <div class="fb-field">
+                    <label class="fb-field__label">Trace</label>
+                    <textarea class="fb-textarea" rows="3" placeholder="> describe what broke"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 EFFECTS
+                 ============================================================ -->
+            <div id="effects" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 12 · Effects</span>
+              <h2>MCP Cone, beam, cursor, grid.</h2>
+              <p class="fb-text-dim">Background grid + scanlines are applied at the shell level. The MCP Cone is used behind hero sections. Cursor is a text-inline element.</p>
+
+              <div class="sg-demo" style="position:relative; overflow:hidden; min-height: 280px;">
+                <div class="fb-mcp-cone" style="--cone-h: 280px;"></div>
+                <div style="position:relative; text-align:center; padding-top: var(--fb-s-10);">
+                  <span class="fb-kicker" style="justify-content:center;">MCP · cone</span>
+                  <h3 style="margin-top: var(--fb-s-3);">Signal in. Clarity out.<span class="fb-cursor"></span></h3>
+                </div>
+              </div>
+
+              <div class="sg-code">&lt;div class="fb-mcp-cone" style="--cone-h: 400px;"&gt;&lt;/div&gt;
+&lt;span class="fb-cursor"&gt;&lt;/span&gt;
+&lt;span class="fb-beam" style="--beam-h: 64px;"&gt;&lt;/span&gt;</div>
+            </div>
+
+            <!-- ============================================================
+                 VOICE
+                 ============================================================ -->
+            <div id="voice" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 13 · Voice</span>
+              <h2>How the system talks.</h2>
+              <div class="fb-grid fb-grid--2">
+                <div class="fb-panel fb-panel--matrix">
+                  <span class="fb-label fb-label--matrix">USE</span>
+                  <ul style="margin-top: var(--fb-s-3); padding-left: 18px; list-style: disc;">
+                    <li>Run the signal</li>
+                    <li>Open the console</li>
+                    <li>Trace the pattern</li>
+                    <li>Send the signal</li>
+                    <li>Enter the room</li>
+                    <li>See what broke</li>
+                  </ul>
+                </div>
+                <div class="fb-panel" style="border-color: color-mix(in srgb, var(--fb-red) 30%, var(--fb-hairline));">
+                  <span class="fb-label" style="color: var(--fb-red);">AVOID</span>
+                  <ul style="margin-top: var(--fb-s-3); padding-left: 18px; list-style: disc;">
+                    <li>Get started today</li>
+                    <li>Learn more</li>
+                    <li>Supercharge your workflow</li>
+                    <li>Unlock AI-powered insights</li>
+                    <li>Revolutionize your [anything]</li>
+                    <li>Next-gen / cutting-edge</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- ============================================================
+                 OVERRIDE RULES
+                 ============================================================ -->
+            <div id="override" class="sg-section fb-stack">
+              <span class="fb-kicker">§ 14 · Override rules</span>
+              <h2>When a project diverges.</h2>
+              <p class="fb-text-dim">FixBroken OS is default for every page in the stack. A project may override when it has a distinct brand (VUMO, future clients). Overrides follow these rules:</p>
+
+              <ol class="fb-stack fb-stack--tight" style="counter-reset: override; padding-left: var(--fb-s-6);">
+                <li><strong>Load order.</strong> Project stylesheet loads AFTER <code class="fb-mono" style="color:var(--fb-signal);">/design/fixbroken-os.css</code>. Never instead of.</li>
+                <li><strong>Token overrides.</strong> Override CSS custom properties in <code class="fb-mono" style="color:var(--fb-signal);">:root</code> or inside a project wrapper class like <code class="fb-mono" style="color:var(--fb-signal);">.vumo-scope</code>.</li>
+                <li><strong>Component overrides.</strong> Target <code class="fb-mono" style="color:var(--fb-signal);">.fb-*</code> classes inside the project wrapper. Never redefine <code class="fb-mono" style="color:var(--fb-signal);">.fb-*</code> globally.</li>
+                <li><strong>New components.</strong> Project-specific components use a project prefix (e.g. <code class="fb-mono" style="color:var(--fb-signal);">.vumo-walkaround</code>). Never add a new <code class="fb-mono" style="color:var(--fb-signal);">.fb-*</code> class in a project.</li>
+                <li><strong>VUMO exception.</strong> VUMO is allowed a more approachable / human interface layer. It still inherits typography and spacing, but may soften the color palette.</li>
+              </ol>
+
+              <div class="sg-code">&lt;!-- On vumo.fixbroken.ai --&gt;
+&lt;link rel="stylesheet" href="https://fixbroken.ai/design/fixbroken-os.css"&gt;
+&lt;link rel="stylesheet" href="/vumo-overrides.css"&gt;  &lt;!-- loads AFTER --&gt;</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="fb-footer">
+    <div class="fb-footer__row">
+      <span>◢ fixbroken.ai · FixBroken OS v0.1</span>
+      <span>design system · living reference</span>
+      <span class="fb-status">system online</span>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

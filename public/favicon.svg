@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="5" fill="#05070a"/>
+  <!-- Pink beam source — fixbroken signature -->
+  <circle cx="16" cy="5.5" r="2.2" fill="#ff3ec9">
+    <animate attributeName="opacity" values="1;0.5;1" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <!-- Cyan MCP cone — the OS layer -->
+  <path d="M16 8 L7 27 L25 27 Z" fill="none" stroke="#00d4ff" stroke-width="2.3" stroke-linejoin="round"/>
+  <path d="M11 27 L21 27" stroke="#00d4ff" stroke-width="2.3" stroke-linecap="round" opacity="0.9"/>
+</svg>
