@@ -1105,38 +1105,110 @@
       </div>
 
       <!-- ====================================================================
-           FLEET · Operator's personal rigs. Two vehicles, both excessive.
-           Card 01: the fully-built overland LX. Card 02: the daily, kept
+           FLEET · Operator's personal rigs. Two spec-rail readouts styled
+           like the NOC block - platform stats up top, build/options below.
+           Rig 01: fully-built overland LX. Rig 02: the daily, kept
            deliberately anonymous (build code only - if you know, you know).
            ==================================================================== -->
       <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
-        <div class="fb-stack fb-stack--tight">
-          <span class="fb-kicker">Fleet · personal rigs</span>
-          <h3 style="font-size: var(--fb-fs-32);">Two rigs. Both excessive.</h3>
-          <p class="fb-text-dim" style="max-width: 58ch;">
-            What rolls out of the driveway. One overbuilt for dirt. The other overbuilt for pavement.
-          </p>
+        <div class="fb-row fb-row--between fb-row--wrap" style="align-items:flex-end;">
+          <div class="fb-stack fb-stack--tight">
+            <span class="fb-kicker">Fleet · personal rigs</span>
+            <h3 style="font-size: var(--fb-fs-32);">Two rigs. Both excessive.</h3>
+          </div>
+          <span class="fb-label fb-label--matrix">both · registered · insured</span>
         </div>
 
         <div class="fb-grid fb-grid--2">
 
-          <article class="fb-signal-card">
-            <span class="fb-signal-card__label">Rig · 01 · Overland</span>
-            <h4 class="fb-signal-card__title">2000 LX 470 · 288k mi.</h4>
-            <p class="fb-signal-card__body">
-              3" Ironman AHC delete coilovers, Nitro 375s on 35s with 17" Nomads, 12k winch and more recovery gear than I'll probably ever need short of a ground anchor - and a spare works if it comes to that, second 12V battery for accessories plus a 24V step-up for utilities, onboard air for tires and shower, Starlink, 20 gallons of shower water with a pressure regulator, 7 gallons of potable water in a white NSF tube to help keep it cool, 2500Wh of lithium power with 200W solar, external fridge, two Ford Pinto-spec jerry cans out back, and now I'm basically just looking for whatever they use on Air Force One for EMP hardening.
-            </p>
-            <span class="fb-signal-card__cta">Rig rundown</span>
-          </article>
+          <!-- RIG 01 · the built LX -->
+          <div class="fb-context-rail">
+            <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-3);">
+              <span class="fb-label fb-label--signal">▸ rig · 01 · overland</span>
+              <span class="fb-status">288,000 mi · running</span>
+            </div>
 
-          <article class="fb-signal-card">
-            <span class="fb-signal-card__label">Rig · 02 · Daily</span>
-            <h4 class="fb-signal-card__title">Build code PRCLJXC8.</h4>
-            <p class="fb-signal-card__body">
-              Link expired, specs intact. R-plate aero kit, sport front, extended fuel tank, front axle lift, 100% PPF, heated wheel. If you know, you know.
-            </p>
-            <span class="fb-signal-card__cta">Spec sheet only</span>
-          </article>
+            <div class="fb-row fb-row--between"><span class="fb-label">platform</span><span class="fb-text-loud">Lexus LX 470 · J100</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">year</span><span>2000</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">engine</span><span>4.7L 2UZ-FE V8 · DOHC</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">displacement</span><span>4,664 cc</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">bore × stroke</span><span>94.0 × 84.0 mm</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">compression</span><span>9.6:1</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">power</span><span>230 hp @ 4,800 rpm</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">torque</span><span>320 lb-ft @ 3,400 rpm</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">trans</span><span>A343F · 4-spd auto</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">drive</span><span>full-time 4WD · 2-spd TC</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">final drive</span><span>4.30:1</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">curb wt. (OEM)</span><span>5,401 lb</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">fuel</span><span>91 oct · 25.4 gal</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">tow rating</span><span>6,500 lb</span></div>
+
+            <div class="fb-context-rail__divider"></div>
+
+            <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+              <span class="fb-label fb-label--signal">▸ build</span>
+              <span class="fb-label">overland · self-contained</span>
+            </div>
+            <div class="fb-row fb-row--between"><span class="fb-label">suspension</span><span>3" Ironman · AHC delete</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">tires</span><span>Nitto Trail Grappler · 35 × 17"</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">wheels</span><span>17" Nomad</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">winch</span><span>12,000 lb</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">aux 12V</span><span>2nd batt + 24V step-up</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">onboard air</span><span>tires + shower</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">comms</span><span>Starlink</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">water · shower</span><span>20 gal · regulated</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">water · potable</span><span>7 gal · NSF tube</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">power · Li</span><span>2,500 Wh · 200W solar</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">fridge</span><span>external</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">aux fuel</span><span>2× jerry · Pinto-spec</span></div>
+
+            <div class="fb-context-rail__divider"></div>
+
+            <div class="fb-row fb-row--between"><span class="fb-label">recovery</span><span class="fb-text-dim" style="font-size:11px;">short of a ground anchor</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">next</span><span class="fb-text-dim" style="font-size:11px;">EMP hardening · AF1-spec</span></div>
+          </div>
+
+          <!-- RIG 02 · the anonymous daily -->
+          <div class="fb-context-rail">
+            <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-3);">
+              <span class="fb-label fb-label--signal">▸ rig · 02 · daily</span>
+              <span class="fb-status">build code only</span>
+            </div>
+
+            <div class="fb-row fb-row--between"><span class="fb-label">build code</span><span class="fb-text-loud">PRCLJXC8</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">lookup</span><span class="fb-text-dim" style="font-size:11px;">link expired · specs intact</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">year</span><span>2023</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">engine</span><span>3.0L twin-turbo flat-6</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">displacement</span><span>2,981 cc</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">bore × stroke</span><span>91.0 × 76.4 mm</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">compression</span><span>10.5:1</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">power</span><span>443 hp @ 6,500 rpm</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">torque</span><span>390 lb-ft @ 2,300-5,000 rpm</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">trans</span><span>8-spd dual-clutch</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">drive</span><span>RWD</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">0-60</span><span>3.3 s · launch</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">top speed</span><span>191 mph</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">curb wt.</span><span>3,382 lb</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">fuel</span><span>93 oct · 23.7 gal (ext. range)</span></div>
+
+            <div class="fb-context-rail__divider"></div>
+
+            <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+              <span class="fb-label fb-label--signal">▸ options</span>
+              <span class="fb-label">if you know, you know</span>
+            </div>
+            <div class="fb-row fb-row--between"><span class="fb-label">aero</span><span>R-plate kit</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">front</span><span>SportDesign</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">fuel tank</span><span>extended range</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">front axle</span><span>lift system</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">paint</span><span>100% PPF</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">steering wheel</span><span>heated</span></div>
+
+            <div class="fb-context-rail__divider"></div>
+
+            <div class="fb-row fb-row--between"><span class="fb-label">model</span><span class="fb-text-dim" style="font-size:11px;">decline to state</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">status</span><span class="fb-text-dim" style="font-size:11px;">daily · garaged</span></div>
+          </div>
 
         </div>
       </div>
