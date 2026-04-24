@@ -243,15 +243,12 @@
     70%      { transform: translateX(-1px); }
   }
 
-  /* Hint: a cheeky little nudge that fades in after a random delay,
-     gently bobs toward the button, gets happy when you hover it.
-     Dismissed on first click or after 10s; remembered via localStorage. */
-  .hp-hint {
-    position: absolute;
-    left: 100%;
-    top: 50%;
-    transform: translateY(-50%) translateX(0);
-    margin-left: 10px;
+  /* Nudge: a sporadic CTA hint that pops next to one of several anchors on
+     the page (verbose toggle, hero CTA, nav Design link). Position is set
+     by JS via getBoundingClientRect — fixed coords so scrolling reposts it.
+     --fb-nudge-fade is set per-appearance for the opacity transition speed. */
+  .fb-nudge {
+    position: fixed;
     padding: 5px 10px;
     background: var(--fb-panel);
     border: 1px solid color-mix(in srgb, var(--fb-signal) 40%, var(--fb-hairline));
@@ -265,71 +262,54 @@
     opacity: 0;
     pointer-events: none;
     box-shadow: 0 0 16px rgba(0, 212, 255, 0.15);
-    /* --hp-hint-fade is set per-appearance by JS so each pop can have its own
-       speed (snappy flash vs. slow drift). Default is the calm middle. */
-    transition: opacity var(--hp-hint-fade, 500ms) ease,
-                transform 320ms cubic-bezier(.25,.9,.3,1.4),
+    z-index: 50;
+    transition: opacity var(--fb-nudge-fade, 500ms) ease,
                 color 180ms ease,
                 border-color 180ms ease,
                 box-shadow 180ms ease;
   }
-  .hp-hint::before {
-    content: "←";
+  .fb-nudge::before {
     margin-right: 6px;
     display: inline-block;
     color: var(--fb-signal);
-    animation: hp-hint-arrow 1.4s ease-in-out infinite;
   }
-  .hp-hint--show {
+  /* Arrow direction follows which side of the anchor we sit on.
+     'left' = nudge is to the RIGHT of anchor → arrow points left.
+     'down' = nudge is BELOW anchor → arrow points up. */
+  .fb-nudge--left::before {
+    content: "←";
+    animation: fb-nudge-bob-h 1.4s ease-in-out infinite;
+  }
+  .fb-nudge--down::before {
+    content: "↑";
+    animation: fb-nudge-bob-v 1.4s ease-in-out infinite;
+  }
+  .fb-nudge--show {
     opacity: 1;
-    pointer-events: auto;   /* allow hover once visible */
+    pointer-events: auto;
   }
-  .hp-hint--show::before {
-    animation: hp-hint-arrow 1.4s ease-in-out infinite;
-  }
-  /* Happy on hover — little bounce + pink blush + stronger glow.
-     Desktop only (touch devices shouldn't fire this from a stray tap). */
-  @media (hover: hover) {
-    .hp-hint:hover {
-      color: var(--fb-pink);
-      border-color: color-mix(in srgb, var(--fb-pink) 50%, var(--fb-hairline));
-      box-shadow: 0 0 20px var(--fb-pink-glow);
-      transform: translateY(-50%) translateX(0) scale(1.08) rotate(-1.5deg);
-      cursor: pointer;
-    }
-    .hp-hint:hover::before {
-      color: var(--fb-pink);
-      animation: hp-hint-arrow-happy 0.6s ease-in-out infinite;
-    }
-  }
-  @keyframes hp-hint-arrow {
+  @keyframes fb-nudge-bob-h {
     0%, 100% { transform: translateX(0); }
     50%      { transform: translateX(-4px); }
   }
-  @keyframes hp-hint-arrow-happy {
-    0%, 100% { transform: translateX(0) rotate(0deg); }
-    25%      { transform: translateX(-5px) rotate(-8deg); }
-    75%      { transform: translateX(-2px) rotate(4deg); }
+  @keyframes fb-nudge-bob-v {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-3px); }
   }
-
-  /* On mobile, hint sits BELOW the toggle with a down-pointing arrow */
-  @media (max-width: 540px) {
-    .hp-hint {
-      left: 0;
-      top: 100%;
-      margin-left: 0;
-      margin-top: 8px;
-      transform: translateY(0);
+  /* Happy on hover — pink blush + stronger glow. */
+  @media (hover: hover) {
+    .fb-nudge:hover {
+      color: var(--fb-pink);
+      border-color: color-mix(in srgb, var(--fb-pink) 50%, var(--fb-hairline));
+      box-shadow: 0 0 20px var(--fb-pink-glow);
+      cursor: pointer;
     }
-    .hp-hint::before { content: "↑"; animation: hp-hint-arrow-v 1.4s ease-in-out infinite; }
-    @keyframes hp-hint-arrow-v {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-3px); }
+    .fb-nudge:hover::before {
+      color: var(--fb-pink);
     }
   }
-
   @media (prefers-reduced-motion: reduce) {
-    .hp-hint::before { animation: none; }
+    .fb-nudge::before { animation: none; }
   }
   .hp-toggle:hover {
     color: var(--fb-signal);
@@ -665,6 +645,10 @@
 </head>
 <body>
 
+<!-- Single global nudge element — JS positions it next to whichever anchor
+     (verbose toggle, hero CTA, Design link) it's targeting this cycle. -->
+<span class="fb-nudge" id="fb-nudge" role="tooltip" tabindex="0"></span>
+
 <div class="fb-grid-bg"></div>
 <div class="fb-scanline"></div>
 
@@ -854,7 +838,6 @@
               <span>verbose</span>
               <span class="hp-toggle__label"></span>
             </button>
-            <span class="hp-hint" id="hp-hint" role="tooltip" tabindex="0"></span>
           </div>
         </div>
 
@@ -1344,7 +1327,6 @@
      ========================================================================== */
   (function(){
     var btn = document.getElementById('hp-toggle-btn');
-    var hint = document.getElementById('hp-hint');
     var KEY = 'fb-verbose';
     var HINT_KEY = 'fb-hint-dismissed';
     var body = document.body;
@@ -1355,66 +1337,51 @@
       try { localStorage.setItem(KEY, on ? '1' : '0'); } catch(_) {}
       if (on) loadVerboseData();
     }
-    /* Escape hatch: add ?reset to the URL to clear any stuck preferences */
+    /* Escape hatch: add ?reset to the URL to clear any stuck preferences.
+       Covers the legacy single-hint key AND the new per-anchor nudge keys. */
     if (location.search.indexOf('reset') > -1) {
       try {
         localStorage.removeItem(KEY);
-        localStorage.removeItem(HINT_KEY);
+        localStorage.removeItem(HINT_KEY);                 // legacy
+        localStorage.removeItem('fb-nudge-retired-verbose');
+        localStorage.removeItem('fb-nudge-retired-contact');
+        localStorage.removeItem('fb-nudge-retired-design');
       } catch(_) {}
     }
     try {
       if (localStorage.getItem(KEY) === '1') apply(true);
     } catch(_) {}
-    /* ------ Hint: a whack-a-mole nudge that pops sporadically -------------
-       - Each appearance picks a random "personality" (flash, pop, drift,
-         tease, shy) — different fade-in/stay/fade-out timings so it never
-         feels like an 8s metronome
-       - Random 5-22s gap between appearances
-       - Fresh cheeky line every time (never repeats back-to-back)
-       - Hover pauses the auto-hide and swaps in a new line
-       - Dismissed permanently on click of toggle or hint
-       - Respects prefers-reduced-motion (single calm personality, no drama) */
-    var hintDismissed = false;
-    try { hintDismissed = localStorage.getItem(HINT_KEY) === '1'; } catch(_) {}
-
-    var hintMessages = [
-      "peek a boo",
-      "hey…",
-      "look at me",
-      "psst",
-      "there's more",
-      "over here",
-      "wanna see?",
-      "the good stuff",
-      "open me",
-      "nudge nudge",
-      "curious?",
-      "don't be shy",
-      "i dare you",
-      "c'mon",
-      "flex alert"
-    ];
-
-    function pickHintMessage(avoid) {
-      var pool = hintMessages.filter(function(m){ return m !== avoid; });
-      return pool[Math.floor(Math.random() * pool.length)];
-    }
+    /* ------ Sporadic CTA nudges (multi-anchor) -----------------------------
+       A playful hint that pops next to ONE of several anchors each cycle:
+         - verbose toggle  → "more under the hood"
+         - hero CTA        → "drop a line"
+         - nav Design link → "the system, raw"
+       Rules:
+         - Random anchor (live only) each cycle. Per-anchor 30s cooldown.
+         - Random personality (flash/pop/drift/tease/shy) → varied pacing.
+         - Random message from the anchor's own pool (honest copy, no hype).
+         - Clicking an anchor retires it permanently (per-anchor localStorage).
+         - Clicking the nudge forwards the click to its current anchor.
+         - When all anchors are retired, the loop stops forever.
+         - Respects prefers-reduced-motion.
+    */
+    var nudge = document.getElementById('fb-nudge');
 
     var prefersReduced = window.matchMedia &&
                          window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* Personalities: each is one "mood" the hint can pop in with.
+    /* Personalities: each is one "mood" the nudge can pop in with.
        fadeIn/fadeOut = ms for the opacity transition.
        stay = [min, max] ms it sits visible before fading.
-       weight = relative frequency. Standard "pop" is most common. */
+       weight = relative frequency. */
     var personalities = prefersReduced ? [
       { fadeIn: 150, stay: [800, 1200], fadeOut: 150, weight: 1 }
     ] : [
-      { fadeIn: 90,   stay: [250, 500],   fadeOut: 90,   weight: 1.5 }, // FLASH (blink)
-      { fadeIn: 220,  stay: [700, 1300],  fadeOut: 220,  weight: 3   }, // pop (standard)
-      { fadeIn: 1100, stay: [900, 1600],  fadeOut: 1200, weight: 1.5 }, // drift (slow fade)
-      { fadeIn: 150,  stay: [500, 900],   fadeOut: 500,  weight: 1.5 }, // tease (quick in, slow out)
-      { fadeIn: 500,  stay: [400, 800],   fadeOut: 200,  weight: 1.5 }  // shy (slow in, quick out)
+      { fadeIn: 90,   stay: [250, 500],   fadeOut: 90,   weight: 1.5 }, // FLASH
+      { fadeIn: 220,  stay: [700, 1300],  fadeOut: 220,  weight: 3   }, // pop
+      { fadeIn: 1100, stay: [900, 1600],  fadeOut: 1200, weight: 1.5 }, // drift
+      { fadeIn: 150,  stay: [500, 900],   fadeOut: 500,  weight: 1.5 }, // tease
+      { fadeIn: 500,  stay: [400, 800],   fadeOut: 200,  weight: 1.5 }  // shy
     ];
 
     function pickPersonality() {
@@ -1428,143 +1395,315 @@
       return personalities[0];
     }
 
+    /* Anchors: each has its own copy pool, preferred side, and retirement
+       persistence. Side 'right' = nudge appears to the right of the anchor
+       (arrow points left). Side 'bottom' = nudge appears below (arrow up). */
+    var ANCHORS = [
+      {
+        id: 'verbose',
+        el: document.getElementById('hp-toggle-btn'),
+        side: 'right',
+        storageKey: 'fb-nudge-retired-verbose',
+        messages: [
+          "peek under", "live telemetry", "weather + latency", "the ops breakdown",
+          "what i actually do", "more if you want", "v0.1 stack", "room behind the door",
+          "look closer", "the long version", "behind the panel", "details below",
+          "unfold", "expand the layer", "more depth"
+        ]
+      },
+      {
+        id: 'contact',
+        el: document.getElementById('hp-hero-cta'),
+        side: 'bottom',
+        storageKey: 'fb-nudge-retired-contact',
+        messages: [
+          "drop a line", "i read these", "real reply", "not a form",
+          "come say hi", "low pressure", "start small", "just a question?",
+          "intro chat", "30 min talk", "email goes to me", "no funnel",
+          "direct line", "say what's broken", "let's talk"
+        ]
+      },
+      {
+        id: 'design',
+        el: document.querySelector('.fb-nav__link[href="/design/"]'),
+        side: 'bottom',
+        storageKey: 'fb-nudge-retired-design',
+        messages: [
+          "the system, raw", "fixbroken-os", "tokens + parts", "11 sections",
+          "for design nerds", "the css", "under the hood", "living style guide",
+          "built on this", "see the kit", "palette + parts", "naked components",
+          "every token", "the design", "borrow it"
+        ]
+      }
+    ];
+
+    ANCHORS.forEach(function(a){
+      a.lastMessage = null;
+      a.lastShownAt = 0;
+      try { a.retired = localStorage.getItem(a.storageKey) === '1'; } catch(_) { a.retired = false; }
+      if (!a.el) a.retired = true;   // missing from DOM → treat as retired
+    });
+    // Verbose is auto-retired when verbose is already on at page load
+    if (body.classList.contains('hp-verbose-on')) {
+      var _v = ANCHORS[0];
+      if (_v) _v.retired = true;
+    }
+
+    var PER_ANCHOR_COOLDOWN = 30000;   // ms — same spot can't pop twice within 30s
+
+    function liveAnchors() {
+      return ANCHORS.filter(function(a){ return a.el && !a.retired; });
+    }
+
+    function retireAnchor(a, persist) {
+      if (!a || a.retired) return;
+      a.retired = true;
+      if (persist !== false) {
+        try { localStorage.setItem(a.storageKey, '1'); } catch(_) {}
+      }
+      if (liveAnchors().length === 0) stopNudgeLoop();
+    }
+
+    function pickMessage(anchor) {
+      var pool = anchor.messages.filter(function(m){ return m !== anchor.lastMessage; });
+      var msg = pool[Math.floor(Math.random() * pool.length)];
+      anchor.lastMessage = msg;
+      return msg;
+    }
+
+    function pickAnchor() {
+      var now = Date.now();
+      var eligible = liveAnchors().filter(function(a){
+        return !a.lastShownAt || (now - a.lastShownAt >= PER_ANCHOR_COOLDOWN);
+      });
+      if (eligible.length === 0) return null;   // all on cooldown
+      return eligible[Math.floor(Math.random() * eligible.length)];
+    }
+
     function nextGap() {
-      // 2.5-9s between appearances — frequent enough that bouncers still see
-      // a couple cycles, sparse enough not to nag
-      return 2500 + Math.floor(Math.random() * 6500);
+      // 5-14s between appearances — three anchors rotating, don't nag
+      return 5000 + Math.floor(Math.random() * 9000);
     }
 
-    var hintLastMessage = null;
-    var hintCycleTimer  = null;   // schedules the next appearance
-    var hintHideTimer   = null;   // schedules the current appearance's hide
-    var hintLoopActive  = false;
-    var hintHovering    = false;
-
-    function clearHintTimers() {
-      if (hintCycleTimer) { clearTimeout(hintCycleTimer); hintCycleTimer = null; }
-      if (hintHideTimer)  { clearTimeout(hintHideTimer);  hintHideTimer  = null; }
+    function isAnchorInView(el) {
+      var r = el.getBoundingClientRect();
+      return r.bottom > 0 && r.top < window.innerHeight &&
+             r.right > 0 && r.left < window.innerWidth;
     }
 
-    /* Single chokepoint for "I'm done with this appearance, schedule next".
-       Both the auto-hide and the post-hover cleanup call this so we can't
-       accidentally drop the loop on one path. */
+    function positionNudge(anchorEl, side) {
+      var rect = anchorEl.getBoundingClientRect();
+      var narrow = window.innerWidth < 540;
+      var effSide = narrow ? 'bottom' : side;
+      nudge.classList.remove('fb-nudge--left', 'fb-nudge--down');
+      if (effSide === 'right') {
+        nudge.classList.add('fb-nudge--left');
+        nudge.style.left = (rect.right + 10) + 'px';
+        nudge.style.top  = (rect.top + rect.height / 2 - nudge.offsetHeight / 2) + 'px';
+      } else {
+        nudge.classList.add('fb-nudge--down');
+        nudge.style.left = rect.left + 'px';
+        nudge.style.top  = (rect.bottom + 8) + 'px';
+      }
+    }
+
+    var cycleTimer    = null;   // schedules the next appearance
+    var hideTimer     = null;   // schedules the current appearance's hide
+    var loopActive    = false;
+    var hovering      = false;
+    var currentAnchor = null;
+
+    function clearTimers() {
+      if (cycleTimer) { clearTimeout(cycleTimer); cycleTimer = null; }
+      if (hideTimer)  { clearTimeout(hideTimer);  hideTimer  = null; }
+    }
+
     function scheduleNext() {
-      if (!hintLoopActive) return;
-      if (hintCycleTimer) { clearTimeout(hintCycleTimer); hintCycleTimer = null; }
-      hintCycleTimer = setTimeout(showHintOnce, nextGap());
+      if (!loopActive) return;
+      if (cycleTimer) { clearTimeout(cycleTimer); cycleTimer = null; }
+      cycleTimer = setTimeout(showNudgeOnce, nextGap());
     }
 
-    function hideHint(fadeOutMs) {
-      if (!hint) return;
-      hint.style.setProperty('--hp-hint-fade', fadeOutMs + 'ms');
-      hint.classList.remove('hp-hint--show');
+    function hideNudge(fadeOutMs) {
+      if (!nudge) return;
+      nudge.style.setProperty('--fb-nudge-fade', fadeOutMs + 'ms');
+      nudge.classList.remove('fb-nudge--show');
     }
 
-    function showHintOnce() {
-      if (!hintLoopActive || !hint) return;
-      if (body.classList.contains('hp-verbose-on')) { stopHintLoop(); return; }
-      // If user is hovering the toggle area (not the hint itself), defer briefly
-      if (hintHovering) {
-        hintCycleTimer = setTimeout(showHintOnce, 2000);
+    function showNudgeOnce() {
+      if (!loopActive || !nudge) return;
+      // If verbose flipped on since last check, retire that anchor
+      var v = ANCHORS[0];
+      if (v && !v.retired && body.classList.contains('hp-verbose-on')) {
+        retireAnchor(v, true);
+      }
+      if (liveAnchors().length === 0) { stopNudgeLoop(); return; }
+      if (hovering) {
+        cycleTimer = setTimeout(showNudgeOnce, 2000);
         return;
       }
+      var anchor = pickAnchor();
+      if (!anchor) {
+        // all eligible anchors on cooldown - wait and retry
+        cycleTimer = setTimeout(showNudgeOnce, 3000);
+        return;
+      }
+      // Skip if the anchor is scrolled off-screen — pick again next tick
+      if (!isAnchorInView(anchor.el)) {
+        anchor.lastShownAt = Date.now();   // engage cooldown so we don't spin
+        cycleTimer = setTimeout(showNudgeOnce, 2500);
+        return;
+      }
+      currentAnchor = anchor;
+      anchor.lastShownAt = Date.now();
       var p = pickPersonality();
       var stay = p.stay[0] + Math.floor(Math.random() * (p.stay[1] - p.stay[0]));
-      hint.style.setProperty('--hp-hint-fade', p.fadeIn + 'ms');
-      hintLastMessage = pickHintMessage(hintLastMessage);
-      hint.textContent = hintLastMessage;
-      hint.classList.add('hp-hint--show');
-      hintHideTimer = setTimeout(function(){
-        hideHint(p.fadeOut);
-        hintHideTimer = null;
+      nudge.textContent = pickMessage(anchor);
+      nudge.style.setProperty('--fb-nudge-fade', p.fadeIn + 'ms');
+      positionNudge(anchor.el, anchor.side);
+      nudge.classList.add('fb-nudge--show');
+      hideTimer = setTimeout(function(){
+        hideNudge(p.fadeOut);
+        hideTimer = null;
+        currentAnchor = null;
         scheduleNext();
       }, stay);
     }
 
-    function startHintLoop() {
-      if (hintLoopActive || hintDismissed) return;
-      if (body.classList.contains('hp-verbose-on')) return;
-      hintLoopActive = true;
-      // First appearance: 400-1400ms after load (snappy — catches bouncers),
-      // then sporadic 2.5-9s gaps forever
-      hintCycleTimer = setTimeout(showHintOnce, 400 + Math.floor(Math.random() * 1000));
+    function startNudgeLoop() {
+      if (loopActive) return;
+      if (liveAnchors().length === 0) return;
+      loopActive = true;
+      // First appearance: 400-1400ms after load (snappy — catches bouncers)
+      cycleTimer = setTimeout(showNudgeOnce, 400 + Math.floor(Math.random() * 1000));
     }
 
-    function stopHintLoop() {
-      hintLoopActive = false;
-      clearHintTimers();
-      if (hint) hint.classList.remove('hp-hint--show');
+    function stopNudgeLoop() {
+      loopActive = false;
+      clearTimers();
+      if (nudge) nudge.classList.remove('fb-nudge--show');
+      currentAnchor = null;
     }
 
-    function dismissHint(persist) {
-      stopHintLoop();
-      if (persist) {
-        hintDismissed = true;
-        try { localStorage.setItem(HINT_KEY, '1'); } catch(_) {}
-      }
-    }
-
-    btn.addEventListener('click', function(){
-      apply(!body.classList.contains('hp-verbose-on'));
-      dismissHint(true);   // persist: once user interacts, never show again
+    // --- Anchor click handlers: any real click retires that anchor forever ---
+    ANCHORS.forEach(function(a){
+      if (!a.el) return;
+      a.el.addEventListener('click', function(){
+        retireAnchor(a, true);
+      });
     });
 
-    if (hint) {
-      // Hover: pause the auto-hide, swap in a fresh line as a reward
-      hint.addEventListener('mouseenter', function(){
-        hintHovering = true;
-        hintLastMessage = pickHintMessage(hintLastMessage);
-        hint.textContent = hintLastMessage;
-        if (hintHideTimer) { clearTimeout(hintHideTimer); hintHideTimer = null; }
+    // Keep the verbose toggle's own behavior (apply the new state)
+    btn.addEventListener('click', function(){
+      apply(!body.classList.contains('hp-verbose-on'));
+    });
+
+    // --- Nudge interactions ---
+    if (nudge) {
+      nudge.addEventListener('mouseenter', function(){
+        hovering = true;
+        if (currentAnchor) nudge.textContent = pickMessage(currentAnchor);
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
       });
-      hint.addEventListener('mouseleave', function(){
-        hintHovering = false;
-        // Resume: short grace period, then fade out and reschedule
-        if (hintLoopActive && hint.classList.contains('hp-hint--show')) {
-          hintHideTimer = setTimeout(function(){
-            hideHint(300);
-            hintHideTimer = null;
+      nudge.addEventListener('mouseleave', function(){
+        hovering = false;
+        if (loopActive && nudge.classList.contains('fb-nudge--show')) {
+          hideTimer = setTimeout(function(){
+            hideNudge(300);
+            hideTimer = null;
+            currentAnchor = null;
             scheduleNext();
           }, 600);
         }
       });
-      // Clicking the hint itself toggles verbose (feels natural)
-      hint.addEventListener('click', function(){
-        apply(true);
-        dismissHint(true);
+      // Clicking the nudge forwards the click to its current anchor
+      nudge.addEventListener('click', function(){
+        if (currentAnchor && currentAnchor.el) {
+          currentAnchor.el.click();
+          retireAnchor(currentAnchor, true);
+        }
+        stopNudgeLoop();
       });
     }
 
-    /* Debug helper — open devtools and run window.__hint() to see live state.
-       Run window.__hint.poke() to force an immediate appearance. */
-    window.__hint = function(){
+    // Keep the nudge glued to its anchor during scroll/resize
+    var repoTimer = null;
+    function maybeReposition() {
+      if (!nudge || !nudge.classList.contains('fb-nudge--show') || !currentAnchor) return;
+      if (!isAnchorInView(currentAnchor.el)) {
+        // Anchor scrolled away — hide immediately, don't leave a floating hint
+        hideNudge(200);
+        if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
+        currentAnchor = null;
+        scheduleNext();
+        return;
+      }
+      positionNudge(currentAnchor.el, currentAnchor.side);
+    }
+    window.addEventListener('scroll', function(){
+      if (repoTimer) return;
+      repoTimer = setTimeout(function(){ repoTimer = null; maybeReposition(); }, 16);
+    }, { passive: true });
+    window.addEventListener('resize', function(){ maybeReposition(); });
+
+    /* Debug helpers:
+         window.__nudge()              → live state
+         window.__nudge.poke('verbose') → force next pop on that anchor
+         window.__nudge.reset()        → clear all retirement + restart */
+    window.__nudge = function(){
       return {
-        loopActive: hintLoopActive,
-        dismissed: hintDismissed,
-        hovering: hintHovering,
+        loopActive: loopActive,
+        hovering: hovering,
         verboseOn: body.classList.contains('hp-verbose-on'),
-        cycleTimerSet: !!hintCycleTimer,
-        hideTimerSet: !!hintHideTimer,
-        lastMessage: hintLastMessage,
-        localStorage_dismissed: (function(){ try { return localStorage.getItem(HINT_KEY); } catch(_) { return null; } })(),
-        localStorage_verbose: (function(){ try { return localStorage.getItem(KEY); } catch(_) { return null; } })()
+        liveCount: liveAnchors().length,
+        current: currentAnchor ? currentAnchor.id : null,
+        cycleTimerSet: !!cycleTimer,
+        hideTimerSet:  !!hideTimer,
+        anchors: ANCHORS.map(function(a){
+          return {
+            id: a.id,
+            hasEl: !!a.el,
+            retired: a.retired,
+            lastMessage: a.lastMessage,
+            cooldownRemainingMs: a.lastShownAt
+              ? Math.max(0, PER_ANCHOR_COOLDOWN - (Date.now() - a.lastShownAt))
+              : 0
+          };
+        })
       };
     };
-    window.__hint.poke = function(){
-      clearHintTimers();
-      if (!hintLoopActive) { hintLoopActive = true; }
-      hintCycleTimer = setTimeout(showHintOnce, 50);
-      return 'poked';
+    window.__nudge.poke = function(anchorId){
+      clearTimers();
+      if (!loopActive) loopActive = true;
+      if (anchorId) {
+        var target = null;
+        ANCHORS.forEach(function(a){ if (a.id === anchorId) target = a; });
+        if (target) {
+          target.lastShownAt = 0;
+          target.retired = false;
+          // Push others onto cooldown so target is the only eligible pick
+          ANCHORS.forEach(function(a){ if (a !== target) a.lastShownAt = Date.now(); });
+        }
+      }
+      cycleTimer = setTimeout(showNudgeOnce, 50);
+      return 'poked' + (anchorId ? (' (' + anchorId + ')') : '');
     };
-    window.__hint.reset = function(){
-      try { localStorage.removeItem(KEY); localStorage.removeItem(HINT_KEY); } catch(_) {}
-      hintDismissed = false;
-      stopHintLoop();
-      startHintLoop();
+    window.__nudge.reset = function(){
+      try {
+        ANCHORS.forEach(function(a){ localStorage.removeItem(a.storageKey); });
+        localStorage.removeItem('fb-hint-dismissed');  // legacy
+      } catch(_) {}
+      ANCHORS.forEach(function(a){
+        a.retired = !a.el;
+        a.lastShownAt = 0;
+        a.lastMessage = null;
+      });
+      stopNudgeLoop();
+      startNudgeLoop();
       return 'reset + restarted';
     };
 
-    startHintLoop();
+    startNudgeLoop();
 
     /* ========================================================================
        3. Verbose data fetchers
