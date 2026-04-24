@@ -1387,12 +1387,27 @@
       if (hintHideTimer)  { clearTimeout(hintHideTimer);  hintHideTimer  = null; }
     }
 
+    /* Single chokepoint for "I'm done with this appearance, schedule next".
+       Both the auto-hide and the post-hover cleanup call this so we can't
+       accidentally drop the loop on one path. */
+    function scheduleNext() {
+      if (!hintLoopActive) return;
+      if (hintCycleTimer) { clearTimeout(hintCycleTimer); hintCycleTimer = null; }
+      hintCycleTimer = setTimeout(showHintOnce, nextGap());
+    }
+
+    function hideHint(fadeOutMs) {
+      if (!hint) return;
+      hint.style.setProperty('--hp-hint-fade', fadeOutMs + 'ms');
+      hint.classList.remove('hp-hint--show');
+    }
+
     function showHintOnce() {
       if (!hintLoopActive || !hint) return;
       if (body.classList.contains('hp-verbose-on')) { stopHintLoop(); return; }
-      // If user is hovering the toggle area, defer briefly
+      // If user is hovering the toggle area (not the hint itself), defer briefly
       if (hintHovering) {
-        hintCycleTimer = setTimeout(showHintOnce, 3000);
+        hintCycleTimer = setTimeout(showHintOnce, 2000);
         return;
       }
       var p = pickPersonality();
@@ -1402,10 +1417,9 @@
       hint.textContent = hintLastMessage;
       hint.classList.add('hp-hint--show');
       hintHideTimer = setTimeout(function(){
-        hint.style.setProperty('--hp-hint-fade', p.fadeOut + 'ms');
-        hint.classList.remove('hp-hint--show');
+        hideHint(p.fadeOut);
         hintHideTimer = null;
-        if (hintLoopActive) hintCycleTimer = setTimeout(showHintOnce, nextGap());
+        scheduleNext();
       }, stay);
     }
 
@@ -1449,11 +1463,10 @@
         // Resume: short grace period, then fade out and reschedule
         if (hintLoopActive && hint.classList.contains('hp-hint--show')) {
           hintHideTimer = setTimeout(function(){
-            hint.style.setProperty('--hp-hint-fade', '300ms');
-            hint.classList.remove('hp-hint--show');
+            hideHint(300);
             hintHideTimer = null;
-            if (hintLoopActive) hintCycleTimer = setTimeout(showHintOnce, nextGap());
-          }, 800);
+            scheduleNext();
+          }, 600);
         }
       });
       // Clicking the hint itself toggles verbose (feels natural)
@@ -1462,6 +1475,35 @@
         dismissHint(true);
       });
     }
+
+    /* Debug helper — open devtools and run window.__hint() to see live state.
+       Run window.__hint.poke() to force an immediate appearance. */
+    window.__hint = function(){
+      return {
+        loopActive: hintLoopActive,
+        dismissed: hintDismissed,
+        hovering: hintHovering,
+        verboseOn: body.classList.contains('hp-verbose-on'),
+        cycleTimerSet: !!hintCycleTimer,
+        hideTimerSet: !!hintHideTimer,
+        lastMessage: hintLastMessage,
+        localStorage_dismissed: (function(){ try { return localStorage.getItem(HINT_KEY); } catch(_) { return null; } })(),
+        localStorage_verbose: (function(){ try { return localStorage.getItem(KEY); } catch(_) { return null; } })()
+      };
+    };
+    window.__hint.poke = function(){
+      clearHintTimers();
+      if (!hintLoopActive) { hintLoopActive = true; }
+      hintCycleTimer = setTimeout(showHintOnce, 50);
+      return 'poked';
+    };
+    window.__hint.reset = function(){
+      try { localStorage.removeItem(KEY); localStorage.removeItem(HINT_KEY); } catch(_) {}
+      hintDismissed = false;
+      stopHintLoop();
+      startHintLoop();
+      return 'reset + restarted';
+    };
 
     startHintLoop();
 
