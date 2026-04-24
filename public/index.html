@@ -91,12 +91,74 @@
     line-height: var(--fb-lh-snug);
     display: flex; gap: var(--fb-s-2); align-items: baseline;
   }
-  .hp-status__glyph { color: var(--fb-signal); font-size: var(--fb-fs-16); line-height: 1; }
+
+  /* ----- Pulsing signal glyph (leads the active phrase) ------------------ */
+  .hp-status__glyph {
+    color: var(--fb-signal);
+    font-size: var(--fb-fs-16);
+    line-height: 1;
+    display: inline-block;
+    transform-origin: center;
+    text-shadow: 0 0 12px var(--fb-signal-glow);
+    animation: hp-glyph-pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes hp-glyph-pulse {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(0.92) rotate(0deg);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.08) rotate(6deg);
+    }
+  }
+
+  /* ----- Active phrase shimmer (terminal-polish gradient sweep) ---------- */
+  /* Base color works even when animation is off — the shimmer is
+     purely an enhancement, never required to read the text. */
+  .hp-status__phrase {
+    color: var(--fb-text-loud);
+    background-image: linear-gradient(
+      90deg,
+      rgba(160, 220, 255, 0.55) 0%,
+      rgba(232, 247, 255, 1.00) 35%,
+      rgba(107, 232, 170, 0.85) 50%,
+      rgba(255, 145, 112, 0.70) 65%,
+      rgba(160, 220, 255, 0.55) 100%
+    );
+    background-size: 240% 100%;
+    background-position: 140% 50%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+    animation: hp-phrase-sweep 3s linear infinite;
+  }
+  @keyframes hp-phrase-sweep {
+    0%   { background-position: 140% 50%; }
+    100% { background-position: -140% 50%; }
+  }
+
   .hp-status__meta {
     font-family: var(--fb-font-mono);
     font-size: var(--fb-fs-12);
     color: var(--fb-text-mute);
     margin-top: var(--fb-s-1);
+  }
+
+  /* Reduced-motion: kill shimmer + glyph animation, keep text readable */
+  @media (prefers-reduced-motion: reduce) {
+    .hp-status__phrase {
+      animation: none;
+      background: none;
+      -webkit-text-fill-color: initial;
+      color: var(--fb-text-loud);
+    }
+    .hp-status__glyph {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 
   /* ----- Verbose toggle --------------------------------------------------- */
@@ -358,7 +420,7 @@
               <div class="hp-status__tag">system · FixBroken OS</div>
               <div class="hp-status__line">
                 <span class="hp-status__glyph" id="hp-glyph">⟡</span>
-                <span id="hp-verb">Untangling interface debt…</span>
+                <span class="hp-status__phrase" id="hp-verb">Untangling interface debt…</span>
               </div>
               <div class="hp-status__meta" id="hp-meta">9s · 4 trust gaps mapped</div>
             </div>
@@ -523,13 +585,10 @@
   (function(){
     var states = [
       { glyph: "⟡", verb: "Untangling interface debt…",   meta: "9s · 4 trust gaps mapped" },
-      { glyph: "◇", verb: "Humanizing the workflow…",     meta: "11s · 3 rough edges removed" },
-      { glyph: "⌁", verb: "Translating model output…",    meta: "8s · 2 product decisions clarified" },
-      { glyph: "⬡", verb: "Hardening trust paths…",       meta: "14s · 5 failure states surfaced" },
-      { glyph: "∴", verb: "Reducing user confusion…",     meta: "7s · 1 clearer path shipped" },
-      { glyph: "✦", verb: "Making it shippable…",         meta: "12s · 6 friction points cleared" },
-      { glyph: "⟡", verb: "De-risking the interface…",    meta: "10s · 3 risk flags surfaced" },
-      { glyph: "◇", verb: "Calming the onboarding…",      meta: "6s · 2 friction taps removed" }
+      { glyph: "✦", verb: "Humanizing the workflow…",     meta: "11s · 3 rough edges removed" },
+      { glyph: "◇", verb: "Translating model output…",    meta: "8s · 2 product decisions clarified" },
+      { glyph: "⌁", verb: "Hardening trust paths…",       meta: "14s · 5 failure states surfaced" },
+      { glyph: "⬡", verb: "Reducing user confusion…",     meta: "7s · 1 clearer path shipped" }
     ];
     var body = document.getElementById('hp-status-body');
     var vE = document.getElementById('hp-verb');
