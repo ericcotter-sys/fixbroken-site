@@ -177,9 +177,15 @@
     .hp-status__meta-cursor { animation: none; opacity: 1; }
   }
 
-  /* ----- Verbose toggle --------------------------------------------------- */
-  .hp-toggle {
+  /* ----- Verbose toggle + hint bubble ------------------------------------ */
+  /* Wrapper gives us positioning context for the hint label. */
+  .hp-toggle-wrap {
+    position: relative;
     align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+  }
+  .hp-toggle {
     display: inline-flex;
     align-items: center;
     gap: var(--fb-s-2);
@@ -194,6 +200,68 @@
     text-transform: uppercase;
     cursor: pointer;
     transition: all var(--fb-t-fast);
+  }
+
+  /* Hint: fades in after a random delay, gently bobs toward the button.
+     Dismissed on first click or after 10s; remembered via localStorage. */
+  .hp-hint {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%) translateX(0);
+    margin-left: 10px;
+    padding: 5px 10px;
+    background: var(--fb-panel);
+    border: 1px solid color-mix(in srgb, var(--fb-signal) 40%, var(--fb-hairline));
+    border-radius: var(--fb-r-2);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-11);
+    color: var(--fb-signal);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 0 16px rgba(0, 212, 255, 0.15);
+    transition: opacity 500ms ease;
+  }
+  .hp-hint::before {
+    content: "←";
+    margin-right: 6px;
+    display: inline-block;
+    color: var(--fb-signal);
+    animation: hp-hint-arrow 1.4s ease-in-out infinite;
+  }
+  .hp-hint--show {
+    opacity: 1;
+  }
+  .hp-hint--show::before {
+    /* re-apply animation when shown */
+    animation: hp-hint-arrow 1.4s ease-in-out infinite;
+  }
+  @keyframes hp-hint-arrow {
+    0%, 100% { transform: translateX(0); }
+    50%      { transform: translateX(-4px); }
+  }
+
+  /* On mobile, hint sits BELOW the toggle with a down-pointing arrow */
+  @media (max-width: 540px) {
+    .hp-hint {
+      left: 0;
+      top: 100%;
+      margin-left: 0;
+      margin-top: 8px;
+      transform: translateY(0);
+    }
+    .hp-hint::before { content: "↑"; animation: hp-hint-arrow-v 1.4s ease-in-out infinite; }
+    @keyframes hp-hint-arrow-v {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-3px); }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hp-hint::before { animation: none; }
   }
   .hp-toggle:hover {
     color: var(--fb-signal);
@@ -623,12 +691,15 @@
             </div>
           </div>
 
-          <!-- Verbose toggle -->
-          <button class="hp-toggle" id="hp-toggle-btn" aria-pressed="false">
-            <span class="hp-toggle__dot"></span>
-            <span>verbose</span>
-            <span class="hp-toggle__label"></span>
-          </button>
+          <!-- Verbose toggle + delayed "try this" hint -->
+          <div class="hp-toggle-wrap">
+            <button class="hp-toggle" id="hp-toggle-btn" aria-pressed="false">
+              <span class="hp-toggle__dot"></span>
+              <span>verbose</span>
+              <span class="hp-toggle__label"></span>
+            </button>
+            <span class="hp-hint" id="hp-hint" role="tooltip">see what's inside</span>
+          </div>
         </div>
 
       </div>
@@ -917,7 +988,9 @@
      ========================================================================== */
   (function(){
     var btn = document.getElementById('hp-toggle-btn');
+    var hint = document.getElementById('hp-hint');
     var KEY = 'fb-verbose';
+    var HINT_KEY = 'fb-hint-dismissed';
     var body = document.body;
 
     function apply(on) {
@@ -926,16 +999,50 @@
       try { localStorage.setItem(KEY, on ? '1' : '0'); } catch(_) {}
       if (on) loadVerboseData();
     }
-    /* Escape hatch: add ?reset to the URL to clear any stuck preference */
+    /* Escape hatch: add ?reset to the URL to clear any stuck preferences */
     if (location.search.indexOf('reset') > -1) {
-      try { localStorage.removeItem(KEY); } catch(_) {}
+      try {
+        localStorage.removeItem(KEY);
+        localStorage.removeItem(HINT_KEY);
+      } catch(_) {}
     }
     try {
       if (localStorage.getItem(KEY) === '1') apply(true);
     } catch(_) {}
+    /* ------ Hint: appears after a random 4-6s delay the first time ------
+       Only shows if verbose is off AND never been dismissed.
+       Auto-hides after 10s or when the user clicks the toggle. */
+    var hintShown = false;
+    var hintTimer = null;
+    var hintDismissed = false;
+    try { hintDismissed = localStorage.getItem(HINT_KEY) === '1'; } catch(_) {}
+
+    function dismissHint(persist) {
+      if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; }
+      if (hint) hint.classList.remove('hp-hint--show');
+      if (persist) {
+        try { localStorage.setItem(HINT_KEY, '1'); } catch(_) {}
+      }
+    }
+
     btn.addEventListener('click', function(){
       apply(!body.classList.contains('hp-verbose-on'));
+      dismissHint(true);   // persist: once user interacts, never show again
     });
+
+    if (!hintDismissed && !body.classList.contains('hp-verbose-on')) {
+      var delay = 4000 + Math.floor(Math.random() * 2000); // 4000-6000ms
+      hintTimer = setTimeout(function(){
+        hintTimer = null;
+        if (!body.classList.contains('hp-verbose-on') && !hintShown) {
+          hintShown = true;
+          hint.classList.add('hp-hint--show');
+          // Auto-dismiss after 10s. Do NOT persist — user may have been AFK;
+          // let the hint try again on next visit. Only clicking persists.
+          setTimeout(function(){ dismissHint(false); }, 10000);
+        }
+      }, delay);
+    }
 
     /* ========================================================================
        3. Verbose data fetchers
