@@ -265,7 +265,9 @@
     opacity: 0;
     pointer-events: none;
     box-shadow: 0 0 16px rgba(0, 212, 255, 0.15);
-    transition: opacity 500ms ease,
+    /* --hp-hint-fade is set per-appearance by JS so each pop can have its own
+       speed (snappy flash vs. slow drift). Default is the calm middle. */
+    transition: opacity var(--hp-hint-fade, 500ms) ease,
                 transform 320ms cubic-bezier(.25,.9,.3,1.4),
                 color 180ms ease,
                 border-color 180ms ease,
@@ -1204,13 +1206,15 @@
     try {
       if (localStorage.getItem(KEY) === '1') apply(true);
     } catch(_) {}
-    /* ------ Hint: a cheeky nudge that appears after a 4-6s delay -------
-       - Copy is randomized from a playful set (picked once per page load)
-       - Gets happy on hover (CSS handles the bounce)
-       - If user hovers, rotate to a new cheeky line to reward curiosity
-       - Dismissed on click (persists) or after 10s (doesn't persist) */
-    var hintShown = false;
-    var hintTimer = null;
+    /* ------ Hint: a whack-a-mole nudge that pops sporadically -------------
+       - Each appearance picks a random "personality" (flash, pop, drift,
+         tease, shy) — different fade-in/stay/fade-out timings so it never
+         feels like an 8s metronome
+       - Random 5-22s gap between appearances
+       - Fresh cheeky line every time (never repeats back-to-back)
+       - Hover pauses the auto-hide and swaps in a new line
+       - Dismissed permanently on click of toggle or hint
+       - Respects prefers-reduced-motion (single calm personality, no drama) */
     var hintDismissed = false;
     try { hintDismissed = localStorage.getItem(HINT_KEY) === '1'; } catch(_) {}
 
@@ -1237,10 +1241,90 @@
       return pool[Math.floor(Math.random() * pool.length)];
     }
 
-    function dismissHint(persist) {
-      if (hintTimer) { clearTimeout(hintTimer); hintTimer = null; }
+    var prefersReduced = window.matchMedia &&
+                         window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    /* Personalities: each is one "mood" the hint can pop in with.
+       fadeIn/fadeOut = ms for the opacity transition.
+       stay = [min, max] ms it sits visible before fading.
+       weight = relative frequency. Standard "pop" is most common. */
+    var personalities = prefersReduced ? [
+      { fadeIn: 150, stay: [1500, 2500], fadeOut: 150, weight: 1 }
+    ] : [
+      { fadeIn: 90,   stay: [400, 800],    fadeOut: 90,   weight: 1.5 }, // FLASH
+      { fadeIn: 220,  stay: [1500, 2800],  fadeOut: 220,  weight: 3   }, // pop
+      { fadeIn: 1200, stay: [2500, 4500],  fadeOut: 1500, weight: 1.5 }, // drift
+      { fadeIn: 150,  stay: [800, 1400],   fadeOut: 600,  weight: 1.5 }, // tease
+      { fadeIn: 600,  stay: [600, 1200],   fadeOut: 200,  weight: 1.5 }  // shy
+    ];
+
+    function pickPersonality() {
+      var total = 0, i;
+      for (i = 0; i < personalities.length; i++) total += personalities[i].weight;
+      var r = Math.random() * total;
+      for (i = 0; i < personalities.length; i++) {
+        r -= personalities[i].weight;
+        if (r <= 0) return personalities[i];
+      }
+      return personalities[0];
+    }
+
+    function nextGap() {
+      // 5-22s between appearances
+      return 5000 + Math.floor(Math.random() * 17000);
+    }
+
+    var hintLastMessage = null;
+    var hintCycleTimer  = null;   // schedules the next appearance
+    var hintHideTimer   = null;   // schedules the current appearance's hide
+    var hintLoopActive  = false;
+    var hintHovering    = false;
+
+    function clearHintTimers() {
+      if (hintCycleTimer) { clearTimeout(hintCycleTimer); hintCycleTimer = null; }
+      if (hintHideTimer)  { clearTimeout(hintHideTimer);  hintHideTimer  = null; }
+    }
+
+    function showHintOnce() {
+      if (!hintLoopActive || !hint) return;
+      if (body.classList.contains('hp-verbose-on')) { stopHintLoop(); return; }
+      // If user is hovering the toggle area, defer briefly
+      if (hintHovering) {
+        hintCycleTimer = setTimeout(showHintOnce, 3000);
+        return;
+      }
+      var p = pickPersonality();
+      var stay = p.stay[0] + Math.floor(Math.random() * (p.stay[1] - p.stay[0]));
+      hint.style.setProperty('--hp-hint-fade', p.fadeIn + 'ms');
+      hintLastMessage = pickHintMessage(hintLastMessage);
+      hint.textContent = hintLastMessage;
+      hint.classList.add('hp-hint--show');
+      hintHideTimer = setTimeout(function(){
+        hint.style.setProperty('--hp-hint-fade', p.fadeOut + 'ms');
+        hint.classList.remove('hp-hint--show');
+        hintHideTimer = null;
+        if (hintLoopActive) hintCycleTimer = setTimeout(showHintOnce, nextGap());
+      }, stay);
+    }
+
+    function startHintLoop() {
+      if (hintLoopActive || hintDismissed) return;
+      if (body.classList.contains('hp-verbose-on')) return;
+      hintLoopActive = true;
+      // First appearance: 3-7s after load, then sporadic forever
+      hintCycleTimer = setTimeout(showHintOnce, 3000 + Math.floor(Math.random() * 4000));
+    }
+
+    function stopHintLoop() {
+      hintLoopActive = false;
+      clearHintTimers();
       if (hint) hint.classList.remove('hp-hint--show');
+    }
+
+    function dismissHint(persist) {
+      stopHintLoop();
       if (persist) {
+        hintDismissed = true;
         try { localStorage.setItem(HINT_KEY, '1'); } catch(_) {}
       }
     }
@@ -1250,31 +1334,34 @@
       dismissHint(true);   // persist: once user interacts, never show again
     });
 
-    /* Hover swap: when the user hovers the hint, reward them with a new line */
     if (hint) {
+      // Hover: pause the auto-hide, swap in a fresh line as a reward
       hint.addEventListener('mouseenter', function(){
-        hint.textContent = pickHintMessage(hint.textContent);
+        hintHovering = true;
+        hintLastMessage = pickHintMessage(hintLastMessage);
+        hint.textContent = hintLastMessage;
+        if (hintHideTimer) { clearTimeout(hintHideTimer); hintHideTimer = null; }
       });
-      /* Clicking the hint itself should also toggle verbose (feels natural) */
+      hint.addEventListener('mouseleave', function(){
+        hintHovering = false;
+        // Resume: short grace period, then fade out and reschedule
+        if (hintLoopActive && hint.classList.contains('hp-hint--show')) {
+          hintHideTimer = setTimeout(function(){
+            hint.style.setProperty('--hp-hint-fade', '300ms');
+            hint.classList.remove('hp-hint--show');
+            hintHideTimer = null;
+            if (hintLoopActive) hintCycleTimer = setTimeout(showHintOnce, nextGap());
+          }, 800);
+        }
+      });
+      // Clicking the hint itself toggles verbose (feels natural)
       hint.addEventListener('click', function(){
         apply(true);
         dismissHint(true);
       });
     }
 
-    if (!hintDismissed && !body.classList.contains('hp-verbose-on')) {
-      var delay = 4000 + Math.floor(Math.random() * 2000); // 4-6s
-      hintTimer = setTimeout(function(){
-        hintTimer = null;
-        if (!body.classList.contains('hp-verbose-on') && !hintShown) {
-          hintShown = true;
-          hint.textContent = pickHintMessage(null);   // pick on first show
-          hint.classList.add('hp-hint--show');
-          // Auto-dismiss after 10s. Not persisted — user may have been AFK.
-          setTimeout(function(){ dismissHint(false); }, 10000);
-        }
-      }, delay);
-    }
+    startHintLoop();
 
     /* ========================================================================
        3. Verbose data fetchers
