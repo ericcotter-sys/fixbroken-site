@@ -613,7 +613,7 @@
         </p>
 
         <div class="fb-rise fb-rise--d2">
-          <a class="fb-cta fb-cta--pink-solid" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">
+          <a class="fb-cta fb-cta--pink-solid" href="#contact" id="hp-hero-cta">
             Start a conversation
           </a>
         </div>
@@ -769,6 +769,75 @@
               <span class="hp-toggle__label"></span>
             </button>
             <span class="hp-hint" id="hp-hint" role="tooltip" tabindex="0"></span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         CONTACT — minimal info collector. Replaces the old mailto.
+         POSTs to /contact on the server; logs to contact.log; returns ref.
+         ==================================================================== -->
+    <section class="hp-contact fb-container" id="contact">
+      <div class="fb-panel fb-panel--pink hp-contact__panel">
+
+        <div class="fb-stack fb-stack--tight" style="margin-bottom: var(--fb-s-6);">
+          <span class="fb-kicker fb-kicker--pink">Signal · Contact</span>
+          <h2 style="font-size: var(--fb-fs-32);">Start a conversation.</h2>
+          <p class="fb-text-dim" style="max-width: 58ch;">
+            Tell me what's broken. One email back within 48h if it's the right shape of problem.
+          </p>
+        </div>
+
+        <form id="hp-contact-form" class="fb-stack" novalidate>
+          <div class="fb-grid fb-grid--2" style="gap: var(--fb-s-3);">
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-name">Name</label>
+              <input class="fb-input" id="hp-cf-name" name="name" type="text" placeholder="first · last" autocomplete="name">
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-email">Email <span style="color: var(--fb-pink);">*</span></label>
+              <input class="fb-input" id="hp-cf-email" name="email" type="email" placeholder="you@domain" autocomplete="email" required>
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-company">Company</label>
+              <input class="fb-input" id="hp-cf-company" name="company" type="text" placeholder="optional" autocomplete="organization">
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-type">Type of help</label>
+              <select class="fb-input" id="hp-cf-type" name="type">
+                <option value="">—</option>
+                <option value="product">Product</option>
+                <option value="brand">Brand</option>
+                <option value="system">System</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
+          </div>
+          <div class="fb-field">
+            <label class="fb-field__label" for="hp-cf-message">What's broken? <span style="color: var(--fb-pink);">*</span></label>
+            <textarea class="fb-textarea" id="hp-cf-message" name="message" rows="4" placeholder="describe what broke. short is fine." required></textarea>
+          </div>
+          <div class="fb-row fb-row--between fb-row--wrap" style="gap: var(--fb-s-3); align-items: center;">
+            <button class="fb-cta fb-cta--pink-solid" type="submit" id="hp-cf-submit">
+              Send the signal
+            </button>
+            <span id="hp-cf-status" class="fb-mono" style="font-size: var(--fb-fs-12); color: var(--fb-text-mute);"></span>
+          </div>
+        </form>
+
+        <!-- Success state (hidden by default; swapped in on submit success) -->
+        <div id="hp-cf-success" class="fb-mono" hidden style="padding: var(--fb-s-4) 0;">
+          <div class="fb-row" style="gap: var(--fb-s-2); font-family: var(--fb-font-mono); color: var(--fb-matrix);">
+            <span style="font-size: var(--fb-fs-16);">✓</span>
+            <span class="fb-label fb-label--matrix">Signal received</span>
+          </div>
+          <div style="margin-top: var(--fb-s-3); color: var(--fb-text-loud); font-size: var(--fb-fs-15);">
+            Ref: <strong class="fb-glow--pink" style="color: var(--fb-pink);" id="hp-cf-ref">—</strong>
+          </div>
+          <div style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14); max-width: 52ch;">
+            I read every one. If it's the right shape of problem, you'll hear back within 48h.
           </div>
         </div>
 
@@ -1249,13 +1318,13 @@
        stay = [min, max] ms it sits visible before fading.
        weight = relative frequency. Standard "pop" is most common. */
     var personalities = prefersReduced ? [
-      { fadeIn: 150, stay: [1500, 2500], fadeOut: 150, weight: 1 }
+      { fadeIn: 150, stay: [800, 1200], fadeOut: 150, weight: 1 }
     ] : [
-      { fadeIn: 90,   stay: [400, 800],    fadeOut: 90,   weight: 1.5 }, // FLASH
-      { fadeIn: 220,  stay: [1500, 2800],  fadeOut: 220,  weight: 3   }, // pop
-      { fadeIn: 1200, stay: [2500, 4500],  fadeOut: 1500, weight: 1.5 }, // drift
-      { fadeIn: 150,  stay: [800, 1400],   fadeOut: 600,  weight: 1.5 }, // tease
-      { fadeIn: 600,  stay: [600, 1200],   fadeOut: 200,  weight: 1.5 }  // shy
+      { fadeIn: 90,   stay: [250, 500],   fadeOut: 90,   weight: 1.5 }, // FLASH (blink)
+      { fadeIn: 220,  stay: [700, 1300],  fadeOut: 220,  weight: 3   }, // pop (standard)
+      { fadeIn: 1100, stay: [900, 1600],  fadeOut: 1200, weight: 1.5 }, // drift (slow fade)
+      { fadeIn: 150,  stay: [500, 900],   fadeOut: 500,  weight: 1.5 }, // tease (quick in, slow out)
+      { fadeIn: 500,  stay: [400, 800],   fadeOut: 200,  weight: 1.5 }  // shy (slow in, quick out)
     ];
 
     function pickPersonality() {
@@ -1270,8 +1339,9 @@
     }
 
     function nextGap() {
-      // 5-22s between appearances
-      return 5000 + Math.floor(Math.random() * 17000);
+      // 2.5-9s between appearances — frequent enough that bouncers still see
+      // a couple cycles, sparse enough not to nag
+      return 2500 + Math.floor(Math.random() * 6500);
     }
 
     var hintLastMessage = null;
@@ -1311,8 +1381,8 @@
       if (hintLoopActive || hintDismissed) return;
       if (body.classList.contains('hp-verbose-on')) return;
       hintLoopActive = true;
-      // First appearance: 3-7s after load, then sporadic forever
-      hintCycleTimer = setTimeout(showHintOnce, 3000 + Math.floor(Math.random() * 4000));
+      // First appearance: 1.5-4s after load, then sporadic forever
+      hintCycleTimer = setTimeout(showHintOnce, 1500 + Math.floor(Math.random() * 2500));
     }
 
     function stopHintLoop() {
