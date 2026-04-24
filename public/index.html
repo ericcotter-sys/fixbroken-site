@@ -1733,6 +1733,17 @@
 
     function openModal() {
       lastFocusedBeforeOpen = document.activeElement;
+      // If the success state is showing (user previously submitted), reset
+      // to a fresh form so they can send another without a page refresh.
+      if (successEl && !successEl.hidden) {
+        successEl.hidden = true;
+        form.hidden = false;
+        form.reset();
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.textContent = 'Send the signal';
+        statusEl.textContent = '';
+      }
       modal.classList.add('hp-modal--open');
       modal.setAttribute('aria-hidden', 'false');
       document.documentElement.style.overflow = 'hidden';
