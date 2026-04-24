@@ -3,11 +3,142 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>fixbroken.ai · operator for broken AI systems</title>
-<meta name="description" content="Consulting and product work for teams shipping AI that needs to actually work for humans. Product, brand, and system clarity.">
+<title>fixbroken.ai · consulting · product · brand</title>
+<meta name="description" content="Ship clearer, more human AI products. I work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.">
 <meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  /* ==========================================================================
+     Homepage-local styles only. Everything structural is in fixbroken-os.css.
+     These styles exist for the live status module + cone layout, which are
+     hero-specific and intentionally not promoted to the global system yet.
+     ========================================================================== */
+
+  .hp-hero {
+    position: relative;
+    overflow: hidden;
+    padding-top: clamp(64px, 12vh, 120px);
+    padding-bottom: clamp(48px, 10vh, 96px);
+  }
+
+  .hp-hero__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--fb-s-8);
+    max-width: 760px;
+  }
+
+  .hp-kicker {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+  }
+
+  .hp-h1 {
+    font-size: var(--fb-fs-88);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: var(--fb-tracking-tight);
+    color: var(--fb-text-loud);
+  }
+  .hp-h1 em {
+    font-style: normal;
+    color: var(--fb-pink);
+    text-shadow: 0 0 32px var(--fb-pink-glow);
+  }
+
+  .hp-body {
+    font-size: var(--fb-fs-20);
+    line-height: var(--fb-lh-relaxed);
+    color: var(--fb-text-dim);
+    max-width: 58ch;
+  }
+
+  /* ----- Status module: small "live operating layer" panel ---------------- */
+  .hp-status {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--fb-s-5);
+    align-items: center;
+    max-width: 540px;
+    padding: var(--fb-s-5) var(--fb-s-6);
+    background: var(--fb-panel);
+    border: 1px solid var(--fb-hairline);
+    border-radius: var(--fb-r-3);
+    box-shadow: var(--fb-lift), 0 0 48px rgba(255, 62, 201, 0.04);
+  }
+
+  .hp-status__cone {
+    width: 48px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  .hp-status__body {
+    min-width: 0;
+    /* fade transition applied to the text block so rotations are smooth
+       without layout shift */
+    transition: opacity 240ms ease;
+  }
+
+  .hp-status__tag {
+    display: flex;
+    align-items: center;
+    gap: var(--fb-s-2);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-11);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+    margin-bottom: var(--fb-s-2);
+  }
+  .hp-status__tag::before {
+    content: "";
+    width: 6px; height: 6px;
+    background: var(--fb-matrix);
+    border-radius: 50%;
+    box-shadow: 0 0 8px var(--fb-matrix-glow);
+    animation: fb-pulse 2s ease-in-out infinite;
+  }
+
+  .hp-status__line {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-14);
+    color: var(--fb-text-loud);
+    line-height: var(--fb-lh-snug);
+    display: flex;
+    gap: var(--fb-s-2);
+    align-items: baseline;
+  }
+  .hp-status__glyph {
+    color: var(--fb-signal);
+    font-size: var(--fb-fs-16);
+    line-height: 1;
+  }
+
+  .hp-status__meta {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+    color: var(--fb-text-mute);
+    margin-top: var(--fb-s-1);
+    letter-spacing: 0.01em;
+  }
+
+  /* Mobile: stack cone above status body so text gets full width */
+  @media (max-width: 540px) {
+    .hp-status {
+      grid-template-columns: 1fr;
+      gap: var(--fb-s-3);
+      padding: var(--fb-s-4);
+    }
+    .hp-status__cone { width: 40px; height: 52px; }
+    .hp-h1 { font-size: clamp(40px, 10vw, 56px); }
+  }
+</style>
 </head>
 <body>
 
@@ -17,13 +148,13 @@
 <div class="fb-shell">
 
   <!-- ======================================================================
-       NAV
+       NAV — minimal. Three entries. Uppercase mono.
        ====================================================================== -->
   <nav class="fb-nav">
     <div class="fb-nav__inner">
       <a href="/" class="fb-nav__brand">fixbroken.ai</a>
       <div class="fb-nav__links">
-        <a class="fb-nav__link fb-nav__link--active" href="/">System</a>
+        <a class="fb-nav__link fb-nav__link--active" href="/">Home</a>
         <a class="fb-nav__link" href="/design/">Design</a>
         <a class="fb-nav__link" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">Signal</a>
       </div>
@@ -33,216 +164,134 @@
   <main>
 
     <!-- ====================================================================
-         HERO — MCP cone sits behind the hero
+         HERO — preserved original copy + small status module beneath
          ==================================================================== -->
-    <section class="fb-section fb-section--loose" style="position:relative; overflow:hidden;">
-      <div class="fb-mcp-cone fb-mcp-cone--pink" style="--cone-h: 560px;"></div>
+    <section class="hp-hero fb-container">
+      <div class="hp-hero__inner">
 
-      <div class="fb-container" style="position:relative;">
-        <div class="fb-stack fb-stack--loose">
+        <div class="hp-kicker">consulting · product · brand</div>
 
-          <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-3);">
-            <span class="fb-status">System online</span>
-            <span class="fb-chip fb-chip--pink">consulting · operator · repair</span>
-          </div>
+        <h1 class="hp-h1 fb-rise">Fix broken <em>AI.</em></h1>
 
-          <h1 class="fb-display fb-display--pink fb-rise">
-            Fix broken <em>AI.</em><span class="fb-cursor fb-cursor--pink" aria-hidden="true"></span>
-          </h1>
+        <p class="hp-body fb-rise fb-rise--d1">
+          Ship clearer, more human AI products. I work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.
+        </p>
 
-          <p class="fb-lede fb-rise fb-rise--d1">
-            Most AI products feel broken to the humans using them. I work with teams to make the signal legible — clearer product, sharper brand, systems that earn trust instead of demanding it.
-          </p>
+        <div class="fb-rise fb-rise--d2">
+          <a class="fb-cta fb-cta--pink-solid" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">
+            Start a conversation
+          </a>
+        </div>
 
-          <div class="fb-row fb-row--wrap fb-rise fb-rise--d2" style="gap: var(--fb-s-3);">
-            <a class="fb-cta fb-cta--solid" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">
-              Open the console
-            </a>
-            <a class="fb-cta fb-cta--ghost" href="#operations">
-              Read signal
-            </a>
+        <!-- Live status module — the "operating layer" proof of work ------ -->
+        <div class="hp-status fb-rise fb-rise--d3" aria-live="polite">
+
+          <!-- Small MCP cone SVG: pink source → cyan cone → matrix output -->
+          <svg class="hp-status__cone" viewBox="0 0 48 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Faint grid hint -->
+            <g opacity="0.25">
+              <line x1="0"  y1="54" x2="48" y2="54" stroke="#2a3442" stroke-width="0.6"/>
+              <line x1="24" y1="4"  x2="24" y2="54" stroke="#2a3442" stroke-width="0.6" stroke-dasharray="1 3"/>
+            </g>
+
+            <!-- Pink beam source: signal entering the cone -->
+            <circle cx="24" cy="4.5" r="2" fill="#ff3ec9">
+              <animate attributeName="opacity" values="1;0.45;1" dur="2s" repeatCount="indefinite"/>
+            </circle>
+            <line x1="24" y1="7" x2="24" y2="13" stroke="#ff3ec9" stroke-width="1.4" opacity="0.85"/>
+
+            <!-- Cone outline — cyan, the OS layer -->
+            <path d="M24 13 L9 54 L39 54 Z" fill="none" stroke="#00d4ff" stroke-width="1.2" opacity="0.75" stroke-linejoin="round"/>
+
+            <!-- Particles falling into the cone — the "work" -->
+            <circle cx="24" cy="18" r="1" fill="#00d4ff">
+              <animate attributeName="cy" values="18;52;18" dur="3s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.9;0;0.9" dur="3s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="21" cy="24" r="0.8" fill="#00d4ff">
+              <animate attributeName="cy" values="24;52;24" dur="2.6s" begin="0.6s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;0;0.7" dur="2.6s" begin="0.6s" repeatCount="indefinite"/>
+            </circle>
+            <circle cx="27" cy="22" r="0.8" fill="#00d4ff">
+              <animate attributeName="cy" values="22;52;22" dur="3.2s" begin="1.2s" repeatCount="indefinite"/>
+              <animate attributeName="opacity" values="0.7;0;0.7" dur="3.2s" begin="1.2s" repeatCount="indefinite"/>
+            </circle>
+
+            <!-- Output line: clean matrix signal leaving the cone base -->
+            <line x1="11" y1="58" x2="37" y2="58" stroke="#00ff88" stroke-width="1.5" stroke-linecap="round" opacity="0.9">
+              <animate attributeName="opacity" values="0.9;0.4;0.9" dur="2s" repeatCount="indefinite"/>
+            </line>
+          </svg>
+
+          <div class="hp-status__body" id="hp-status-body">
+            <div class="hp-status__tag">system · FixBroken OS</div>
+            <div class="hp-status__line">
+              <span class="hp-status__glyph" id="hp-glyph">⟡</span>
+              <span id="hp-verb">Untangling interface debt…</span>
+            </div>
+            <div class="hp-status__meta" id="hp-meta">9s · 4 trust gaps mapped</div>
           </div>
 
         </div>
-      </div>
-    </section>
 
-    <!-- ====================================================================
-         CONTEXT — what broken AI actually looks like in the wild
-         ==================================================================== -->
-    <section class="fb-section">
-      <div class="fb-container">
-        <div class="fb-stack">
-
-          <div class="fb-row fb-row--between fb-row--wrap" style="align-items:flex-end;">
-            <div class="fb-stack fb-stack--tight">
-              <span class="fb-kicker">Context · The pattern</span>
-              <h2>Most AI doesn't ship. It leaks.</h2>
-            </div>
-            <span class="fb-label fb-label--signal">Trace · 01</span>
-          </div>
-
-          <div class="fb-terminal">
-            <div class="fb-terminal__bar">
-              <span class="fb-terminal__dots">
-                <span class="fb-terminal__dot fb-terminal__dot--red"></span>
-                <span class="fb-terminal__dot fb-terminal__dot--amber"></span>
-                <span class="fb-terminal__dot fb-terminal__dot--matrix"></span>
-              </span>
-              signal / trace / broken-ai.log
-            </div>
-            <div class="fb-terminal__body">
-              <div class="fb-command">the model works · the product doesn't</div>
-              <div class="fb-output">users don't trust the output. confidence is invisible. the "AI" feels like a black box nobody signed up for.</div>
-
-              <div class="fb-command fb-command--matrix">the copy lies about capability</div>
-              <div class="fb-output">oversold in the hero. under-documented in the app. customers feel tricked before value lands.</div>
-
-              <div class="fb-command">the brand mimics every other AI brand</div>
-              <div class="fb-output">purple gradients, sparkle icon, a noun + "GPT." nothing memorable, nothing credible, nothing human.</div>
-
-              <div class="fb-command fb-command--matrix">the human-in-the-loop is theater</div>
-              <div class="fb-output">staff, operators, and end users have no real intervention points. corrections disappear into silence.</div>
-
-              <div class="fb-command fb-command--none"><span class="fb-label fb-label--amber">STATUS ·</span> <span style="color:var(--fb-amber);">BROKEN. USABLE. FIXABLE.</span></div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         OPERATIONS — the three things I actually do
-         ==================================================================== -->
-    <section class="fb-section" id="operations">
-      <div class="fb-container">
-        <div class="fb-stack fb-stack--loose">
-
-          <div class="fb-stack fb-stack--tight">
-            <span class="fb-kicker">Output · Operations</span>
-            <h2>Three operations, one system.</h2>
-            <p class="fb-lede" style="margin-top: var(--fb-s-2);">
-              I don't deliver decks. I work in the actual product, brand, and system until it behaves.
-            </p>
-          </div>
-
-          <div class="fb-grid">
-
-            <article class="fb-signal-card">
-              <span class="fb-signal-card__label">Op · 01 · Product</span>
-              <h3 class="fb-signal-card__title">Unfuck the flow.</h3>
-              <p class="fb-signal-card__body">
-                AI-native UX. Confidence signals, human checkpoints, recovery paths. Make the product feel like a tool, not a demo.
-              </p>
-              <span class="fb-signal-card__cta">Trace the pattern</span>
-            </article>
-
-            <article class="fb-signal-card">
-              <span class="fb-signal-card__label">Op · 02 · Brand</span>
-              <h3 class="fb-signal-card__title">Earn the room.</h3>
-              <p class="fb-signal-card__body">
-                Positioning, language, visual system. Replace generic AI gloss with voice that reads as credible to operators, customers, and investors.
-              </p>
-              <span class="fb-signal-card__cta">Build the signal</span>
-            </article>
-
-            <article class="fb-signal-card">
-              <span class="fb-signal-card__label">Op · 03 · System</span>
-              <h3 class="fb-signal-card__title">Make it shippable.</h3>
-              <p class="fb-signal-card__body">
-                Pilot structure, commercialization, dealer / operator / customer interface. Translate technical capability into sellable workflow.
-              </p>
-              <span class="fb-signal-card__cta">Open the room</span>
-            </article>
-
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         SIGNAL — live status / what's running
-         ==================================================================== -->
-    <section class="fb-section">
-      <div class="fb-container">
-        <div class="fb-grid fb-grid--2">
-
-          <div class="fb-panel fb-panel--signal">
-            <div class="fb-stack fb-stack--tight">
-              <span class="fb-kicker">Signal · Current engagements</span>
-              <h3>What's running.</h3>
-              <p class="fb-text-dim" style="font-size: var(--fb-fs-15);">
-                Current and recent consulting work — clients on the roster get a subsite, a brief, and a direct line.
-              </p>
-              <div class="fb-divider fb-divider--signal"></div>
-              <div class="fb-stack fb-stack--tight fb-mono" style="font-size: var(--fb-fs-13); color: var(--fb-text-dim);">
-                <div class="fb-row fb-row--between">
-                  <span>VUMO · walkaround + brand</span>
-                  <span class="fb-status">active</span>
-                </div>
-                <div class="fb-row fb-row--between">
-                  <span>(roster open)</span>
-                  <span class="fb-label">intake: 1/qtr</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="fb-context-rail">
-            <div class="fb-row fb-row--between"><span class="fb-label">OPERATOR</span><span class="fb-text-loud">Eric Cotter</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">ROLE</span><span>CPO · brand · repair</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">BASED</span><span>Ohio · remote</span></div>
-            <div class="fb-context-rail__divider"></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">SYSTEM</span><span class="fb-text-loud">FixBroken OS v0.1</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">TENANTS</span><span>vumo.fixbroken.ai</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">UPTIME</span><span class="fb-glow--matrix" style="color: var(--fb-matrix);">100%</span></div>
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         CTA — command to enter the room
-         ==================================================================== -->
-    <section class="fb-section fb-section--loose">
-      <div class="fb-container fb-container--narrow">
-        <div class="fb-panel fb-panel--pink fb-panel--lifted" style="text-align:center;">
-          <div class="fb-stack" style="align-items:center; gap: var(--fb-s-5);">
-            <span class="fb-kicker fb-kicker--pink">Run · Contact</span>
-            <h2 class="fb-glow--pink">Something broken?</h2>
-            <p class="fb-lede" style="max-width: 52ch;">
-              One email. Tell me the system, the pattern, and what you've tried. If it's the right shape of problem, we'll get on a call.
-            </p>
-            <div class="fb-row fb-row--wrap" style="justify-content:center; gap: var(--fb-s-3);">
-              <a class="fb-cta fb-cta--pink-solid" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai%20·%20something%20broke">
-                Send the signal
-              </a>
-              <a class="fb-cta fb-cta--ghost" href="/design/">
-                Read the system
-              </a>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
 
   </main>
 
-  <!-- ======================================================================
-       FOOTER
-       ====================================================================== -->
   <footer class="fb-footer">
     <div class="fb-footer__row">
-      <span>◢ fixbroken.ai</span>
-      <span>© 2026 Eric Cotter · all signals reserved</span>
+      <span>fixbroken.ai · Eric Cotter</span>
       <span class="fb-status">system online</span>
     </div>
   </footer>
 
 </div>
+
+<script>
+  /* ==========================================================================
+     Live status rotation.
+     - ~3.2s per state
+     - Fades out, swaps content, fades in
+     - Respects prefers-reduced-motion (no rotation, first state only)
+     ========================================================================== */
+  (function(){
+    var states = [
+      { glyph: "⟡", verb: "Untangling interface debt…",         meta: "9s · 4 trust gaps mapped" },
+      { glyph: "◇", verb: "Humanizing the workflow…",           meta: "11s · 3 rough edges removed" },
+      { glyph: "⌁", verb: "Translating model output…",          meta: "8s · 2 product decisions clarified" },
+      { glyph: "⬡", verb: "Hardening trust paths…",             meta: "14s · 5 failure states surfaced" },
+      { glyph: "∴", verb: "Reducing user confusion…",           meta: "7s · 1 clearer path shipped" },
+      { glyph: "✦", verb: "Making it shippable…",               meta: "12s · 6 friction points cleared" },
+      { glyph: "⟡", verb: "De-risking the interface…",          meta: "10s · 3 risk flags surfaced" },
+      { glyph: "◇", verb: "Calming the onboarding…",            meta: "6s · 2 friction taps removed" }
+    ];
+
+    var body   = document.getElementById('hp-status-body');
+    var verbEl = document.getElementById('hp-verb');
+    var metaEl = document.getElementById('hp-meta');
+    var glyEl  = document.getElementById('hp-glyph');
+
+    var i = 1; // start on 2nd state since state 0 is rendered in markup
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reduced) return; // leave the first state alone
+
+    function swap(){
+      body.style.opacity = '0.3';
+      setTimeout(function(){
+        var s = states[i % states.length];
+        glyEl.textContent  = s.glyph;
+        verbEl.textContent = s.verb;
+        metaEl.textContent = s.meta;
+        body.style.opacity = '1';
+        i++;
+      }, 220);
+    }
+
+    setInterval(swap, 3200);
+  })();
+</script>
 
 </body>
 </html>
