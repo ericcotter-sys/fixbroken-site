@@ -207,7 +207,40 @@
     letter-spacing: var(--fb-tracking-extra);
     text-transform: uppercase;
     cursor: pointer;
-    transition: all var(--fb-t-fast);
+    transition: color 180ms ease,
+                border-color 180ms ease,
+                background 180ms ease,
+                box-shadow 220ms ease,
+                transform 280ms cubic-bezier(.25,.9,.3,1.4);
+  }
+  .hp-toggle__dot {
+    transition: background 180ms ease, box-shadow 180ms ease, transform 220ms cubic-bezier(.25,.9,.3,1.4);
+  }
+
+  /* Happy on hover — pink blush, small bounce, tilt, dot pops.
+     Desktop only (touch devices shouldn't trigger from stray taps). */
+  @media (hover: hover) {
+    .hp-toggle:hover {
+      color: var(--fb-pink);
+      border-color: color-mix(in srgb, var(--fb-pink) 55%, var(--fb-hairline));
+      background: var(--fb-pink-wash);
+      box-shadow: 0 0 20px var(--fb-pink-glow);
+      transform: translateY(-1px) scale(1.05) rotate(-1.2deg);
+    }
+    .hp-toggle:hover .hp-toggle__dot {
+      background: var(--fb-pink);
+      box-shadow: 0 0 12px var(--fb-pink-glow);
+      transform: scale(1.35);
+    }
+    /* Tiny wiggle on the label arrow ("off" → "on") to feel alive */
+    .hp-toggle:hover .hp-toggle__label {
+      animation: hp-toggle-wiggle 0.5s ease-in-out;
+    }
+  }
+  @keyframes hp-toggle-wiggle {
+    0%, 100% { transform: translateX(0); }
+    40%      { transform: translateX(2px); }
+    70%      { transform: translateX(-1px); }
   }
 
   /* Hint: a cheeky little nudge that fades in after a random delay,
@@ -807,6 +840,71 @@
 
       </div>
 
+      <!-- Operations — what I actually do -->
+      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
+        <div class="fb-stack fb-stack--tight">
+          <span class="fb-kicker">Output · Operations</span>
+          <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
+          <p class="fb-text-dim" style="max-width: 58ch;">
+            I don't deliver decks. I work in the actual product, brand, and system until it behaves.
+          </p>
+        </div>
+
+        <div class="fb-grid">
+          <article class="fb-signal-card">
+            <span class="fb-signal-card__label">Op · 01 · Product</span>
+            <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
+            <p class="fb-signal-card__body">AI-native UX. Confidence signals, human checkpoints, recovery paths. Make the product feel like a tool, not a demo.</p>
+            <span class="fb-signal-card__cta">Trace the pattern</span>
+          </article>
+          <article class="fb-signal-card">
+            <span class="fb-signal-card__label">Op · 02 · Brand</span>
+            <h4 class="fb-signal-card__title">Earn the room.</h4>
+            <p class="fb-signal-card__body">Positioning, language, visual system. Replace generic AI gloss with voice that reads credible to operators, customers, and investors.</p>
+            <span class="fb-signal-card__cta">Build the signal</span>
+          </article>
+          <article class="fb-signal-card">
+            <span class="fb-signal-card__label">Op · 03 · System</span>
+            <h4 class="fb-signal-card__title">Make it shippable.</h4>
+            <p class="fb-signal-card__body">Pilot structure, commercialization, dealer / operator / customer interface. Translate technical capability into sellable workflow.</p>
+            <span class="fb-signal-card__cta">Open the room</span>
+          </article>
+        </div>
+      </div>
+
+      <!-- Active engagements + context rail -->
+      <div class="fb-grid fb-grid--2" style="margin-bottom: var(--fb-s-10);">
+        <div class="fb-panel fb-panel--signal">
+          <span class="fb-kicker">Signal · Current engagements</span>
+          <h4 style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-24);">What's running.</h4>
+          <div class="fb-divider fb-divider--signal"></div>
+          <div class="fb-stack fb-stack--tight fb-mono" style="font-size: var(--fb-fs-13); color: var(--fb-text-dim);">
+            <div class="fb-row fb-row--between">
+              <span>VUMO · walkaround + brand</span>
+              <span class="fb-status">active</span>
+            </div>
+            <div class="fb-row fb-row--between">
+              <span>(roster open)</span>
+              <span class="fb-label">intake: 1/qtr</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="fb-context-rail">
+          <div class="fb-row fb-row--between"><span class="fb-label">OPERATOR</span><span class="fb-text-loud">Eric Cotter</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">ROLE</span><span>CPO · brand · repair</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">BASED</span><span>San Jose · Carmel Valley · CA</span></div>
+          <div class="fb-context-rail__divider"></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">HOST</span><span>AWS Lightsail</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">REGION</span><span>us-east-2a · Ohio</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">NETWORK</span><span>dual-stack · IPv4 + IPv6</span></div>
+          <div class="fb-context-rail__divider"></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">SYSTEM</span><span class="fb-text-loud">FixBroken OS v0.1</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">TENANTS</span><span>vumo.fixbroken.ai</span></div>
+          <div class="fb-row fb-row--between"><span class="fb-label">UPTIME</span><span class="fb-glow--matrix" style="color: var(--fb-matrix);">100%</span></div>
+        </div>
+      </div>
+
       <!-- Tokenz Usage Arena — TRON light cycles racing across time windows -->
       <div class="hp-arena" id="hp-arena" style="margin-bottom: var(--fb-s-10);">
         <div class="hp-arena__head">
@@ -998,71 +1096,6 @@
             <div class="fb-row fb-row--between"><span style="color: var(--fb-amber); font-family: var(--fb-font-mono); font-size: 11px;">[ ]</span><span>on-call runbook</span></div>
           </div>
 
-        </div>
-      </div>
-
-      <!-- Operations (the "flex" part — full services) -->
-      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
-        <div class="fb-stack fb-stack--tight">
-          <span class="fb-kicker">Output · Operations</span>
-          <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
-          <p class="fb-text-dim" style="max-width: 58ch;">
-            I don't deliver decks. I work in the actual product, brand, and system until it behaves.
-          </p>
-        </div>
-
-        <div class="fb-grid">
-          <article class="fb-signal-card">
-            <span class="fb-signal-card__label">Op · 01 · Product</span>
-            <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
-            <p class="fb-signal-card__body">AI-native UX. Confidence signals, human checkpoints, recovery paths. Make the product feel like a tool, not a demo.</p>
-            <span class="fb-signal-card__cta">Trace the pattern</span>
-          </article>
-          <article class="fb-signal-card">
-            <span class="fb-signal-card__label">Op · 02 · Brand</span>
-            <h4 class="fb-signal-card__title">Earn the room.</h4>
-            <p class="fb-signal-card__body">Positioning, language, visual system. Replace generic AI gloss with voice that reads credible to operators, customers, and investors.</p>
-            <span class="fb-signal-card__cta">Build the signal</span>
-          </article>
-          <article class="fb-signal-card">
-            <span class="fb-signal-card__label">Op · 03 · System</span>
-            <h4 class="fb-signal-card__title">Make it shippable.</h4>
-            <p class="fb-signal-card__body">Pilot structure, commercialization, dealer / operator / customer interface. Translate technical capability into sellable workflow.</p>
-            <span class="fb-signal-card__cta">Open the room</span>
-          </article>
-        </div>
-      </div>
-
-      <!-- Active engagements + context rail -->
-      <div class="fb-grid fb-grid--2">
-        <div class="fb-panel fb-panel--signal">
-          <span class="fb-kicker">Signal · Current engagements</span>
-          <h4 style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-24);">What's running.</h4>
-          <div class="fb-divider fb-divider--signal"></div>
-          <div class="fb-stack fb-stack--tight fb-mono" style="font-size: var(--fb-fs-13); color: var(--fb-text-dim);">
-            <div class="fb-row fb-row--between">
-              <span>VUMO · walkaround + brand</span>
-              <span class="fb-status">active</span>
-            </div>
-            <div class="fb-row fb-row--between">
-              <span>(roster open)</span>
-              <span class="fb-label">intake: 1/qtr</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="fb-context-rail">
-          <div class="fb-row fb-row--between"><span class="fb-label">OPERATOR</span><span class="fb-text-loud">Eric Cotter</span></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">ROLE</span><span>CPO · brand · repair</span></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">BASED</span><span>San Jose · Carmel Valley · CA</span></div>
-          <div class="fb-context-rail__divider"></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">HOST</span><span>AWS Lightsail</span></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">REGION</span><span>us-east-2a · Ohio</span></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">NETWORK</span><span>dual-stack · IPv4 + IPv6</span></div>
-          <div class="fb-context-rail__divider"></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">SYSTEM</span><span class="fb-text-loud">FixBroken OS v0.1</span></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">TENANTS</span><span>vumo.fixbroken.ai</span></div>
-          <div class="fb-row fb-row--between"><span class="fb-label">UPTIME</span><span class="fb-glow--matrix" style="color: var(--fb-matrix);">100%</span></div>
         </div>
       </div>
 
