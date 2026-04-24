@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>fixbroken.ai · consulting · product · brand</title>
-<meta name="description" content="Ship clearer, more human AI products. I work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.">
+<meta name="description" content="Ship clearer, more human AI products. We work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.">
 <meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
@@ -697,7 +697,7 @@
         <h1 class="hp-h1 fb-rise">Fix broken <em>AI.</em><span class="fb-cursor fb-cursor--pink" aria-hidden="true"></span></h1>
 
         <p class="hp-body fb-rise fb-rise--d1">
-          Ship clearer, more human AI products. I work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.
+          Ship clearer, more human AI products. We work with teams to make complex AI feel simple, useful, and trustworthy to the people who have to actually use it.
         </p>
 
         <div class="fb-rise fb-rise--d2">
@@ -926,7 +926,7 @@
             Ref: <strong class="fb-glow--pink" style="color: var(--fb-pink);" id="hp-cf-ref">—</strong>
           </div>
           <div style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14); max-width: 52ch;">
-            I read every one. If it's the right shape of problem, you'll hear back within 48h.
+            We read every one. If it's the right shape of problem, you'll hear back within 48h.
           </div>
           <div style="margin-top: var(--fb-s-5);">
             <button type="button" class="fb-cta fb-cta--ghost" id="hp-cf-close2">Close</button>
@@ -1009,7 +1009,7 @@
           <span class="fb-kicker">Output · Operations</span>
           <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
           <p class="fb-text-dim" style="max-width: 58ch;">
-            I don't deliver decks. I work in the actual product, brand, and system until it behaves.
+            We don't deliver decks. We work in the actual product, brand, and system until it behaves.
           </p>
         </div>
 
@@ -2135,13 +2135,29 @@
       }
     }
 
-    // Intercept ANY element with data-open-modal="contact"
+    // Intercept ANY element with data-open-modal="contact".
+    // Use capture phase so we beat any other click handler on the element
+    // (including iOS Safari's native mailto: navigation race).
     document.addEventListener('click', function(ev){
       var trigger = ev.target.closest && ev.target.closest('[data-open-modal="contact"]');
       if (!trigger) return;
       ev.preventDefault();
+      ev.stopPropagation();
       openModal();
-    });
+    }, true);
+
+    // Belt-and-suspenders: bind each [data-open-modal="contact"] element
+    // directly as well, in case the capture-phase listener is bypassed
+    // (some mobile browsers handle mailto: before delegated handlers fire).
+    Array.prototype.forEach.call(
+      document.querySelectorAll('[data-open-modal="contact"]'),
+      function(el){
+        el.addEventListener('click', function(ev){
+          ev.preventDefault();
+          openModal();
+        });
+      }
+    );
 
     closeBtn.addEventListener('click', closeModal);
     if (closeBtn2) closeBtn2.addEventListener('click', closeModal);
@@ -2209,7 +2225,7 @@
           var msg = r.status === 429 ? 'easy there. try again in 30s.' :
                     err === 'bad_email'   ? 'that email doesn\'t look right' :
                     err === 'bad_message' ? 'need a message to work with' :
-                    'something broke on my end. try again or email directly.';
+                    'something broke on our end. try again or email directly.';
           setStatus(msg, 'var(--fb-amber)');
           submitBtn.disabled = false;
           submitBtn.style.opacity = '1';
