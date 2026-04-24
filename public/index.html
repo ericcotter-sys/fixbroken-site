@@ -426,19 +426,67 @@
   .hp-wx-dot--fog    { background: var(--fb-text-mute); box-shadow: none; }
 
   /* ==========================================================================
-     CONTACT section — always visible, between hero and verbose.
+     CONTACT MODAL — hidden by default. Opens when hero CTA is clicked.
+     ESC + backdrop click + close button all dismiss it.
      ========================================================================== */
-  .hp-contact {
-    padding-block: var(--fb-s-16);
-    scroll-margin-top: 80px;
+  .hp-modal {
+    position: fixed;
+    inset: 0;
+    z-index: var(--fb-z-modal);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: var(--fb-s-4);
+    background: rgba(5, 7, 10, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 220ms ease;
   }
-  .hp-contact__panel {
-    max-width: 760px;
-    margin-inline: auto;
+  .hp-modal--open { display: flex; opacity: 1; }
+  .hp-modal__panel {
+    width: 100%;
+    max-width: 560px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+    position: relative;
+    background: var(--fb-panel);
+    border: 1px solid color-mix(in srgb, var(--fb-pink) 35%, var(--fb-hairline));
+    border-radius: var(--fb-r-4);
+    box-shadow: var(--fb-lift-strong), 0 0 64px var(--fb-pink-glow);
     padding: var(--fb-s-8);
+    transform: translateY(12px) scale(0.97);
+    transition: transform 300ms cubic-bezier(.25,.9,.3,1.2);
   }
-  /* Custom select arrow to match the terminal aesthetic */
-  .hp-contact select.fb-input {
+  .hp-modal--open .hp-modal__panel {
+    transform: translateY(0) scale(1);
+  }
+  .hp-modal__close {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    border: 1px solid var(--fb-hairline);
+    background: transparent;
+    color: var(--fb-text-mute);
+    cursor: pointer;
+    font-family: var(--fb-font-mono);
+    font-size: 15px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: color var(--fb-t-fast),
+                border-color var(--fb-t-fast),
+                transform 240ms cubic-bezier(.25,.9,.3,1.4);
+  }
+  .hp-modal__close:hover {
+    color: var(--fb-text-loud);
+    border-color: var(--fb-hairline-hot);
+    transform: rotate(90deg);
+  }
+  /* Custom select arrow */
+  .hp-modal select.fb-input {
     appearance: none;
     -webkit-appearance: none;
     background-image: linear-gradient(45deg, transparent 50%, var(--fb-text-dim) 50%),
@@ -448,13 +496,18 @@
     background-repeat: no-repeat;
     padding-right: 32px;
   }
-  .hp-contact select.fb-input:focus {
+  .hp-modal select.fb-input:focus {
     background-image: linear-gradient(45deg, transparent 50%, var(--fb-signal) 50%),
                       linear-gradient(135deg, var(--fb-signal) 50%, transparent 50%);
   }
   @media (max-width: 640px) {
-    .hp-contact { padding-block: var(--fb-s-10); }
-    .hp-contact__panel { padding: var(--fb-s-5); }
+    .hp-modal { padding: var(--fb-s-3); }
+    .hp-modal__panel { padding: var(--fb-s-5); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hp-modal, .hp-modal__panel { transition: none; }
+    .hp-modal__panel { transform: none; }
+    .hp-modal__close:hover { transform: none; }
   }
 
   /* ==========================================================================
@@ -623,7 +676,7 @@
       <div class="fb-nav__links">
         <a class="fb-nav__link fb-nav__link--active" href="/">Home</a>
         <a class="fb-nav__link" href="/design/">Design</a>
-        <a class="fb-nav__link" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai">Signal</a>
+        <a class="fb-nav__link" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai" data-open-modal="contact">Signal</a>
       </div>
     </div>
   </nav>
@@ -645,7 +698,8 @@
         </p>
 
         <div class="fb-rise fb-rise--d2">
-          <a class="fb-cta fb-cta--pink-solid" href="#contact" id="hp-hero-cta">
+          <!-- href is a JS-off fallback; JS intercepts and opens the modal -->
+          <a class="fb-cta fb-cta--pink-solid" href="mailto:eric.cotter@gmail.com?subject=fixbroken.ai" id="hp-hero-cta" data-open-modal="contact">
             Start a conversation
           </a>
         </div>
@@ -808,15 +862,16 @@
     </section>
 
     <!-- ====================================================================
-         CONTACT — minimal info collector. Replaces the old mailto.
-         POSTs to /contact on the server; logs to contact.log; returns ref.
+         CONTACT MODAL — hidden by default. Opens when the hero CTA fires.
          ==================================================================== -->
-    <section class="hp-contact fb-container" id="contact">
-      <div class="fb-panel fb-panel--pink hp-contact__panel">
+    <div class="hp-modal" id="hp-contact-modal" role="dialog" aria-modal="true" aria-labelledby="hp-modal-title" aria-hidden="true">
+      <div class="hp-modal__panel">
+
+        <button type="button" class="hp-modal__close" id="hp-modal-close" aria-label="Close">✕</button>
 
         <div class="fb-stack fb-stack--tight" style="margin-bottom: var(--fb-s-6);">
           <span class="fb-kicker fb-kicker--pink">Signal · Contact</span>
-          <h2 style="font-size: var(--fb-fs-32);">Start a conversation.</h2>
+          <h2 id="hp-modal-title" style="font-size: var(--fb-fs-32);">Start a conversation.</h2>
           <p class="fb-text-dim" style="max-width: 58ch;">
             Tell me what's broken. One email back within 48h if it's the right shape of problem.
           </p>
@@ -871,10 +926,13 @@
           <div style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14); max-width: 52ch;">
             I read every one. If it's the right shape of problem, you'll hear back within 48h.
           </div>
+          <div style="margin-top: var(--fb-s-5);">
+            <button type="button" class="fb-cta fb-cta--ghost" id="hp-cf-close2">Close</button>
+          </div>
         </div>
 
       </div>
-    </section>
+    </div>
 
     <!-- ====================================================================
          VERBOSE — hidden by default. The "flex" layer.
@@ -1427,8 +1485,9 @@
       if (hintLoopActive || hintDismissed) return;
       if (body.classList.contains('hp-verbose-on')) return;
       hintLoopActive = true;
-      // First appearance: 1.5-4s after load, then sporadic forever
-      hintCycleTimer = setTimeout(showHintOnce, 1500 + Math.floor(Math.random() * 2500));
+      // First appearance: 400-1400ms after load (snappy — catches bouncers),
+      // then sporadic 2.5-9s gaps forever
+      hintCycleTimer = setTimeout(showHintOnce, 400 + Math.floor(Math.random() * 1000));
     }
 
     function stopHintLoop() {
@@ -1653,15 +1712,67 @@
   })();
 
   /* ==========================================================================
-     Contact form — POSTs JSON to /contact, shows terminal-style success state
+     Contact modal + form
+     - Hidden by default. Opens when any [data-open-modal="contact"] is clicked.
+     - ESC / backdrop click / close button all dismiss.
+     - Form POSTs JSON to /contact, swaps to a terminal-style success state.
      ========================================================================== */
   (function(){
+    var modal = document.getElementById('hp-contact-modal');
     var form = document.getElementById('hp-contact-form');
-    if (!form) return;
+    if (!modal || !form) return;
+
+    var closeBtn  = document.getElementById('hp-modal-close');
+    var closeBtn2 = document.getElementById('hp-cf-close2');
     var submitBtn = document.getElementById('hp-cf-submit');
     var statusEl  = document.getElementById('hp-cf-status');
     var successEl = document.getElementById('hp-cf-success');
     var refEl     = document.getElementById('hp-cf-ref');
+
+    var lastFocusedBeforeOpen = null;
+
+    function openModal() {
+      lastFocusedBeforeOpen = document.activeElement;
+      modal.classList.add('hp-modal--open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.documentElement.style.overflow = 'hidden';
+      // Focus the first field shortly after the transition starts
+      setTimeout(function(){
+        var first = document.getElementById('hp-cf-name');
+        if (first) first.focus();
+      }, 80);
+    }
+    function closeModal() {
+      modal.classList.remove('hp-modal--open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.documentElement.style.overflow = '';
+      if (lastFocusedBeforeOpen && lastFocusedBeforeOpen.focus) {
+        lastFocusedBeforeOpen.focus();
+      }
+    }
+
+    // Intercept ANY element with data-open-modal="contact"
+    document.addEventListener('click', function(ev){
+      var trigger = ev.target.closest && ev.target.closest('[data-open-modal="contact"]');
+      if (!trigger) return;
+      ev.preventDefault();
+      openModal();
+    });
+
+    closeBtn.addEventListener('click', closeModal);
+    if (closeBtn2) closeBtn2.addEventListener('click', closeModal);
+
+    // Click the backdrop (not the panel) to close
+    modal.addEventListener('click', function(ev){
+      if (ev.target === modal) closeModal();
+    });
+
+    // ESC to close
+    document.addEventListener('keydown', function(ev){
+      if (ev.key === 'Escape' && modal.classList.contains('hp-modal--open')) {
+        closeModal();
+      }
+    });
 
     function setStatus(text, color) {
       statusEl.textContent = text || '';
