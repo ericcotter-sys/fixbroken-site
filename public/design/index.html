@@ -47,6 +47,7 @@
     color: var(--fb-text-dim);
     overflow-x: auto;
     white-space: pre;
+    min-width: 0;
   }
   .sg-toc {
     position: sticky; top: calc(var(--fb-nav-h) + var(--fb-s-4));
@@ -67,11 +68,11 @@
   .sg-toc a:hover { color: var(--fb-signal); border-color: var(--fb-signal); }
   .sg-layout {
     display: grid;
-    grid-template-columns: 180px 1fr;
+    grid-template-columns: 180px minmax(0, 1fr);
     gap: var(--fb-s-8);
   }
   @media (max-width: 960px) {
-    .sg-layout { grid-template-columns: 1fr; }
+    .sg-layout { grid-template-columns: minmax(0, 1fr); }
     .sg-toc { position: static; display: flex; gap: var(--fb-s-2); flex-wrap: wrap; }
     .sg-toc a { border-left: 0; border: 1px solid var(--fb-hairline); padding: 6px 10px; border-radius: 999px; }
   }

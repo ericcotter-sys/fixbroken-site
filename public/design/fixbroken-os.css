@@ -303,10 +303,10 @@ hr {
 .fb-grid {
   display: grid;
   gap: var(--fb-s-4);
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
 }
 
-.fb-grid--2 { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+.fb-grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr)); }
 .fb-grid--tight { gap: var(--fb-s-2); }
 
 /* ==========================================================================
@@ -1089,7 +1089,7 @@ hr {
   /* Grids collapse to single column */
   .fb-grid,
   .fb-grid--2 {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--fb-s-3);
   }
 
