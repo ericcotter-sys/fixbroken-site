@@ -63,7 +63,110 @@ function mailFrom() {
   return `"${name}" <${email}>`;
 }
 
-function ownerEmailBody(entry) {
+// ---------------------------------------------------------------------------
+// Email templates — HTML + plaintext.
+// Email HTML must use inline styles (Gmail strips <style> blocks); tables for
+// layout (Outlook compat); hex colors (CSS vars don't work in mail clients);
+// system-font fallbacks (Google Fonts @import is unreliable in email).
+// Tokens mirror FixBroken OS.
+// ---------------------------------------------------------------------------
+function esc(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+const EMAIL_FONT_MONO = "ui-monospace,SFMono-Regular,Menlo,Consolas,monospace";
+const EMAIL_FONT_SANS = "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+
+// Wraps a body block in the FixBroken OS email chrome.
+function emailFrame(preheader, innerHtml) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark light">
+<meta name="supported-color-schemes" content="dark light">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fixbroken.ai</title>
+</head>
+<body style="margin:0;padding:0;background:#05070a;color:#e4eaf2;font-family:${EMAIL_FONT_SANS};">
+  <span style="display:none !important;visibility:hidden;mso-hide:all;font-size:1px;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">${esc(preheader)}</span>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#05070a;padding:32px 12px;">
+    <tr><td align="center">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;background:#0f151c;border:1px solid #2a3442;border-radius:10px;overflow:hidden;box-shadow:0 0 48px rgba(255,62,201,0.06);">
+        ${innerHtml}
+      </table>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;margin-top:16px;">
+        <tr><td style="font-family:${EMAIL_FONT_MONO};font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:#556070;text-align:center;">
+          <span style="color:#ff3ec9;">◢</span> fixbroken.ai · consulting · product · brand
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+/* ---- SUBMITTER auto-reply ------------------------------------------------ */
+function submitterEmailText(entry) {
+  return [
+    'Signal received.',
+    '',
+    `Ref: ${entry.ref}`,
+    '',
+    "I read every one. If it's the right shape of problem, you'll hear back within 48h.",
+    '',
+    '— Eric',
+    'fixbroken.ai'
+  ].join('\n');
+}
+function submitterEmailHtml(entry) {
+  const inner = `
+    <tr><td style="padding:28px 28px 0 28px;">
+      <span style="font-family:${EMAIL_FONT_MONO};font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#8a97a8;">system · fixbroken os</span>
+    </td></tr>
+
+    <tr><td style="padding:12px 28px 4px 28px;">
+      <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#00ff88;vertical-align:2px;margin-right:8px;"></span>
+      <span style="font-family:${EMAIL_FONT_MONO};font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:#00ff88;">signal received</span>
+    </td></tr>
+
+    <tr><td style="padding:16px 28px 20px 28px;">
+      <h1 style="margin:0;font-family:${EMAIL_FONT_SANS};font-size:30px;font-weight:600;color:#ffffff;line-height:1.1;letter-spacing:-0.02em;">
+        Got your <span style="color:#ff3ec9;">signal.</span>
+      </h1>
+    </td></tr>
+
+    <tr><td style="padding:0 28px 20px 28px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0a0e14;border:1px solid #2a3442;border-radius:6px;">
+        <tr><td style="padding:14px 18px;">
+          <div style="font-family:${EMAIL_FONT_MONO};font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#8a97a8;">ref</div>
+          <div style="font-family:${EMAIL_FONT_MONO};font-size:20px;color:#ff3ec9;margin-top:4px;letter-spacing:0.02em;">${esc(entry.ref)}</div>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <tr><td style="padding:0 28px 24px 28px;">
+      <p style="margin:0;font-family:${EMAIL_FONT_SANS};font-size:16px;line-height:1.6;color:#e4eaf2;">
+        I read every one. If it's the right shape of problem, you'll hear back within 48h.
+      </p>
+    </td></tr>
+
+    <tr><td style="padding:0 28px;"><div style="height:1px;background:#2a3442;"></div></td></tr>
+
+    <tr><td style="padding:18px 28px 28px 28px;">
+      <p style="margin:0;font-family:${EMAIL_FONT_SANS};font-size:14px;color:#8a97a8;line-height:1.6;">
+        — Eric<br>
+        <a href="https://fixbroken.ai" style="color:#00d4ff;text-decoration:none;">fixbroken.ai</a>
+      </p>
+    </td></tr>
+  `;
+  return emailFrame(`Signal received · Ref ${entry.ref}`, inner);
+}
+
+/* ---- OWNER notification -------------------------------------------------- */
+function ownerEmailText(entry) {
   return [
     'NEW SIGNAL',
     '',
@@ -85,18 +188,49 @@ function ownerEmailBody(entry) {
     'Reply-To is set — hit reply to respond to the submitter.'
   ].join('\n');
 }
+function ownerEmailHtml(entry) {
+  const row = (k, v, kcolor, vcolor) => `
+    <tr>
+      <td style="padding:6px 0;width:90px;vertical-align:top;font-family:${EMAIL_FONT_MONO};font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:${kcolor || '#556070'};">${esc(k)}</td>
+      <td style="padding:6px 0;vertical-align:top;font-family:${EMAIL_FONT_MONO};font-size:13px;color:${vcolor || '#e4eaf2'};word-break:break-word;">${v}</td>
+    </tr>
+  `;
+  const inner = `
+    <tr><td style="padding:24px 28px 16px 28px;border-bottom:1px solid #2a3442;">
+      <span style="font-family:${EMAIL_FONT_MONO};font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#ff3ec9;">▸ new signal · <span style="color:#ffffff;">${esc(entry.ref)}</span></span>
+    </td></tr>
 
-function submitterEmailBody(entry) {
-  return [
-    'Signal received.',
-    '',
-    `Ref: ${entry.ref}`,
-    '',
-    "I read every one. If it's the right shape of problem, you'll hear back within 48h.",
-    '',
-    '— Eric',
-    'fixbroken.ai'
-  ].join('\n');
+    <tr><td style="padding:18px 28px 8px 28px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+        ${row('name',    esc(entry.name || '—'), '#556070', '#ffffff')}
+        ${row('email',   `<a href="mailto:${esc(entry.email)}" style="color:#00d4ff;text-decoration:none;">${esc(entry.email)}</a>`)}
+        ${row('company', esc(entry.company || '—'))}
+        ${row('type',    esc(entry.type || '—'))}
+        ${row('when',    esc(entry.ts))}
+      </table>
+    </td></tr>
+
+    <tr><td style="padding:12px 28px 20px 28px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0a0e14;border:1px solid #2a3442;border-radius:6px;">
+        <tr><td style="padding:14px 18px 6px 18px;">
+          <div style="font-family:${EMAIL_FONT_MONO};font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#8a97a8;">message</div>
+        </td></tr>
+        <tr><td style="padding:4px 18px 16px 18px;">
+          <p style="margin:0;font-family:${EMAIL_FONT_SANS};font-size:15px;line-height:1.6;color:#e4eaf2;white-space:pre-wrap;">${esc(entry.message)}</p>
+        </td></tr>
+      </table>
+    </td></tr>
+
+    <tr><td style="padding:14px 28px;background:#0a0e14;border-top:1px solid #2a3442;">
+      <div style="font-family:${EMAIL_FONT_MONO};font-size:11px;color:#556070;line-height:1.7;">
+        ip: ${esc(entry.ip || '—')}<br>
+        ua: ${esc((entry.ua || '').slice(0, 140))}<br>
+        <span style="color:#00d4ff;">reply-to is set — hit reply to respond directly.</span>
+      </div>
+    </td></tr>
+  `;
+  const preheader = `${entry.name || entry.email} · ${(entry.type || 'signal')} · ${entry.message.slice(0, 100)}`;
+  return emailFrame(preheader, inner);
 }
 
 async function sendContactEmails(entry) {
@@ -109,7 +243,8 @@ async function sendContactEmails(entry) {
       to: process.env.MAIL_TO || process.env.SMTP_USER,
       replyTo: entry.email,
       subject: `[fixbroken.ai] ${entry.type || 'contact'} · ${entry.name || entry.email} · ${entry.ref}`,
-      text: ownerEmailBody(entry)
+      text: ownerEmailText(entry),
+      html: ownerEmailHtml(entry)
     });
   } catch (e) {
     console.error('owner mail err:', e.message);
@@ -121,7 +256,8 @@ async function sendContactEmails(entry) {
       from: mailFrom(),
       to: entry.email,
       subject: `Signal received · ${entry.ref}`,
-      text: submitterEmailBody(entry)
+      text: submitterEmailText(entry),
+      html: submitterEmailHtml(entry)
     });
   } catch (e) {
     console.error('auto-reply err:', e.message);
