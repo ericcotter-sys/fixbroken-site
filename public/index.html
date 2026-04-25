@@ -1406,57 +1406,21 @@
             </div>
             <div class="fb-row fb-row--between"><span class="fb-label">host</span><span class="fb-text-loud">AWS Lightsail</span></div>
             <div class="fb-row fb-row--between"><span class="fb-label">region</span><span>us-east-2a · Ohio</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">os</span><span>Ubuntu 24.04 LTS · noble</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">tier</span><span>2 GB · 2 vCPU · 60 GB SSD</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">networking</span><span>dual-stack</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">static ipv4</span><span class="fb-text-loud">3.140.37.153</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">ipv6</span><span style="font-size: 11px;">2600:1f16:1ccd:d200::</span></div>
-          </div>
-
-          <!-- STACK -->
-          <div class="fb-context-rail">
-            <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-3);">
-              <span class="fb-label fb-label--signal">▸ stack</span>
-              <span class="fb-status"></span>
-            </div>
-            <div class="fb-row fb-row--between"><span class="fb-label">runtime</span><span class="fb-text-loud">Node 20.20</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">framework</span><span>Express 4.21</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">proxy</span><span>Nginx 1.24</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">tls</span><span>Certbot 2.9 · Let's Encrypt</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">init</span><span>systemd</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">vcs</span><span>git · ssh ed25519</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">shell</span><span>bash</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">os</span><span>Ubuntu 24.04 LTS</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">stack</span><span>Node 20 · Express · Nginx</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">tls</span><span>Let's Encrypt · auto-renew</span></div>
           </div>
 
           <!-- SERVICES -->
           <div class="fb-context-rail">
             <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-3);">
               <span class="fb-label fb-label--matrix">▸ services</span>
-              <span class="fb-label fb-label--matrix">7/7 active</span>
+              <span class="fb-label fb-label--matrix">all active</span>
             </div>
-            <div class="fb-row fb-row--between"><span class="fb-label">fixbroken</span><span class="fb-status"><span>:3000</span></span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">staging</span><span class="fb-status"><span>:3002</span></span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">webhook</span><span class="fb-status"><span>:3001</span></span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">vumo</span><span class="fb-status"><span>:3010</span></span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">nginx</span><span class="fb-status"><span>:80 :443</span></span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">fail2ban</span><span class="fb-status"><span>sshd</span></span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">ufw</span><span class="fb-status"><span>22 80 443</span></span></div>
-          </div>
-
-          <!-- SECURITY -->
-          <div class="fb-context-rail">
-            <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-3);">
-              <span class="fb-label" style="color: var(--fb-amber);">▸ security</span>
-              <span class="fb-status"></span>
-            </div>
-            <div class="fb-row fb-row--between"><span class="fb-label">tls</span><span>ECDSA · 4 SANs</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">cert expires</span><span>2026-07-23</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">firewall</span><span>UFW + Lightsail</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">open ports</span><span>22 · 80 · 443</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">fail2ban jail</span><span>sshd · default</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">ssh keys</span><span>ed25519 · 2 trusted</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">snapshots</span><span>daily 00:00 UTC · 7d</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">secrets</span><span>.env · 0600</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">fixbroken</span><span class="fb-status"></span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">vumo</span><span class="fb-status"></span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">webhook</span><span class="fb-status"></span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">nginx</span><span class="fb-status"></span></div>
           </div>
 
           <!-- DEPLOY -->
@@ -1466,27 +1430,9 @@
               <span class="fb-status"></span>
             </div>
             <div class="fb-row fb-row--between"><span class="fb-label">trigger</span><span>GitHub webhook</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">endpoint</span><span>/hooks/*</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">verification</span><span>HMAC sha-256</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">flow</span><span>pull · ci · restart</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">latency</span><span>~10s</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">logs</span><span>/var/log/*-deploy.log</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">staging</span><span>stage.fixbroken.ai · basic-auth</span></div>
-          </div>
-
-          <!-- DNS / DOMAINS -->
-          <div class="fb-context-rail">
-            <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-3);">
-              <span class="fb-label fb-label--signal">▸ dns</span>
-              <span class="fb-status"></span>
-            </div>
-            <div class="fb-row fb-row--between"><span class="fb-label">registrar</span><span>GoDaddy</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">apex</span><span class="fb-text-loud">fixbroken.ai</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">records</span><span>@ · www · vumo · stage · tokenz</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">ttl</span><span>3600s</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">ns</span><span>ns33.domaincontrol.com</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">mx</span><span style="color: var(--fb-amber);">pending · Workspace</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">renewal</span><span>2028-04-24</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">flow</span><span>push → pull → restart</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">latency</span><span>~10s to live</span></div>
+            <div class="fb-row fb-row--between"><span class="fb-label">staging</span><span>stage.fixbroken.ai</span></div>
           </div>
 
           <!-- DESIGN -->
@@ -1496,28 +1442,9 @@
               <span class="fb-status"></span>
             </div>
             <div class="fb-row fb-row--between"><span class="fb-label">system</span><span class="fb-text-loud">FixBroken OS v0.1</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">tokens</span><span>colors · type · spacing · motion</span></div>
             <div class="fb-row fb-row--between"><span class="fb-label">components</span><span>.fb-* (25+)</span></div>
             <div class="fb-row fb-row--between"><span class="fb-label">fonts</span><span>Inter + JetBrains Mono</span></div>
             <div class="fb-row fb-row--between"><span class="fb-label">signature</span><span style="color: var(--fb-pink); text-shadow: 0 0 8px var(--fb-pink-glow);">#ff3ec9</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">signal</span><span style="color: var(--fb-signal);">#00d4ff</span></div>
-            <div class="fb-row fb-row--between"><span class="fb-label">override scope</span><span>.vumo-scope</span></div>
-          </div>
-
-          <!-- BACKLOG -->
-          <div class="fb-context-rail">
-            <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-3);">
-              <span class="fb-label" style="color: var(--fb-coral);">▸ backlog</span>
-              <span class="fb-label">3 done · 5 open</span>
-            </div>
-            <div class="fb-row fb-row--between"><span style="color: var(--fb-matrix); font-family: var(--fb-font-mono); font-size: 11px;">[✓]</span><span style="text-decoration: line-through; color: var(--fb-text-mute);">homepage 1.0</span></div>
-            <div class="fb-row fb-row--between"><span style="color: var(--fb-matrix); font-family: var(--fb-font-mono); font-size: 11px;">[✓]</span><span style="text-decoration: line-through; color: var(--fb-text-mute);">design system v0.1</span></div>
-            <div class="fb-row fb-row--between"><span style="color: var(--fb-matrix); font-family: var(--fb-font-mono); font-size: 11px;">[✓]</span><span style="text-decoration: line-through; color: var(--fb-text-mute);">VUMO subsite</span></div>
-            <div class="fb-row fb-row--between"><span style="color: var(--fb-amber); font-family: var(--fb-font-mono); font-size: 11px;">[ ]</span><span>hello@fixbroken.ai alias</span></div>
-            <div class="fb-row fb-row--between"><span style="color: var(--fb-amber); font-family: var(--fb-font-mono); font-size: 11px;">[ ]</span><span>/contact form endpoint</span></div>
-            <div class="fb-row fb-row--between"><span style="color: var(--fb-amber); font-family: var(--fb-font-mono); font-size: 11px;">[ ]</span><span>webhook auto-deploy verify</span></div>
-            <div class="fb-row fb-row--between"><span style="color: var(--fb-amber); font-family: var(--fb-font-mono); font-size: 11px;">[ ]</span><span>tokenz nginx proxy</span></div>
-            <div class="fb-row fb-row--between"><span style="color: var(--fb-amber); font-family: var(--fb-font-mono); font-size: 11px;">[ ]</span><span>on-call runbook</span></div>
           </div>
 
         </div>
