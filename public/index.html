@@ -1282,7 +1282,7 @@
       </div>
 
       <!-- Tokenz Usage Arena — TRON light cycles racing across time windows -->
-      <div class="hp-arena" id="hp-arena" style="margin-bottom: var(--fb-s-10);">
+      <div class="hp-arena" id="hp-arena" style="margin-bottom: var(--fb-s-10);" data-anchor="tokenz">
         <div class="hp-arena__head">
           <span>tokenz · <strong>claude runtime</strong> · light cycles</span>
           <span id="hp-arena-stamp">awaiting signal…</span>
@@ -1814,6 +1814,16 @@
     try {
       if (localStorage.getItem(KEY) === '1') apply(true);
     } catch(_) {}
+
+    // Deep-link: #tokenz opens verbose and scrolls to the arena
+    if (location.hash === '#tokenz') {
+      apply(true);
+      setTimeout(function() {
+        var arena = document.getElementById('hp-arena');
+        if (arena) arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+
     /* ------ Sporadic CTA nudges (multi-anchor) -----------------------------
        A playful hint that pops next to ONE of several anchors each cycle:
          - verbose toggle  → "more under the hood"
