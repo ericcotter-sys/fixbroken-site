@@ -510,6 +510,73 @@
   }
 
   /* ==========================================================================
+     INTELLIGENCE LADDER — layered progression inside philosophy section
+     ========================================================================== */
+  .hp-ladder {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-top: var(--fb-s-4);
+  }
+  .hp-ladder__rung {
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: var(--fb-s-3);
+    padding: var(--fb-s-3) 0;
+    border-left: 2px solid var(--fb-hairline);
+    margin-left: 6px;
+    padding-left: var(--fb-s-4);
+    position: relative;
+  }
+  .hp-ladder__rung::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--fb-hairline);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hp-ladder__rung:last-child { border-left-color: transparent; }
+  .hp-ladder__rung:nth-child(1)::before { background: var(--fb-text-mute); }
+  .hp-ladder__rung:nth-child(2)::before { background: var(--fb-text-dim); }
+  .hp-ladder__rung:nth-child(3)::before { background: var(--fb-signal-dim); }
+  .hp-ladder__rung:nth-child(4)::before { background: var(--fb-signal); box-shadow: 0 0 6px var(--fb-signal-glow); }
+  .hp-ladder__rung:nth-child(5)::before { background: var(--fb-matrix-dim); box-shadow: 0 0 6px var(--fb-matrix-glow); }
+  .hp-ladder__rung:nth-child(6)::before { background: var(--fb-matrix); box-shadow: 0 0 8px var(--fb-matrix-glow); }
+  .hp-ladder__num {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-11);
+    color: var(--fb-text-ghost);
+    letter-spacing: var(--fb-tracking-wide);
+  }
+  .hp-ladder__body {}
+  .hp-ladder__label {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-13);
+    font-weight: 600;
+    color: var(--fb-text-loud);
+    text-transform: uppercase;
+    letter-spacing: var(--fb-tracking-wide);
+  }
+  .hp-ladder__desc {
+    margin-top: var(--fb-s-1);
+    font-size: var(--fb-fs-14);
+    color: var(--fb-text-dim);
+    line-height: var(--fb-lh-relaxed);
+  }
+  @media (max-width: 640px) {
+    .hp-ladder__rung {
+      grid-template-columns: 1fr;
+      padding-left: var(--fb-s-3);
+    }
+    .hp-ladder__num { display: none; }
+  }
+
+  /* ==========================================================================
      TOKENZ — Usage Arena (TRON light-cycles racing across windows)
      ========================================================================== */
   .hp-arena {
@@ -1112,7 +1179,74 @@
 
         </div>
 
-        <p class="fb-text-dim" style="margin-top: var(--fb-s-4); max-width: 52ch; font-size: var(--fb-fs-15);">
+        <div class="fb-divider" style="margin-top: var(--fb-s-6);"></div>
+
+        <div class="fb-grid fb-grid--2" style="margin-top: var(--fb-s-6);">
+
+          <div class="fb-stack fb-stack--tight">
+            <span class="fb-label fb-label--signal">07 · The intelligence ladder</span>
+            <h4 style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-24);">Good analytical technology compounds in layers.</h4>
+            <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
+              The strongest AI and analytics products do not start with recommendations. They earn their way there. Too many products jump straight to predictions before the user trusts the data, understands the insight, or sees the implication. That creates magic-show software. It may look impressive, but it does not create confidence.
+            </p>
+            <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
+              Our work helps teams build the full ladder. Clean data becomes visible insight. Insight becomes business meaning. Meaning becomes scenario thinking. Scenario thinking becomes better recommendations. Better recommendations create products people can trust, sell, and use.
+            </p>
+            <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
+              <span class="fb-label">What clients get:</span> A product that earns user trust at every layer, not just at the output.
+            </p>
+          </div>
+
+          <div>
+            <div class="hp-ladder">
+              <div class="hp-ladder__rung">
+                <span class="hp-ladder__num">01</span>
+                <div class="hp-ladder__body">
+                  <div class="hp-ladder__label">Data</div>
+                  <div class="hp-ladder__desc">Clean ingredients. Trusted inputs. Clear definitions. No mystery math hiding bad foundations.</div>
+                </div>
+              </div>
+              <div class="hp-ladder__rung">
+                <span class="hp-ladder__num">02</span>
+                <div class="hp-ladder__body">
+                  <div class="hp-ladder__label">Insight</div>
+                  <div class="hp-ladder__desc">What happened? What changed? What pattern is visible now that was hard to see before?</div>
+                </div>
+              </div>
+              <div class="hp-ladder__rung">
+                <span class="hp-ladder__num">03</span>
+                <div class="hp-ladder__body">
+                  <div class="hp-ladder__label">Implication</div>
+                  <div class="hp-ladder__desc">So what? Why does this matter to the business, the workflow, the customer, or the decision-maker?</div>
+                </div>
+              </div>
+              <div class="hp-ladder__rung">
+                <span class="hp-ladder__num">04</span>
+                <div class="hp-ladder__body">
+                  <div class="hp-ladder__label">Scenario</div>
+                  <div class="hp-ladder__desc">What could happen next? What changes if the team chooses path A, B, or C?</div>
+                </div>
+              </div>
+              <div class="hp-ladder__rung">
+                <span class="hp-ladder__num">05</span>
+                <div class="hp-ladder__body">
+                  <div class="hp-ladder__label">Recommendation</div>
+                  <div class="hp-ladder__desc">What should the user do now? What action is supported by the evidence?</div>
+                </div>
+              </div>
+              <div class="hp-ladder__rung">
+                <span class="hp-ladder__num">06</span>
+                <div class="hp-ladder__body">
+                  <div class="hp-ladder__label">Prediction</div>
+                  <div class="hp-ladder__desc">Where is this likely going? What should the team anticipate before the signal becomes obvious?</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <p class="fb-text-dim" style="margin-top: var(--fb-s-6); max-width: 52ch; font-size: var(--fb-fs-15);">
           The goal is not to make AI look impressive. The goal is to make intelligence usable.
         </p>
       </div>
