@@ -541,12 +541,46 @@
     transition: background 0.3s ease, box-shadow 0.3s ease;
   }
   .hp-ladder__rung:last-child { border-left-color: transparent; }
-  .hp-ladder__rung:nth-child(1)::before { background: var(--fb-text-mute); }
-  .hp-ladder__rung:nth-child(2)::before { background: var(--fb-text-dim); }
-  .hp-ladder__rung:nth-child(3)::before { background: var(--fb-signal-dim); }
-  .hp-ladder__rung:nth-child(4)::before { background: var(--fb-signal); box-shadow: 0 0 6px var(--fb-signal-glow); }
-  .hp-ladder__rung:nth-child(5)::before { background: var(--fb-matrix-dim); box-shadow: 0 0 6px var(--fb-matrix-glow); }
-  .hp-ladder__rung:nth-child(6)::before { background: var(--fb-matrix); box-shadow: 0 0 8px var(--fb-matrix-glow); }
+  .hp-ladder__rung:nth-child(1)::before { background: var(--fb-text-mute); animation: hp-ladder-pulse-1 6s ease infinite; }
+  .hp-ladder__rung:nth-child(2)::before { background: var(--fb-text-dim); animation: hp-ladder-pulse-2 6s ease infinite; }
+  .hp-ladder__rung:nth-child(3)::before { background: var(--fb-signal-dim); animation: hp-ladder-pulse-3 6s ease infinite; }
+  .hp-ladder__rung:nth-child(4)::before { background: var(--fb-signal); box-shadow: 0 0 6px var(--fb-signal-glow); animation: hp-ladder-pulse-4 6s ease infinite; }
+  .hp-ladder__rung:nth-child(5)::before { background: var(--fb-matrix-dim); box-shadow: 0 0 6px var(--fb-matrix-glow); animation: hp-ladder-pulse-5 6s ease infinite; }
+  .hp-ladder__rung:nth-child(6)::before { background: var(--fb-matrix); box-shadow: 0 0 8px var(--fb-matrix-glow); animation: hp-ladder-pulse-6 6s ease infinite; }
+
+  @keyframes hp-ladder-pulse-1 {
+    0%, 8%   { transform: translateY(-50%) scale(1); box-shadow: none; }
+    12%      { transform: translateY(-50%) scale(1.8); background: var(--fb-signal); box-shadow: 0 0 12px var(--fb-signal-glow); }
+    20%, 100%{ transform: translateY(-50%) scale(1); box-shadow: none; }
+  }
+  @keyframes hp-ladder-pulse-2 {
+    0%, 14%  { transform: translateY(-50%) scale(1); box-shadow: none; }
+    18%      { transform: translateY(-50%) scale(1.8); background: var(--fb-signal); box-shadow: 0 0 12px var(--fb-signal-glow); }
+    26%, 100%{ transform: translateY(-50%) scale(1); box-shadow: none; }
+  }
+  @keyframes hp-ladder-pulse-3 {
+    0%, 20%  { transform: translateY(-50%) scale(1); box-shadow: none; }
+    24%      { transform: translateY(-50%) scale(1.8); background: var(--fb-signal); box-shadow: 0 0 14px var(--fb-signal-glow); }
+    32%, 100%{ transform: translateY(-50%) scale(1); box-shadow: none; }
+  }
+  @keyframes hp-ladder-pulse-4 {
+    0%, 26%  { transform: translateY(-50%) scale(1); }
+    30%      { transform: translateY(-50%) scale(1.8); background: var(--fb-signal-bright); box-shadow: 0 0 16px var(--fb-signal-glow); }
+    38%, 100%{ transform: translateY(-50%) scale(1); }
+  }
+  @keyframes hp-ladder-pulse-5 {
+    0%, 32%  { transform: translateY(-50%) scale(1); }
+    36%      { transform: translateY(-50%) scale(1.8); background: var(--fb-matrix); box-shadow: 0 0 16px var(--fb-matrix-glow); }
+    44%, 100%{ transform: translateY(-50%) scale(1); }
+  }
+  @keyframes hp-ladder-pulse-6 {
+    0%, 38%  { transform: translateY(-50%) scale(1); }
+    42%      { transform: translateY(-50%) scale(1.8); background: var(--fb-matrix); box-shadow: 0 0 20px var(--fb-matrix-glow); }
+    50%, 100%{ transform: translateY(-50%) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hp-ladder__rung::before { animation: none !important; }
+  }
   .hp-ladder__num {
     font-family: var(--fb-font-mono);
     font-size: var(--fb-fs-11);
