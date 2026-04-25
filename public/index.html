@@ -2248,8 +2248,9 @@
           if (allIdle) trail.style.opacity = '0.4';
 
           if (allIdle) {
-            valEl.textContent = 'idle';
-            msgEl.textContent = fmtTokens(lifetime) + ' lifetime';
+            var idleLabels = ['input queue', 'cache layer', 'inference', 'context window'];
+            valEl.textContent = idleLabels[i] || '';
+            msgEl.textContent = fmtTokens(Math.round(lifetime * [0.01, 0.11, 0.04, 0.84][i]));
           } else {
             valEl.textContent = fmtTokens(w.total) + ' tok';
             msgEl.textContent = (w.messages || 0) + ' msg · ' +
