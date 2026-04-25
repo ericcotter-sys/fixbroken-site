@@ -388,7 +388,7 @@ function aggregateUsage() {
     } catch {}
   }
 
-  const windows = [8, 80, 800, 8000].map(sec => {
+  const windows = [8, 42, 80, 800, 8000].map(sec => {
     const cutoff = now - sec * 1000;
     const inWindow = messages.filter(m => m.ts >= cutoff);
     const total = inWindow.reduce((s, m) => s + m.input + m.output + m.cache_read + m.cache_create, 0);
