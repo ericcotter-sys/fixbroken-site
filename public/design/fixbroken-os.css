@@ -986,7 +986,7 @@ hr {
   background: var(--fb-signal);
   margin-left: 2px;
   vertical-align: -0.12em;
-  animation: fb-blink 860ms steps(1) infinite;
+  animation: fb-blink 2.4s ease infinite;
   box-shadow: 0 0 12px var(--fb-signal-glow);
 }
 
@@ -1009,10 +1009,11 @@ hr {
    ========================================================================== */
 
 @keyframes fb-blink {
-  0%, 14%   { opacity: 1; }
-  15%, 24%  { opacity: 0; }
-  25%, 38%  { opacity: 1; }
-  39%, 100% { opacity: 0; }
+  0%        { opacity: 0.15; }
+  6%, 12%   { opacity: 0.9; }
+  15%, 21%  { opacity: 0.15; }
+  24%, 30%  { opacity: 0.85; }
+  35%, 100% { opacity: 0.15; }
 }
 
 @keyframes fb-pulse {
