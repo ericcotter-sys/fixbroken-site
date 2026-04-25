@@ -2227,6 +2227,9 @@
         var windows = data.windows;
         var maxTotal = Math.max.apply(null, windows.map(function(w){ return w.total || 0; }));
 
+        var lifetime = (data.lifetime && data.lifetime.total) || 0;
+        var allIdle = maxTotal === 0 && lifetime > 0;
+
         windows.forEach(function(w, i){
           var row = document.querySelector('[data-cycle="' + i + '"]');
           if (!row) return;
@@ -2234,19 +2237,24 @@
           var valEl = row.querySelector('.hp-val');
           var msgEl = row.querySelector('.hp-msg');
 
-          /* Width: log-scaled vs max, with a 4% floor so head is always visible */
           var pct;
           if (!w.total || maxTotal === 0) {
-            pct = 4;
+            pct = allIdle ? [12, 18, 28, 42][i] || 8 : 4;
           } else {
             var r = Math.log10(w.total + 1) / Math.log10(maxTotal + 1);
             pct = Math.max(4, Math.min(98, r * 98));
           }
           trail.style.width = pct + '%';
+          if (allIdle) trail.style.opacity = '0.4';
 
-          valEl.textContent = fmtTokens(w.total) + ' tok';
-          msgEl.textContent = (w.messages || 0) + ' msg · ' +
-            (w.rate_per_sec ? Math.round(w.rate_per_sec) : 0) + ' t/s';
+          if (allIdle) {
+            valEl.textContent = 'idle';
+            msgEl.textContent = fmtTokens(lifetime) + ' lifetime';
+          } else {
+            valEl.textContent = fmtTokens(w.total) + ' tok';
+            msgEl.textContent = (w.messages || 0) + ' msg · ' +
+              (w.rate_per_sec ? Math.round(w.rate_per_sec) : 0) + ' t/s';
+          }
         });
 
         /* Footer aggregates — pull from longest window (8000s) */
@@ -2260,8 +2268,12 @@
         );
 
         var secAgo = data.now ? Math.round((Date.now() - data.now) / 1000) : 0;
-        document.getElementById('hp-arena-stamp').textContent =
-          'polled ' + (secAgo < 60 ? secAgo + 's' : Math.round(secAgo/60) + 'm') + ' ago';
+        var stampEl = document.getElementById('hp-arena-stamp');
+        if (allIdle) {
+          stampEl.textContent = 'between sessions · ' + fmtTokens(lifetime) + ' lifetime tokens';
+        } else {
+          stampEl.textContent = 'polled ' + (secAgo < 60 ? secAgo + 's' : Math.round(secAgo/60) + 'm') + ' ago';
+        }
       }).catch(function(){
         document.getElementById('hp-arena-stamp').textContent = 'signal unreachable';
       });
