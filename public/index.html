@@ -1700,8 +1700,8 @@
     }
 
     function nextGap() {
-      // 5-14s between appearances — three anchors rotating, don't nag
-      return 5000 + Math.floor(Math.random() * 9000);
+      // 3-7s between appearances — keep the nudge lively
+      return 3000 + Math.floor(Math.random() * 4000);
     }
 
     function isAnchorInView(el) {
