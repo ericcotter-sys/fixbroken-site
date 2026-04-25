@@ -615,22 +615,22 @@
      ========================================================================== */
   .hp-arena {
     padding: var(--fb-s-6);
-    background: var(--fb-ink);
-    border: 1px solid var(--fb-hairline);
-    border-radius: var(--fb-r-3);
+    background: #020408;
+    border: 1px solid rgba(0, 212, 255, 0.12);
+    border-radius: 0;
     font-family: var(--fb-font-mono);
     position: relative;
-    overflow: hidden;
-    /* Grid arena floor */
+    overflow: visible;
     background-image:
-      linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
-    background-size: 24px 24px;
+      linear-gradient(rgba(0, 212, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+    box-shadow: inset 0 0 80px rgba(0, 212, 255, 0.03);
   }
 
   .hp-arena__head {
     display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: var(--fb-s-4);
+    margin-bottom: var(--fb-s-5);
     font-size: var(--fb-fs-11);
     letter-spacing: var(--fb-tracking-extra);
     text-transform: uppercase;
@@ -642,88 +642,87 @@
     text-shadow: 0 0 8px var(--fb-signal-glow);
   }
 
-  /* One light cycle per time window */
   .hp-cycle {
     display: grid;
-    grid-template-columns: 54px 1fr 110px;
+    grid-template-columns: 54px 1fr 140px;
     align-items: center;
     gap: var(--fb-s-3);
-    padding-block: var(--fb-s-2);
+    padding-block: 6px;
     font-size: var(--fb-fs-12);
   }
 
   .hp-cycle__label {
-    color: var(--fb-text-dim);
+    color: var(--cycle-color, var(--fb-text-dim));
     letter-spacing: var(--fb-tracking-wide);
     text-transform: uppercase;
     font-size: var(--fb-fs-11);
+    text-shadow: 0 0 6px var(--cycle-glow, transparent);
   }
 
-  /* The track — where the cycle leaves its trail */
   .hp-cycle__track {
     position: relative;
-    height: 10px;
-    background: rgba(42, 52, 66, 0.4);
-    border-radius: 999px;
-    overflow: hidden;
+    height: 3px;
+    background: rgba(0, 212, 255, 0.06);
+    border-radius: 0;
+    overflow: visible;
   }
 
-  /* The trail — animated fill, color-coded per cycle */
   .hp-cycle__trail {
     position: absolute;
     inset: 0 auto 0 0;
     width: 0%;
-    background: linear-gradient(90deg,
-      transparent 0%,
-      var(--cycle-color, var(--fb-signal)) 20%,
-      var(--cycle-color, var(--fb-signal)) 80%,
-      var(--cycle-head, var(--fb-signal-bright)) 100%);
-    box-shadow: 0 0 12px var(--cycle-glow, var(--fb-signal-glow));
+    height: 3px;
+    background: var(--cycle-color, var(--fb-signal));
+    box-shadow:
+      0 0 6px var(--cycle-glow, var(--fb-signal-glow)),
+      0 0 20px var(--cycle-glow, var(--fb-signal-glow));
     transition: width 900ms cubic-bezier(.2,.7,.2,1);
-    border-radius: 999px;
+    border-radius: 0;
   }
 
-  /* The cycle head — leading dot with halo */
   .hp-cycle__head {
     position: absolute;
     top: 50%;
-    right: -2px;
+    right: -1px;
     transform: translateY(-50%);
-    width: 10px; height: 10px;
-    border-radius: 50%;
+    width: 6px; height: 6px;
+    border-radius: 0;
     background: var(--cycle-head, var(--fb-signal-bright));
-    box-shadow: 0 0 16px var(--cycle-glow, var(--fb-signal-glow)),
-                0 0 32px var(--cycle-glow, var(--fb-signal-glow));
-    animation: hp-cycle-pulse 1s ease-in-out infinite;
+    box-shadow:
+      0 0 8px var(--cycle-head, var(--fb-signal-bright)),
+      0 0 20px var(--cycle-glow, var(--fb-signal-glow)),
+      0 0 40px var(--cycle-glow, var(--fb-signal-glow));
+    animation: hp-cycle-pulse 1.2s ease-in-out infinite;
   }
   @keyframes hp-cycle-pulse {
-    0%, 100% { transform: translateY(-50%) scale(1); }
-    50% { transform: translateY(-50%) scale(1.35); }
+    0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-50%) scale(1.5); opacity: 1; }
   }
 
   .hp-cycle__meta {
     text-align: right;
-    color: var(--fb-text-loud);
-    font-size: var(--fb-fs-13);
+    color: var(--fb-text);
+    font-size: var(--fb-fs-12);
     white-space: nowrap;
+  }
+  .hp-cycle__meta .hp-val {
+    color: var(--cycle-head, var(--fb-text-loud));
   }
   .hp-cycle__meta small {
     color: var(--fb-text-mute);
-    font-size: var(--fb-fs-11);
+    font-size: var(--fb-fs-10);
     margin-left: 4px;
   }
 
-  /* Color per cycle */
   .hp-cycle--8s    { --cycle-color: var(--fb-signal); --cycle-head: var(--fb-signal-bright); --cycle-glow: var(--fb-signal-glow); }
   .hp-cycle--80s   { --cycle-color: var(--fb-matrix); --cycle-head: #7dffb7;              --cycle-glow: var(--fb-matrix-glow); }
   .hp-cycle--800s  { --cycle-color: var(--fb-pink);   --cycle-head: var(--fb-pink-bright);   --cycle-glow: var(--fb-pink-glow); }
   .hp-cycle--8000s { --cycle-color: var(--fb-amber);  --cycle-head: #ffd17a;              --cycle-glow: rgba(255,182,74,0.45); }
 
-  /* Status row at bottom of arena */
   .hp-arena__foot {
-    margin-top: var(--fb-s-4);
+    margin-top: var(--fb-s-5);
     padding-top: var(--fb-s-3);
-    border-top: 1px dashed var(--fb-hairline);
+    border-top: 1px solid rgba(0, 212, 255, 0.08);
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -744,16 +743,15 @@
     text-shadow: 0 0 8px var(--fb-signal-glow);
   }
 
-  /* Reduced-motion: no pulsing head */
   @media (prefers-reduced-motion: reduce) {
     .hp-cycle__head { animation: none; }
     .hp-cycle__trail { transition: width 0ms; }
   }
 
   @media (max-width: 540px) {
-    .hp-arena { padding: var(--fb-s-4); background-size: 16px 16px; }
-    .hp-cycle { grid-template-columns: 44px 1fr 86px; gap: var(--fb-s-2); }
-    .hp-cycle__meta { font-size: var(--fb-fs-12); }
+    .hp-arena { padding: var(--fb-s-4); background-size: 20px 20px; }
+    .hp-cycle { grid-template-columns: 44px 1fr 100px; gap: var(--fb-s-2); }
+    .hp-cycle__meta { font-size: var(--fb-fs-11); }
   }
 
   @media (max-width: 540px) {
@@ -1333,10 +1331,6 @@
           <span>lifetime <strong id="hp-tkn-lifetime">—</strong></span>
           <span>proj/day <strong id="hp-tkn-projday">—</strong></span>
           <span>rate <span class="hp-arena__rate" id="hp-tkn-rate">—</span></span>
-        </div>
-        <div style="margin-top: var(--fb-s-3); padding-top: var(--fb-s-3); border-top: 1px solid var(--fb-hairline); font-size: var(--fb-fs-11); color: var(--fb-text-mute); display: flex; justify-content: space-between; flex-wrap: wrap; gap: var(--fb-s-2);">
-          <span>2026 ytd inference tokens across all runtimes · <strong style="color: var(--fb-text-dim);">weekly cap: sustained</strong></span>
-          <span>codex + claude code · <strong style="color: var(--fb-signal);">high throughput</strong></span>
         </div>
       </div>
 
@@ -2227,9 +2221,6 @@
         var windows = data.windows;
         var maxTotal = Math.max.apply(null, windows.map(function(w){ return w.total || 0; }));
 
-        var lifetime = (data.lifetime && data.lifetime.total) || 0;
-        var allIdle = maxTotal === 0 && lifetime > 0;
-
         windows.forEach(function(w, i){
           var row = document.querySelector('[data-cycle="' + i + '"]');
           if (!row) return;
@@ -2239,28 +2230,22 @@
 
           var pct;
           if (!w.total || maxTotal === 0) {
-            pct = allIdle ? [12, 18, 28, 42][i] || 8 : 4;
+            pct = 2;
           } else {
             var r = Math.log10(w.total + 1) / Math.log10(maxTotal + 1);
             pct = Math.max(4, Math.min(98, r * 98));
           }
           trail.style.width = pct + '%';
-          if (allIdle) trail.style.opacity = '0.4';
 
-          if (allIdle) {
-            valEl.textContent = '—';
-            msgEl.textContent = '';
-          } else {
-            valEl.textContent = fmtTokens(w.total) + ' tok';
-            msgEl.textContent = (w.messages || 0) + ' msg · ' +
-              (w.rate_per_sec ? Math.round(w.rate_per_sec) : 0) + ' t/s';
-          }
+          valEl.textContent = w.total ? fmtTokens(w.total) : '—';
+          msgEl.textContent = w.total
+            ? (w.messages || 0) + ' msg · ' + (w.rate_per_sec ? Math.round(w.rate_per_sec).toLocaleString() : 0) + ' t/s'
+            : '';
         });
 
-        /* Footer aggregates — pull from longest window (8000s) */
         var big = windows[windows.length - 1] || {};
         document.getElementById('hp-tkn-rate').textContent =
-          (big.rate_per_sec ? Math.round(big.rate_per_sec) : 0) + ' tok/s';
+          (big.rate_per_sec ? Math.round(big.rate_per_sec).toLocaleString() : 0) + ' tok/s';
         document.getElementById('hp-tkn-projday').textContent = fmtTokens(big.proj_day || 0);
         document.getElementById('hp-tkn-lifetime').textContent = fmtTokens(
           (data.lifetime && data.lifetime.total) ||
@@ -2268,12 +2253,8 @@
         );
 
         var secAgo = data.now ? Math.round((Date.now() - data.now) / 1000) : 0;
-        var stampEl = document.getElementById('hp-arena-stamp');
-        if (allIdle) {
-          stampEl.textContent = 'between sessions · ' + fmtTokens(lifetime) + ' lifetime tokens';
-        } else {
-          stampEl.textContent = 'polled ' + (secAgo < 60 ? secAgo + 's' : Math.round(secAgo/60) + 'm') + ' ago';
-        }
+        document.getElementById('hp-arena-stamp').textContent =
+          'polled ' + (secAgo < 60 ? secAgo + 's' : Math.round(secAgo/60) + 'm') + ' ago';
       }).catch(function(){
         document.getElementById('hp-arena-stamp').textContent = 'signal unreachable';
       });
