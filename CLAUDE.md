@@ -1,5 +1,9 @@
 # CLAUDE.md — vumo-fixbroken-site
 
+## Product Overview
+
+Fixbroken is Eric Cotter's product strategy, AI execution, and enterprise solution studio. This repo (`vumo-fixbroken-site`) is the source for https://fixbroken.ai — the agency hub that explains what Fixbroken does, who it serves, and how to start a conversation. It also hosts **FixBroken OS**, the global design system used by every tenant subsite (vumo.fixbroken.ai today; others later). See STRATEGY.md for mission, Q2 priorities, and scope boundaries.
+
 **What this repo is:** the source for https://fixbroken.ai — Eric Cotter's consulting site and the home of **FixBroken OS**, the global design system used by every tenant subsite (vumo.fixbroken.ai today; others later).
 
 **Repo naming note:** the repo is prefixed `vumo-` for historical reasons (it was the first client engagement site). It will likely be renamed to `fixbroken-site` once the brand is stable. Don't let the name mislead — this IS the flagship.
@@ -128,3 +132,37 @@ Projects load their override stylesheet AFTER `fixbroken-os.css` and scope their
 - Host: AWS Lightsail us-east-2 (Ohio)
 - Domain: GoDaddy
 - Static IP: `3.140.37.153`
+
+## Deploy Targets
+
+| Target | Branch | URL | Auth |
+|---|---|---|---|
+| Production | `main` | https://fixbroken.ai | Public |
+| Staging | `staging` | https://stage.fixbroken.ai | Basic auth |
+
+Deploy is automatic via GitHub webhook. Push to the target branch and the site updates in ~10 seconds. See SDLC.md for branching rules.
+
+## Definition of Done
+
+A change is done when all of the following are true:
+
+1. PR is green on CI (once CI is configured via FBAI-001).
+2. Lint passes (once linter is configured via FBAI-001).
+3. Tested at 375px, 768px, and 1440px viewports.
+4. Design system not forked — no inline styles overriding `.fb-*` tokens. Use wrapper classes per the override pattern above.
+5. STRATEGY.md alignment checked — does this work serve a Q2 priority? Is it in scope? If not, do not ship it.
+6. Deploy verified on staging before merging to main.
+7. QA sign-off per QA.md.
+
+## Governance Docs
+
+This repo is governed by the Fixbroken AI SDLC. See:
+
+- [STRATEGY.md](STRATEGY.md) — mission, Q2 priorities, out-of-scope, kill criteria (CPO owns)
+- [SDLC.md](SDLC.md) — branching model, PR rules, test requirements, release cadence
+- [AGENTS.md](AGENTS.md) — org chart, reporting lines, escalation rules
+- [PM.md](PM.md) — PM operating rules, ticket format, status digest template
+- [CTO.md](CTO.md) — CTO operating rules, ADR requirements, build-vs-buy threshold
+- [ARCHITECTURE.md](ARCHITECTURE.md) — system design, stack, data model, security posture (CTO owns)
+- [QA.md](QA.md) — test plan format, regression checklist, bug intake, sign-off rules
+- [ADRs/](ADRs/) — architecture decision records (CTO owns)

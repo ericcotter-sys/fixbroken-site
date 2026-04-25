@@ -359,13 +359,10 @@ function scanTranscripts() {
   return files;
 }
 
-let usageCache = null;
-let usageCacheTs = 0;
-const CACHE_TTL = 5000;
+let usageCache = { now: Date.now(), windows: [], lifetime: {} };
 
 function aggregateUsage() {
   const now = Date.now();
-  if (usageCache && now - usageCacheTs < CACHE_TTL) return usageCache;
 
   const messages = [];
   for (const file of scanTranscripts()) {
@@ -430,13 +427,16 @@ function aggregateUsage() {
       last_ts: lastTs
     }
   };
-  usageCacheTs = now;
   return usageCache;
 }
 
+// Server-side poll: recompute every 2s, clients just read the snapshot
+setInterval(() => { try { aggregateUsage(); } catch {} }, 2000);
+aggregateUsage();
+
 app.get('/api/usage', (_req, res) => {
   try {
-    res.json(aggregateUsage());
+    res.json(usageCache);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
