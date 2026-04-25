@@ -339,6 +339,109 @@ app.post('/contact', (req, res) => {
   );
 });
 
+// ---------------------------------------------------------------------------
+// Token usage endpoint — reads Claude Code transcripts
+// ---------------------------------------------------------------------------
+const TRANSCRIPT_DIR = path.join(require('os').homedir(), '.claude', 'projects');
+
+function scanTranscripts() {
+  const files = [];
+  function walk(dir) {
+    try {
+      for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) walk(full);
+        else if (entry.name.endsWith('.jsonl')) files.push(full);
+      }
+    } catch {}
+  }
+  walk(TRANSCRIPT_DIR);
+  return files;
+}
+
+let usageCache = null;
+let usageCacheTs = 0;
+const CACHE_TTL = 5000;
+
+function aggregateUsage() {
+  const now = Date.now();
+  if (usageCache && now - usageCacheTs < CACHE_TTL) return usageCache;
+
+  const messages = [];
+  for (const file of scanTranscripts()) {
+    try {
+      const lines = fs.readFileSync(file, 'utf8').split('\n');
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        try {
+          const d = JSON.parse(line);
+          if (d.message && d.message.usage) {
+            const u = d.message.usage;
+            const ts = d.timestamp || (d.message.created_at ? new Date(d.message.created_at).getTime() : 0);
+            messages.push({
+              ts: typeof ts === 'string' ? new Date(ts).getTime() : ts,
+              input: u.input_tokens || 0,
+              output: u.output_tokens || 0,
+              cache_read: u.cache_read_input_tokens || 0,
+              cache_create: u.cache_creation_input_tokens || 0
+            });
+          }
+        } catch {}
+      }
+    } catch {}
+  }
+
+  const windows = [8, 80, 800, 8000].map(sec => {
+    const cutoff = now - sec * 1000;
+    const inWindow = messages.filter(m => m.ts >= cutoff);
+    const total = inWindow.reduce((s, m) => s + m.input + m.output + m.cache_read + m.cache_create, 0);
+    const msgCount = inWindow.length;
+    const rate = sec > 0 ? total / sec : 0;
+    return {
+      seconds: sec,
+      messages: msgCount,
+      input: inWindow.reduce((s, m) => s + m.input, 0),
+      cache_create: inWindow.reduce((s, m) => s + m.cache_create, 0),
+      cache_read: inWindow.reduce((s, m) => s + m.cache_read, 0),
+      output: inWindow.reduce((s, m) => s + m.output, 0),
+      total,
+      billable: total,
+      rate_per_sec: Math.round(rate),
+      proj_hour: Math.round(rate * 3600),
+      proj_day: Math.round(rate * 86400)
+    };
+  });
+
+  const allTotal = messages.reduce((s, m) => s + m.input + m.output + m.cache_read + m.cache_create, 0);
+  const firstTs = messages.length ? Math.min(...messages.map(m => m.ts)) : 0;
+  const lastTs = messages.length ? Math.max(...messages.map(m => m.ts)) : 0;
+
+  usageCache = {
+    now,
+    windows,
+    lifetime: {
+      messages: messages.length,
+      input: messages.reduce((s, m) => s + m.input, 0),
+      cache_create: messages.reduce((s, m) => s + m.cache_create, 0),
+      cache_read: messages.reduce((s, m) => s + m.cache_read, 0),
+      output: messages.reduce((s, m) => s + m.output, 0),
+      total: allTotal,
+      first_ts: firstTs,
+      last_ts: lastTs
+    }
+  };
+  usageCacheTs = now;
+  return usageCache;
+}
+
+app.get('/api/usage', (_req, res) => {
+  try {
+    res.json(aggregateUsage());
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, HOST, () => {
