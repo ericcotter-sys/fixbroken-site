@@ -26,7 +26,9 @@
     "tenants:health": "node tools/tenants.js --health",
     "diff:tokens": "node tools/token-diff.js",
     "changelog": "node tools/changelog.js",
-    "changelog:md": "node tools/changelog.js --markdown"
+    "changelog:md": "node tools/changelog.js --markdown",
+    "deploy:check": "node tools/deploy-check.js",
+    "deploy:verify": "node tools/deploy-check.js --post"
   },
   "dependencies": {
     "express": "^4.21.0",
