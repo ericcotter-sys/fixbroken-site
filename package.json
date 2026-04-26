@@ -4,6 +4,9 @@
   "private": true,
   "type": "commonjs",
   "main": "server.js",
+  "bin": {
+    "fb": "bin/fb"
+  },
   "scripts": {
     "start": "node server.js",
     "lint:voice": "node tools/voice-lint.js",

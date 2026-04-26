@@ -1,0 +1,116 @@
+#!/usr/bin/env node
+'use strict';
+
+const { execSync, spawnSync } = require('child_process');
+const path = require('path');
+
+// ---------------------------------------------------------------------------
+// fb — FixBroken OS CLI
+// ---------------------------------------------------------------------------
+// Single entry point for all FixBroken OS tools.
+//
+// Usage: fb <command> [args...]
+// ---------------------------------------------------------------------------
+
+const TOOLS_DIR = path.resolve(__dirname, '..', 'tools');
+const REPO_ROOT = path.resolve(__dirname, '..');
+
+const COMMANDS = {
+  lint:       { script: 'voice-lint.js',          desc: 'Voice + design system linter' },
+  audit:      { script: 'audit.js',               desc: '6-category page audit' },
+  check:      { script: 'check.js',               desc: 'Full quality gate' },
+  generate:   { script: null, npm: 'generate',    desc: 'Regenerate manifest + style guide' },
+  manifest:   { script: 'generate-manifest.js',   desc: 'Regenerate manifest only' },
+  styleguide: { script: 'generate-styleguide.js', desc: 'Regenerate style guide only' },
+  scaffold:   { script: 'scaffold-tenant.js',     desc: 'Create new tenant subsite' },
+  tenants:    { script: 'tenants.js',             desc: 'List active tenants' },
+  diff:       { script: 'token-diff.js',          desc: 'Diff design tokens between refs' },
+  changelog:  { script: 'changelog.js',           desc: 'Generate design system changelog' },
+  validate:   { script: 'validate-manifest.js',   desc: 'Check if manifest is current' },
+};
+
+function printHelp() {
+  console.log(`
+\x1b[1mfb\x1b[0m — FixBroken OS CLI
+
+\x1b[1mUsage:\x1b[0m fb <command> [args...]
+
+\x1b[1mCommands:\x1b[0m`);
+
+  const maxLen = Math.max(...Object.keys(COMMANDS).map(k => k.length));
+  for (const [name, cmd] of Object.entries(COMMANDS)) {
+    console.log(`  ${name.padEnd(maxLen + 2)} ${cmd.desc}`);
+  }
+
+  console.log(`
+\x1b[1mExamples:\x1b[0m
+  fb lint                          # lint all HTML files
+  fb audit --verbose               # verbose page audit
+  fb check                         # full quality gate
+  fb scaffold comply               # create new tenant
+  fb tenants --health              # list tenants with health checks
+  fb diff HEAD~5                   # token diff vs 5 commits ago
+  fb changelog --md                # markdown changelog
+
+\x1b[1mAliases:\x1b[0m
+  fb l  → fb lint
+  fb a  → fb audit
+  fb c  → fb check
+  fb s  → fb scaffold
+  fb t  → fb tenants
+  fb d  → fb diff
+  fb g  → fb generate
+`);
+}
+
+const ALIASES = {
+  l: 'lint',
+  a: 'audit',
+  c: 'check',
+  s: 'scaffold',
+  t: 'tenants',
+  d: 'diff',
+  g: 'generate',
+  cl: 'changelog',
+  v: 'validate',
+};
+
+function main() {
+  let args = process.argv.slice(2);
+
+  if (args.length === 0 || args[0] === '--help' || args[0] === '-h' || args[0] === 'help') {
+    printHelp();
+    process.exit(0);
+  }
+
+  let cmdName = args[0];
+  const cmdArgs = args.slice(1);
+
+  // Resolve aliases
+  if (ALIASES[cmdName]) cmdName = ALIASES[cmdName];
+
+  const cmd = COMMANDS[cmdName];
+  if (!cmd) {
+    console.error(`Unknown command: ${cmdName}`);
+    console.error('Run "fb --help" for available commands.');
+    process.exit(1);
+  }
+
+  // Execute
+  if (cmd.npm) {
+    const result = spawnSync('npm', ['run', cmd.npm, '--', ...cmdArgs], {
+      cwd: REPO_ROOT,
+      stdio: 'inherit',
+    });
+    process.exit(result.status || 0);
+  } else {
+    const scriptPath = path.join(TOOLS_DIR, cmd.script);
+    const result = spawnSync('node', [scriptPath, ...cmdArgs], {
+      cwd: REPO_ROOT,
+      stdio: 'inherit',
+    });
+    process.exit(result.status || 0);
+  }
+}
+
+main();
