@@ -15,7 +15,10 @@
     "scaffold": "node tools/scaffold-tenant.js",
     "audit": "node tools/audit.js",
     "audit:json": "node tools/audit.js --json",
-    "audit:verbose": "node tools/audit.js --verbose"
+    "audit:verbose": "node tools/audit.js --verbose",
+    "validate:manifest": "node tools/validate-manifest.js",
+    "check": "node tools/check.js",
+    "check:fix": "node tools/check.js --fix"
   },
   "dependencies": {
     "express": "^4.21.0",
