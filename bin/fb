@@ -28,6 +28,7 @@ const COMMANDS = {
   changelog:  { script: 'changelog.js',           desc: 'Generate design system changelog' },
   validate:   { script: 'validate-manifest.js',   desc: 'Check if manifest is current' },
   deploy:     { script: 'deploy-check.js',        desc: 'Pre/post deploy validation' },
+  usage:      { script: 'usage.js',              desc: 'Component usage analyzer' },
 };
 
 function printHelp() {

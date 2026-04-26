@@ -28,7 +28,10 @@
     "changelog": "node tools/changelog.js",
     "changelog:md": "node tools/changelog.js --markdown",
     "deploy:check": "node tools/deploy-check.js",
-    "deploy:verify": "node tools/deploy-check.js --post"
+    "deploy:verify": "node tools/deploy-check.js --post",
+    "usage": "node tools/usage.js",
+    "usage:all": "node tools/usage.js --all",
+    "usage:unused": "node tools/usage.js --unused"
   },
   "dependencies": {
     "express": "^4.21.0",
