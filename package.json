@@ -20,7 +20,8 @@
     "check": "node tools/check.js",
     "check:fix": "node tools/check.js --fix",
     "tenants": "node tools/tenants.js",
-    "tenants:health": "node tools/tenants.js --health"
+    "tenants:health": "node tools/tenants.js --health",
+    "diff:tokens": "node tools/token-diff.js"
   },
   "dependencies": {
     "express": "^4.21.0",

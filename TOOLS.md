@@ -12,6 +12,9 @@ All tools live in `tools/` and run with Node 20. No external dependencies beyond
 | `npm run audit` | 6-category page audit |
 | `npm run generate` | Regenerate manifest + style guide |
 | `npm run scaffold -- <name>` | Create new tenant subsite |
+| `npm run tenants` | List active tenants |
+| `npm run tenants:health` | List tenants with live health checks |
+| `npm run diff:tokens` | Diff design tokens vs last commit |
 
 ## Tools
 
@@ -148,6 +151,31 @@ npm run check:fix                      # auto-fix stale manifest
 ```
 
 Exits 1 on first failure. Use in CI pipelines.
+
+### Tenant Manager (`tools/tenants.js`)
+
+Lists active tenants, their ports, domains, and health.
+
+```bash
+npm run tenants                        # list all tenants
+npm run tenants:health                 # include live health checks
+node tools/tenants.js --json           # JSON output
+```
+
+Discovers tenants from `/home/ubuntu/apps/`, reads ports from systemd units (with server.js fallback), and checks FixBroken OS CSS import.
+
+### Token Diff (`tools/token-diff.js`)
+
+Shows what design tokens changed between two manifest versions.
+
+```bash
+npm run diff:tokens                    # working tree vs last commit
+node tools/token-diff.js HEAD~5        # vs 5 commits ago
+node tools/token-diff.js main staging  # compare two branches
+node tools/token-diff.js --json        # JSON output
+```
+
+Reports added, removed, and changed tokens, components, classes, and voice rules. Exit code 1 if there are changes, 0 if identical.
 
 ## Integration patterns
 
