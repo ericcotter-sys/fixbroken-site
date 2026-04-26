@@ -30,6 +30,7 @@ const COMMANDS = {
   deploy:     { script: 'deploy-check.js',        desc: 'Pre/post deploy validation' },
   usage:      { script: 'usage.js',              desc: 'Component usage analyzer' },
   contrast:   { script: 'contrast.js',           desc: 'WCAG color contrast checker' },
+  overrides:  { script: 'validate-overrides.js', desc: 'Validate tenant override CSS' },
 };
 
 function printHelp() {
