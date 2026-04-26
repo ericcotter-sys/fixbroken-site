@@ -27,10 +27,22 @@ vumo-fixbroken-site/
 ├── public/
 │   ├── index.html         fixbroken.ai landing
 │   └── design/
-│       ├── fixbroken-os.css   THE design system — do not fork
-│       ├── index.html         living style guide at /design/
-│       └── brand.md           voice + palette + principles
+│       ├── fixbroken-os.css          THE design system — do not fork
+│       ├── fixbroken-os.manifest.json machine-readable system manifest
+│       ├── index.html                 hand-maintained style guide
+│       ├── generated.html             auto-generated reference
+│       └── brand.md                   voice + palette + principles
+├── tools/
+│   ├── voice-lint.js      voice + design system linter
+│   ├── audit.js           6-category page audit (voice/design/a11y/responsive/perf)
+│   ├── generate-manifest.js   CSS → JSON manifest generator
+│   ├── generate-styleguide.js manifest → living HTML reference
+│   ├── scaffold-tenant.js     new tenant subsite generator
+│   ├── validate-manifest.js   stale manifest detector
+│   ├── check.js               unified quality gate (lint + audit + validate)
+│   └── pre-commit             git pre-commit hook
 ├── CLAUDE.md              this file
+├── TOOLS.md               complete toolchain reference
 └── README.md
 ```
 
@@ -113,9 +125,19 @@ Projects load their override stylesheet AFTER `fixbroken-os.css` and scope their
 ### Development workflow
 
 1. Edit files locally on your Mac under `~/Documents/Claude/Projects/VUMO/repos/vumo-fixbroken-site/`.
-2. Test at multiple widths in browser (375, 768, 1440).
-3. Commit + push to `main` → webhook auto-deploys to https://fixbroken.ai within ~10s.
-4. For risky changes: push to `staging` → preview at https://stage.fixbroken.ai (basic auth).
+2. Run `npm run check` before committing (or let the pre-commit hook catch issues).
+3. Test at multiple widths in browser (375, 768, 1440).
+4. Commit + push to `main` → webhook auto-deploys to https://fixbroken.ai within ~10s.
+5. For risky changes: push to `staging` → preview at https://stage.fixbroken.ai (basic auth).
+
+### Toolchain (see TOOLS.md for full reference)
+
+- `npm run check` — unified quality gate (manifest + lint + audit). Run before every commit.
+- `npm run lint:voice` — voice linter for banned phrases and CSS violations.
+- `npm run audit` — 6-category page audit (voice, design, structure, a11y, responsive, perf).
+- `npm run generate` — regenerate manifest + style guide from CSS.
+- `npm run scaffold -- <name>` — create a new tenant subsite.
+- Pre-commit hook runs voice-lint on all staged HTML/CSS files automatically.
 
 ---
 
