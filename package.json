@@ -8,7 +8,8 @@
     "start": "node server.js",
     "lint:voice": "node tools/voice-lint.js",
     "lint:voice:json": "node tools/voice-lint.js --json",
-    "lint:voice:strict": "node tools/voice-lint.js --strict"
+    "lint:voice:strict": "node tools/voice-lint.js --strict",
+    "generate:manifest": "node tools/generate-manifest.js"
   },
   "dependencies": {
     "express": "^4.21.0",

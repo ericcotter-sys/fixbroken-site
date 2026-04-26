@@ -1,0 +1,786 @@
+{
+  "$schema": "https://fixbroken.ai/design/fixbroken-os.manifest.schema.json",
+  "name": "FixBroken OS",
+  "version": "0.1.0",
+  "generated": "2026-04-26T08:50:34.374Z",
+  "source": {
+    "css": "/design/fixbroken-os.css",
+    "brand": "/design/brand.md",
+    "styleguide": "/design/",
+    "cssLines": 1175
+  },
+  "tokens": {
+    "color-base-surfaces": [
+      {
+        "name": "--fb-black",
+        "value": "#05070a",
+        "description": "body background"
+      },
+      {
+        "name": "--fb-ink",
+        "value": "#0a0e14",
+        "description": "default surface"
+      },
+      {
+        "name": "--fb-panel",
+        "value": "#0f151c",
+        "description": "lifted panel"
+      },
+      {
+        "name": "--fb-surface",
+        "value": "#141b24",
+        "description": "more lifted"
+      },
+      {
+        "name": "--fb-rail",
+        "value": "#1a2330",
+        "description": "rails, nav, sub-panels"
+      },
+      {
+        "name": "--fb-hairline",
+        "value": "#2a3442",
+        "description": "borders, dividers"
+      },
+      {
+        "name": "--fb-hairline-hot",
+        "value": "#3d4a5c",
+        "description": "emphasized border"
+      }
+    ],
+    "color-signal": [
+      {
+        "name": "--fb-signal",
+        "value": "#00d4ff",
+        "description": "electric cyan — primary signal"
+      },
+      {
+        "name": "--fb-signal-dim",
+        "value": "#0099bb",
+        "description": "dimmed variant for subtle emphasis"
+      },
+      {
+        "name": "--fb-signal-bright",
+        "value": "#6de8ff",
+        "description": "highlight / active state"
+      },
+      {
+        "name": "--fb-signal-glow",
+        "value": "rgba(0, 212, 255, 0.35)"
+      },
+      {
+        "name": "--fb-signal-wash",
+        "value": "rgba(0, 212, 255, 0.06)"
+      }
+    ],
+    "color-matrix": [
+      {
+        "name": "--fb-matrix",
+        "value": "#00ff88",
+        "description": "Matrix green"
+      },
+      {
+        "name": "--fb-matrix-dim",
+        "value": "#00b868"
+      },
+      {
+        "name": "--fb-matrix-glow",
+        "value": "rgba(0, 255, 136, 0.30)"
+      },
+      {
+        "name": "--fb-matrix-wash",
+        "value": "rgba(0, 255, 136, 0.05)"
+      }
+    ],
+    "color-coral": [
+      {
+        "name": "--fb-coral",
+        "value": "#ff7a5a"
+      },
+      {
+        "name": "--fb-coral-dim",
+        "value": "#e56b4f"
+      },
+      {
+        "name": "--fb-coral-glow",
+        "value": "rgba(255, 122, 90, 0.30)"
+      }
+    ],
+    "color-pink": [
+      {
+        "name": "--fb-pink",
+        "value": "#ff3ec9"
+      },
+      {
+        "name": "--fb-pink-bright",
+        "value": "#ff6bd8"
+      },
+      {
+        "name": "--fb-pink-dim",
+        "value": "#c4309a"
+      },
+      {
+        "name": "--fb-pink-glow",
+        "value": "rgba(255, 62, 201, 0.35)"
+      },
+      {
+        "name": "--fb-pink-wash",
+        "value": "rgba(255, 62, 201, 0.06)"
+      }
+    ],
+    "color-state": [
+      {
+        "name": "--fb-amber",
+        "value": "#ffb64a",
+        "description": "warning"
+      },
+      {
+        "name": "--fb-red",
+        "value": "#ff4a5a",
+        "description": "error"
+      },
+      {
+        "name": "--fb-red-dim",
+        "value": "#c4364a"
+      }
+    ],
+    "color-text": [
+      {
+        "name": "--fb-text",
+        "value": "#e4eaf2",
+        "description": "primary — soft white with blue hint"
+      },
+      {
+        "name": "--fb-text-loud",
+        "value": "#ffffff",
+        "description": "extreme emphasis"
+      },
+      {
+        "name": "--fb-text-dim",
+        "value": "#8a97a8",
+        "description": "secondary copy"
+      },
+      {
+        "name": "--fb-text-mute",
+        "value": "#556070",
+        "description": "tertiary / labels"
+      },
+      {
+        "name": "--fb-text-ghost",
+        "value": "#354050",
+        "description": "placeholder / disabled"
+      }
+    ],
+    "typography": [
+      {
+        "name": "--fb-font-mono",
+        "value": "\"JetBrains Mono\", \"SF Mono\", ui-monospace, Menlo, Consolas, monospace"
+      },
+      {
+        "name": "--fb-font-sans",
+        "value": "\"Inter\", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif"
+      },
+      {
+        "name": "--fb-fs-10",
+        "value": "10px"
+      },
+      {
+        "name": "--fb-fs-11",
+        "value": "11px"
+      },
+      {
+        "name": "--fb-fs-12",
+        "value": "12px"
+      },
+      {
+        "name": "--fb-fs-13",
+        "value": "13px"
+      },
+      {
+        "name": "--fb-fs-14",
+        "value": "14px"
+      },
+      {
+        "name": "--fb-fs-15",
+        "value": "15px"
+      },
+      {
+        "name": "--fb-fs-16",
+        "value": "16px"
+      },
+      {
+        "name": "--fb-fs-18",
+        "value": "18px"
+      },
+      {
+        "name": "--fb-fs-20",
+        "value": "20px"
+      },
+      {
+        "name": "--fb-fs-24",
+        "value": "24px"
+      },
+      {
+        "name": "--fb-fs-32",
+        "value": "32px"
+      },
+      {
+        "name": "--fb-fs-40",
+        "value": "40px"
+      },
+      {
+        "name": "--fb-fs-48",
+        "value": "clamp(36px, 5vw, 48px)"
+      },
+      {
+        "name": "--fb-fs-64",
+        "value": "clamp(44px, 7vw, 64px)"
+      },
+      {
+        "name": "--fb-fs-88",
+        "value": "clamp(52px, 9vw, 88px)"
+      },
+      {
+        "name": "--fb-lh-tight",
+        "value": "1.1"
+      },
+      {
+        "name": "--fb-lh-snug",
+        "value": "1.25"
+      },
+      {
+        "name": "--fb-lh-normal",
+        "value": "1.5"
+      },
+      {
+        "name": "--fb-lh-relaxed",
+        "value": "1.7"
+      },
+      {
+        "name": "--fb-tracking-tight",
+        "value": "-0.02em"
+      },
+      {
+        "name": "--fb-tracking-normal",
+        "value": "0"
+      },
+      {
+        "name": "--fb-tracking-wide",
+        "value": "0.08em"
+      },
+      {
+        "name": "--fb-tracking-extra",
+        "value": "0.16em"
+      }
+    ],
+    "spacing-scale": [
+      {
+        "name": "--fb-s-1",
+        "value": "4px"
+      },
+      {
+        "name": "--fb-s-2",
+        "value": "8px"
+      },
+      {
+        "name": "--fb-s-3",
+        "value": "12px"
+      },
+      {
+        "name": "--fb-s-4",
+        "value": "16px"
+      },
+      {
+        "name": "--fb-s-5",
+        "value": "20px"
+      },
+      {
+        "name": "--fb-s-6",
+        "value": "24px"
+      },
+      {
+        "name": "--fb-s-8",
+        "value": "32px"
+      },
+      {
+        "name": "--fb-s-10",
+        "value": "40px"
+      },
+      {
+        "name": "--fb-s-12",
+        "value": "48px"
+      },
+      {
+        "name": "--fb-s-16",
+        "value": "64px"
+      },
+      {
+        "name": "--fb-s-20",
+        "value": "80px"
+      },
+      {
+        "name": "--fb-s-24",
+        "value": "96px"
+      },
+      {
+        "name": "--fb-s-32",
+        "value": "128px"
+      }
+    ],
+    "radius": [
+      {
+        "name": "--fb-r-0",
+        "value": "0px"
+      },
+      {
+        "name": "--fb-r-1",
+        "value": "2px"
+      },
+      {
+        "name": "--fb-r-2",
+        "value": "4px"
+      },
+      {
+        "name": "--fb-r-3",
+        "value": "6px"
+      },
+      {
+        "name": "--fb-r-4",
+        "value": "10px"
+      }
+    ],
+    "shadows-glows": [
+      {
+        "name": "--fb-glow-signal",
+        "value": "0 0 24px var(--fb-signal-glow)"
+      },
+      {
+        "name": "--fb-glow-matrix",
+        "value": "0 0 24px var(--fb-matrix-glow)"
+      },
+      {
+        "name": "--fb-glow-coral",
+        "value": "0 0 24px var(--fb-coral-glow)"
+      },
+      {
+        "name": "--fb-glow-soft",
+        "value": "0 0 64px rgba(0, 212, 255, 0.08)"
+      },
+      {
+        "name": "--fb-lift",
+        "value": "0 1px 0 rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.4)"
+      },
+      {
+        "name": "--fb-lift-strong",
+        "value": "0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.6)"
+      }
+    ],
+    "motion": [
+      {
+        "name": "--fb-t-fast",
+        "value": "120ms cubic-bezier(.2,.6,.2,1)"
+      },
+      {
+        "name": "--fb-t-normal",
+        "value": "220ms cubic-bezier(.2,.6,.2,1)"
+      },
+      {
+        "name": "--fb-t-slow",
+        "value": "380ms cubic-bezier(.2,.6,.2,1)"
+      }
+    ],
+    "z-index-layers": [
+      {
+        "name": "--fb-z-grid",
+        "value": "0"
+      },
+      {
+        "name": "--fb-z-base",
+        "value": "1"
+      },
+      {
+        "name": "--fb-z-panel",
+        "value": "10"
+      },
+      {
+        "name": "--fb-z-nav",
+        "value": "100"
+      },
+      {
+        "name": "--fb-z-overlay",
+        "value": "500"
+      },
+      {
+        "name": "--fb-z-modal",
+        "value": "1000"
+      },
+      {
+        "name": "--fb-z-toast",
+        "value": "2000"
+      }
+    ],
+    "layout": [
+      {
+        "name": "--fb-max-w",
+        "value": "1200px"
+      },
+      {
+        "name": "--fb-max-w-narrow",
+        "value": "720px"
+      },
+      {
+        "name": "--fb-nav-h",
+        "value": "56px"
+      },
+      {
+        "name": "--fb-px",
+        "value": "clamp(20px, 4vw, 40px)"
+      }
+    ]
+  },
+  "palette": [
+    {
+      "role": "Base",
+      "color": "near-black",
+      "token": "--fb-black"
+    },
+    {
+      "role": "Signal (primary)",
+      "color": "electric cyan",
+      "token": "--fb-signal"
+    },
+    {
+      "role": "Pink (flagship signature)",
+      "color": "neon magenta",
+      "token": "--fb-pink"
+    },
+    {
+      "role": "Matrix (alive / runtime)",
+      "color": "green",
+      "token": "--fb-matrix"
+    },
+    {
+      "role": "Coral (human accent)",
+      "color": "warm orange",
+      "token": "--fb-coral"
+    },
+    {
+      "role": "Warn",
+      "color": "amber",
+      "token": "--fb-amber"
+    },
+    {
+      "role": "Error",
+      "color": "red",
+      "token": "--fb-red"
+    }
+  ],
+  "typography": {
+    "families": [
+      {
+        "family": "Inter",
+        "usage": "human copy (lede, body, headings that need to breathe)"
+      },
+      {
+        "family": "JetBrains Mono",
+        "usage": "system copy (labels, prompts, commands, chips, statuses)"
+      }
+    ],
+    "rule": "No third family. No decorative fonts. No script."
+  },
+  "components": [
+    {
+      "class": "fb-shell",
+      "description": "the outermost wrapper for a full page. Think of it as the chassis of the console. Everything sits inside a shell."
+    },
+    {
+      "class": "fb-container",
+      "description": "centered content column with consistent max width"
+    },
+    {
+      "class": "fb-section",
+      "description": "vertical rhythm block"
+    },
+    {
+      "class": "fb-stack",
+      "description": "vertical spacing between children"
+    },
+    {
+      "class": "fb-row",
+      "description": "horizontal layout"
+    },
+    {
+      "class": "fb-grid",
+      "description": "auto-fit grid, great for command dashboards"
+    },
+    {
+      "class": "fb-display",
+      "description": "oversized hero title"
+    },
+    {
+      "class": "fb-lede",
+      "description": "hero subtitle"
+    },
+    {
+      "class": "fb-mono",
+      "description": "force monospace"
+    },
+    {
+      "class": "fb-label",
+      "description": "small uppercase tracking label"
+    },
+    {
+      "class": "fb-kicker",
+      "description": "tag line above a title"
+    },
+    {
+      "class": "fb-nav",
+      "description": "top command bar"
+    },
+    {
+      "class": "fb-panel",
+      "description": "the core container for content. Dark, bordered, hair of glow."
+    },
+    {
+      "class": "fb-terminal",
+      "description": "stylized terminal window"
+    },
+    {
+      "class": "fb-command",
+      "description": "a single command line (prompt + text + cursor)"
+    },
+    {
+      "class": "fb-cta",
+      "description": "command-style CTA. Feels like a command, not a marketing button."
+    },
+    {
+      "class": "fb-chip",
+      "description": "small pill / badge. For statuses, categories, keywords."
+    },
+    {
+      "class": "fb-status",
+      "description": "live status row with colored dot"
+    },
+    {
+      "class": "fb-signal-card",
+      "description": "a card for a service, feature, or project. Grid-ready."
+    },
+    {
+      "class": "fb-context-rail",
+      "description": "side rail with system context (stats, keys, status)"
+    },
+    {
+      "class": "fb-form",
+      "description": "terminal-style form controls"
+    },
+    {
+      "class": "fb-footer",
+      "description": "closing system bar"
+    },
+    {
+      "class": "fb-divider",
+      "description": "horizontal signal line"
+    },
+    {
+      "class": "fb-grid-bg",
+      "description": "subtle background grid (only on shells, not panels)"
+    },
+    {
+      "class": "fb-scanline",
+      "description": "horizontal scan line overlay (subtle)"
+    },
+    {
+      "class": "fb-mcp-cone",
+      "description": "the foundational metaphor. Beam from the top. Used as a hero decoration. Inherit width from parent; height from --cone-h."
+    },
+    {
+      "class": "fb-beam",
+      "description": "a vertical signal beam (small decorative element)"
+    },
+    {
+      "class": "fb-cursor",
+      "description": "blinking terminal cursor"
+    },
+    {
+      "class": "fb-glow",
+      "description": "apply a subtle glow to any element"
+    }
+  ],
+  "allClasses": [
+    "fb-beam",
+    "fb-chip",
+    "fb-chip--amber",
+    "fb-chip--coral",
+    "fb-chip--matrix",
+    "fb-chip--pink",
+    "fb-chip--signal",
+    "fb-command",
+    "fb-command--arrow",
+    "fb-command--matrix",
+    "fb-command--none",
+    "fb-container",
+    "fb-container--narrow",
+    "fb-context-rail",
+    "fb-context-rail__divider",
+    "fb-context-rail__key",
+    "fb-context-rail__row",
+    "fb-context-rail__val",
+    "fb-cta",
+    "fb-cta--coral",
+    "fb-cta--ghost",
+    "fb-cta--matrix",
+    "fb-cta--pink",
+    "fb-cta--pink-solid",
+    "fb-cta--solid",
+    "fb-cursor",
+    "fb-cursor--pink",
+    "fb-display",
+    "fb-display--pink",
+    "fb-divider",
+    "fb-divider--signal",
+    "fb-field",
+    "fb-field__label",
+    "fb-footer",
+    "fb-footer__row",
+    "fb-form",
+    "fb-glow",
+    "fb-glow--coral",
+    "fb-glow--matrix",
+    "fb-glow--pink",
+    "fb-grid",
+    "fb-grid--2",
+    "fb-grid--tight",
+    "fb-grid-bg",
+    "fb-input",
+    "fb-kicker",
+    "fb-kicker--pink",
+    "fb-label",
+    "fb-label--amber",
+    "fb-label--coral",
+    "fb-label--matrix",
+    "fb-label--pink",
+    "fb-label--signal",
+    "fb-lede",
+    "fb-mcp-cone",
+    "fb-mcp-cone--coral",
+    "fb-mcp-cone--matrix",
+    "fb-mcp-cone--pink",
+    "fb-mono",
+    "fb-mono-label",
+    "fb-nav",
+    "fb-nav__brand",
+    "fb-nav__inner",
+    "fb-nav__link",
+    "fb-nav__link--active",
+    "fb-nav__links",
+    "fb-nav__links--fade",
+    "fb-output",
+    "fb-panel",
+    "fb-panel--coral",
+    "fb-panel--lifted",
+    "fb-panel--loose",
+    "fb-panel--matrix",
+    "fb-panel--pink",
+    "fb-panel--signal",
+    "fb-panel--tight",
+    "fb-rise",
+    "fb-rise--d1",
+    "fb-rise--d2",
+    "fb-rise--d3",
+    "fb-rise--d4",
+    "fb-row",
+    "fb-row--between",
+    "fb-row--wrap",
+    "fb-scanline",
+    "fb-section",
+    "fb-section--loose",
+    "fb-section--tight",
+    "fb-select",
+    "fb-shell",
+    "fb-signal-card",
+    "fb-signal-card__body",
+    "fb-signal-card__cta",
+    "fb-signal-card__label",
+    "fb-signal-card__title",
+    "fb-stack",
+    "fb-stack--loose",
+    "fb-stack--tight",
+    "fb-status",
+    "fb-status--amber",
+    "fb-status--pink",
+    "fb-status--red",
+    "fb-status--signal",
+    "fb-terminal",
+    "fb-terminal__bar",
+    "fb-terminal__body",
+    "fb-terminal__dot",
+    "fb-terminal__dot--amber",
+    "fb-terminal__dot--matrix",
+    "fb-terminal__dot--red",
+    "fb-terminal__dots",
+    "fb-text-dim",
+    "fb-text-loud",
+    "fb-text-mute",
+    "fb-textarea"
+  ],
+  "keyframes": [
+    "fb-blink",
+    "fb-pulse",
+    "fb-sweep",
+    "fb-rise"
+  ],
+  "breakpoints": [
+    960,
+    640,
+    380
+  ],
+  "voice": {
+    "use": [
+      "Run the signal",
+      "Open the console",
+      "Trace the pattern",
+      "Send the signal",
+      "Enter the room",
+      "See what broke",
+      "Something broken?",
+      "System online"
+    ],
+    "avoid": [
+      "Get started today",
+      "Learn more",
+      "Supercharge your workflow",
+      "Unlock AI-powered insights",
+      "Revolutionize / disrupt / next-gen",
+      "Cutting-edge / best-in-class",
+      "Any \"AI for everyone\" variant"
+    ],
+    "identity": "is Eric Cotter's consulting brand for teams shipping AI that needs to work for actual humans. Not a startup. Not a studio. An operator who sees the pattern, opens the console, and works inside the product until it behaves.",
+    "metaphor": "a central beam that takes chaotic input, parses signal, and outputs usable clarity. Every page in the stack should feel like entering that beam.",
+    "aesthetic": [
+      "Black canvas, controlled neon.",
+      "Terminal precision. Command-center utility.",
+      "Executive-grade hacker interface, not gamer cosplay.",
+      "Signal over spectacle. Every pixel earns its place."
+    ]
+  },
+  "rules": {
+    "namespace": "All public classes use .fb-* prefix",
+    "overridePattern": "Load project stylesheet AFTER fixbroken-os.css. Override tokens via wrapper class.",
+    "bannedFonts": [
+      "Any font besides Inter and JetBrains Mono"
+    ],
+    "bannedColors": [
+      "purple",
+      "glassmorphism"
+    ],
+    "bannedEmoji": [
+      "sparkles",
+      "rocket",
+      "fire",
+      "lightbulb",
+      "party",
+      "handshake"
+    ],
+    "mobile": "Every component must be reviewed at 375px before shipping",
+    "neon": "Neon is a signal, not a decoration. If you add glow, it should mean something."
+  }
+}
