@@ -177,6 +177,34 @@ node tools/token-diff.js --json        # JSON output
 
 Reports added, removed, and changed tokens, components, classes, and voice rules. Exit code 1 if there are changes, 0 if identical.
 
+### Audit API (server.js endpoint)
+
+Programmatic HTML auditing via HTTP. Available when the server is running.
+
+```bash
+# Check what the endpoint expects
+curl https://fixbroken.ai/api/audit
+
+# Audit HTML content
+curl -X POST https://fixbroken.ai/api/audit \
+  -H "Content-Type: application/json" \
+  -d '{"html": "<!doctype html><html lang=\"en\">..."}'
+```
+
+**Response:**
+```json
+{
+  "ok": true,
+  "grade": "A",
+  "errors": 0,
+  "warns": 0,
+  "passes": 11,
+  "findings": [...]
+}
+```
+
+**Limits:** 500KB max HTML body.
+
 ## Integration patterns
 
 ### CI pipeline

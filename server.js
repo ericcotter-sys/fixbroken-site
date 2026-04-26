@@ -442,6 +442,43 @@ app.get('/api/usage', (_req, res) => {
   }
 });
 
+// ---------------------------------------------------------------------------
+// Audit API endpoint — programmatic page audits
+// ---------------------------------------------------------------------------
+// POST /api/audit  { html: "<html>..." }
+// Returns audit findings, grade, and score.
+// ---------------------------------------------------------------------------
+let auditCore;
+try {
+  auditCore = require('./tools/audit-core');
+} catch {}
+
+if (auditCore) {
+  app.post('/api/audit', (req, res) => {
+    const { html } = req.body || {};
+    if (!html || typeof html !== 'string') {
+      return res.status(400).json({ ok: false, err: 'missing html field' });
+    }
+    if (html.length > 500_000) {
+      return res.status(413).json({ ok: false, err: 'html too large (max 500KB)' });
+    }
+    try {
+      const result = auditCore.auditHtml(html);
+      res.json({ ok: true, ...result });
+    } catch (e) {
+      res.status(500).json({ ok: false, err: e.message });
+    }
+  });
+
+  app.get('/api/audit', (_req, res) => {
+    res.json({
+      endpoint: 'POST /api/audit',
+      body: '{ "html": "<html>...</html>" }',
+      response: '{ ok: true, grade: "A", findings: [...], errors: 0, warns: 0, passes: N }',
+    });
+  });
+}
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, HOST, () => {
