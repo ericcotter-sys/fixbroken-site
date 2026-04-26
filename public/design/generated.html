@@ -1,0 +1,781 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FixBroken OS · Generated Reference</title>
+<meta name="description" content="Auto-generated reference for FixBroken OS — every token, component, and rule extracted from the CSS.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  .sg-section { scroll-margin-top: 80px; }
+  .sg-swatch {
+    display: flex; align-items: center; gap: var(--fb-s-3);
+    padding: var(--fb-s-3);
+    background: var(--fb-panel);
+    border: 1px solid var(--fb-hairline);
+    border-radius: var(--fb-r-2);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+  }
+  .sg-chip-color {
+    width: 40px; height: 40px;
+    border-radius: var(--fb-r-2);
+    flex-shrink: 0;
+    border: 1px solid var(--fb-hairline);
+  }
+  .sg-key { color: var(--fb-text-mute); text-transform: none; letter-spacing: var(--fb-tracking-wide); min-width: 180px; }
+  .sg-val { color: var(--fb-text-loud); margin-left: auto; white-space: nowrap; }
+  .sg-desc { color: var(--fb-text-mute); font-size: var(--fb-fs-11); margin-left: var(--fb-s-3); }
+  .sg-toc {
+    position: sticky; top: calc(var(--fb-nav-h) + var(--fb-s-4));
+    align-self: start;
+  }
+  .sg-toc a {
+    display: block; padding: 4px 0;
+    color: var(--fb-text-mute);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    border-left: 1px solid var(--fb-hairline);
+    padding-left: var(--fb-s-3);
+    transition: color var(--fb-t-fast), border-color var(--fb-t-fast);
+  }
+  .sg-toc a:hover { color: var(--fb-signal); border-color: var(--fb-signal); }
+  .sg-layout {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: var(--fb-s-8);
+  }
+  .sg-class-grid {
+    display: flex; flex-wrap: wrap; gap: var(--fb-s-1);
+  }
+  @media (max-width: 960px) {
+    .sg-layout { grid-template-columns: minmax(0, 1fr); }
+    .sg-toc { position: static; display: flex; gap: var(--fb-s-2); flex-wrap: wrap; }
+    .sg-toc a { border-left: 0; border: 1px solid var(--fb-hairline); padding: 6px 10px; border-radius: 999px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fb-grid-bg"></div>
+<div class="fb-scanline"></div>
+
+<div class="fb-shell">
+
+  <nav class="fb-nav">
+    <div class="fb-nav__inner">
+      <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+      <div class="fb-nav__links">
+        <a class="fb-nav__link" href="/">System</a>
+        <a class="fb-nav__link" href="/design/">Design</a>
+        <a class="fb-nav__link fb-nav__link--active" href="/design/generated.html">Reference</a>
+        <a class="fb-nav__link" href="mailto:hello@fixbroken.ai">Signal</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="fb-section fb-section--loose" style="position:relative; overflow:hidden;">
+      <div class="fb-mcp-cone" style="--cone-h: 400px;"></div>
+      <div class="fb-container" style="position:relative;">
+        <div class="fb-stack">
+          <span class="fb-kicker">System · Auto-Generated Reference</span>
+          <h1 class="fb-display">FixBroken <em>OS.</em></h1>
+          <p class="fb-lede">
+            Machine-generated from <code class="fb-mono" style="color:var(--fb-signal);">fixbroken-os.css</code> and <code class="fb-mono" style="color:var(--fb-signal);">brand.md</code>. 95 tokens. 29 components. 115 classes. Always current.
+          </p>
+          <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-2);">
+            <span class="fb-chip fb-chip--signal">v0.1.0</span>
+            <span class="fb-chip fb-chip--matrix">auto-generated</span>
+            <span class="fb-chip">2026-04-26</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="fb-section">
+      <div class="fb-container">
+        <div class="sg-layout">
+
+          <aside class="sg-toc">
+            <a href="#tokens">Tokens</a>
+            <a href="#components">Components</a>
+            <a href="#classes">All Classes</a>
+            <a href="#voice">Voice</a>
+            <a href="#typography">Typography</a>
+            <a href="#motion">Motion</a>
+            <a href="#breakpoints">Breakpoints</a>
+            <a href="#rules">Rules</a>
+          </aside>
+
+          <div class="fb-stack fb-stack--loose">
+
+            <!-- TOKENS -->
+            <div id="tokens" class="sg-section fb-stack">
+              <span class="fb-kicker">Tokens</span>
+              <h2>95 design tokens.</h2>
+              
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Color Base Surfaces</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-black);"></span><span class="sg-key">--fb-black</span><span class="sg-val">#05070a</span><span class="sg-desc">body background</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-ink);"></span><span class="sg-key">--fb-ink</span><span class="sg-val">#0a0e14</span><span class="sg-desc">default surface</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-panel);"></span><span class="sg-key">--fb-panel</span><span class="sg-val">#0f151c</span><span class="sg-desc">lifted panel</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-surface);"></span><span class="sg-key">--fb-surface</span><span class="sg-val">#141b24</span><span class="sg-desc">more lifted</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-rail);"></span><span class="sg-key">--fb-rail</span><span class="sg-val">#1a2330</span><span class="sg-desc">rails, nav, sub-panels</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-hairline);"></span><span class="sg-key">--fb-hairline</span><span class="sg-val">#2a3442</span><span class="sg-desc">borders, dividers</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-hairline-hot);"></span><span class="sg-key">--fb-hairline-hot</span><span class="sg-val">#3d4a5c</span><span class="sg-desc">emphasized border</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Color Signal</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-signal);"></span><span class="sg-key">--fb-signal</span><span class="sg-val">#00d4ff</span><span class="sg-desc">electric cyan — primary signal</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-signal-dim);"></span><span class="sg-key">--fb-signal-dim</span><span class="sg-val">#0099bb</span><span class="sg-desc">dimmed variant for subtle emphasis</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-signal-bright);"></span><span class="sg-key">--fb-signal-bright</span><span class="sg-val">#6de8ff</span><span class="sg-desc">highlight / active state</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-signal-glow);"></span><span class="sg-key">--fb-signal-glow</span><span class="sg-val">rgba(0, 212, 255, 0.35)</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-signal-wash);"></span><span class="sg-key">--fb-signal-wash</span><span class="sg-val">rgba(0, 212, 255, 0.06)</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Color Matrix</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-matrix);"></span><span class="sg-key">--fb-matrix</span><span class="sg-val">#00ff88</span><span class="sg-desc">Matrix green</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-matrix-dim);"></span><span class="sg-key">--fb-matrix-dim</span><span class="sg-val">#00b868</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-matrix-glow);"></span><span class="sg-key">--fb-matrix-glow</span><span class="sg-val">rgba(0, 255, 136, 0.30)</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-matrix-wash);"></span><span class="sg-key">--fb-matrix-wash</span><span class="sg-val">rgba(0, 255, 136, 0.05)</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Color Coral</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-coral);"></span><span class="sg-key">--fb-coral</span><span class="sg-val">#ff7a5a</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-coral-dim);"></span><span class="sg-key">--fb-coral-dim</span><span class="sg-val">#e56b4f</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-coral-glow);"></span><span class="sg-key">--fb-coral-glow</span><span class="sg-val">rgba(255, 122, 90, 0.30)</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Color Pink</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-pink);"></span><span class="sg-key">--fb-pink</span><span class="sg-val">#ff3ec9</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-pink-bright);"></span><span class="sg-key">--fb-pink-bright</span><span class="sg-val">#ff6bd8</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-pink-dim);"></span><span class="sg-key">--fb-pink-dim</span><span class="sg-val">#c4309a</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-pink-glow);"></span><span class="sg-key">--fb-pink-glow</span><span class="sg-val">rgba(255, 62, 201, 0.35)</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-pink-wash);"></span><span class="sg-key">--fb-pink-wash</span><span class="sg-val">rgba(255, 62, 201, 0.06)</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Color State</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-amber);"></span><span class="sg-key">--fb-amber</span><span class="sg-val">#ffb64a</span><span class="sg-desc">warning</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-red);"></span><span class="sg-key">--fb-red</span><span class="sg-val">#ff4a5a</span><span class="sg-desc">error</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-red-dim);"></span><span class="sg-key">--fb-red-dim</span><span class="sg-val">#c4364a</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Color Text</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text);"></span><span class="sg-key">--fb-text</span><span class="sg-val">#e4eaf2</span><span class="sg-desc">primary — soft white with blue hint</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text-loud);"></span><span class="sg-key">--fb-text-loud</span><span class="sg-val">#ffffff</span><span class="sg-desc">extreme emphasis</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text-dim);"></span><span class="sg-key">--fb-text-dim</span><span class="sg-val">#8a97a8</span><span class="sg-desc">secondary copy</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text-mute);"></span><span class="sg-key">--fb-text-mute</span><span class="sg-val">#556070</span><span class="sg-desc">tertiary / labels</span></div>
+                  <div class="sg-swatch"><span class="sg-chip-color" style="background:var(--fb-text-ghost);"></span><span class="sg-key">--fb-text-ghost</span><span class="sg-val">#354050</span><span class="sg-desc">placeholder / disabled</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Typography</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-key">--fb-font-mono</span><span class="sg-val">"JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-font-sans</span><span class="sg-val">"Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-10</span><span class="sg-val">10px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-11</span><span class="sg-val">11px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-12</span><span class="sg-val">12px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-13</span><span class="sg-val">13px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-14</span><span class="sg-val">14px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-15</span><span class="sg-val">15px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-16</span><span class="sg-val">16px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-18</span><span class="sg-val">18px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-20</span><span class="sg-val">20px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-24</span><span class="sg-val">24px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-32</span><span class="sg-val">32px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-40</span><span class="sg-val">40px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-48</span><span class="sg-val">clamp(36px, 5vw, 48px)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-64</span><span class="sg-val">clamp(44px, 7vw, 64px)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-fs-88</span><span class="sg-val">clamp(52px, 9vw, 88px)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-lh-tight</span><span class="sg-val">1.1</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-lh-snug</span><span class="sg-val">1.25</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-lh-normal</span><span class="sg-val">1.5</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-lh-relaxed</span><span class="sg-val">1.7</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-tracking-tight</span><span class="sg-val">-0.02em</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-tracking-normal</span><span class="sg-val">0</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-tracking-wide</span><span class="sg-val">0.08em</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-tracking-extra</span><span class="sg-val">0.16em</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Spacing Scale</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-1</span><span class="sg-val">4px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-2</span><span class="sg-val">8px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-3</span><span class="sg-val">12px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-4</span><span class="sg-val">16px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-5</span><span class="sg-val">20px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-6</span><span class="sg-val">24px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-8</span><span class="sg-val">32px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-10</span><span class="sg-val">40px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-12</span><span class="sg-val">48px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-16</span><span class="sg-val">64px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-20</span><span class="sg-val">80px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-24</span><span class="sg-val">96px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-s-32</span><span class="sg-val">128px</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Radius</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-key">--fb-r-0</span><span class="sg-val">0px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-r-1</span><span class="sg-val">2px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-r-2</span><span class="sg-val">4px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-r-3</span><span class="sg-val">6px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-r-4</span><span class="sg-val">10px</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Shadows Glows</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-key">--fb-glow-signal</span><span class="sg-val">0 0 24px var(--fb-signal-glow)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-glow-matrix</span><span class="sg-val">0 0 24px var(--fb-matrix-glow)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-glow-coral</span><span class="sg-val">0 0 24px var(--fb-coral-glow)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-glow-soft</span><span class="sg-val">0 0 64px rgba(0, 212, 255, 0.08)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-lift</span><span class="sg-val">0 1px 0 rgba(255,255,255,0.03) inset, 0 1px 2px rgba(0,0,0,0.4)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-lift-strong</span><span class="sg-val">0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px rgba(0,0,0,0.6)</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Motion</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-key">--fb-t-fast</span><span class="sg-val">120ms cubic-bezier(.2,.6,.2,1)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-t-normal</span><span class="sg-val">220ms cubic-bezier(.2,.6,.2,1)</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-t-slow</span><span class="sg-val">380ms cubic-bezier(.2,.6,.2,1)</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Z Index Layers</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-key">--fb-z-grid</span><span class="sg-val">0</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-z-base</span><span class="sg-val">1</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-z-panel</span><span class="sg-val">10</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-z-nav</span><span class="sg-val">100</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-z-overlay</span><span class="sg-val">500</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-z-modal</span><span class="sg-val">1000</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-z-toast</span><span class="sg-val">2000</span></div>
+              </div>
+            </div>
+
+            <div class="fb-stack fb-stack--tight">
+              <span class="fb-label">Layout</span>
+              <div class="fb-grid fb-grid--tight">
+                  <div class="sg-swatch"><span class="sg-key">--fb-max-w</span><span class="sg-val">1200px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-max-w-narrow</span><span class="sg-val">720px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-nav-h</span><span class="sg-val">56px</span></div>
+                  <div class="sg-swatch"><span class="sg-key">--fb-px</span><span class="sg-val">clamp(20px, 4vw, 40px)</span></div>
+              </div>
+            </div>
+            </div>
+
+            <!-- COMPONENTS -->
+            <div id="components" class="sg-section fb-stack">
+              <span class="fb-kicker">Components</span>
+              <h2>29 documented components.</h2>
+              <div class="fb-grid fb-grid--2">
+                
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-shell</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">the outermost wrapper for a full page. Think of it as the chassis of the console. Everything sits inside a shell.</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-container</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">centered content column with consistent max width</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-section</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">vertical rhythm block</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-stack</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">vertical spacing between children</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-row</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">horizontal layout</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-grid</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">auto-fit grid, great for command dashboards</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-display</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">oversized hero title</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-lede</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">hero subtitle</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-mono</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">force monospace</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-label</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">small uppercase tracking label</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-kicker</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">tag line above a title</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-nav</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">top command bar</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-panel</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">the core container for content. Dark, bordered, hair of glow.</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-terminal</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">stylized terminal window</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-command</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">a single command line (prompt + text + cursor)</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-cta</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">command-style CTA. Feels like a command, not a marketing button.</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-chip</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">small pill / badge. For statuses, categories, keywords.</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-status</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">live status row with colored dot</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-signal-card</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">a card for a service, feature, or project. Grid-ready.</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-context-rail</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">side rail with system context (stats, keys, status)</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-form</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">terminal-style form controls</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-footer</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">closing system bar</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-divider</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">horizontal signal line</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-grid-bg</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">subtle background grid (only on shells, not panels)</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-scanline</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">horizontal scan line overlay (subtle)</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-mcp-cone</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">the foundational metaphor. Beam from the top. Used as a hero decoration. Inherit width from parent; height from --cone-h.</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-beam</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">a vertical signal beam (small decorative element)</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-cursor</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">blinking terminal cursor</p>
+              </div>
+
+              <div class="fb-panel">
+                <div class="fb-row fb-row--between" style="margin-bottom: var(--fb-s-2);">
+                  <code class="fb-mono" style="color:var(--fb-signal); font-size: var(--fb-fs-14);">.fb-glow</code>
+                </div>
+                <p style="color: var(--fb-text-dim); font-size: var(--fb-fs-14);">apply a subtle glow to any element</p>
+              </div>
+              </div>
+            </div>
+
+            <!-- ALL CLASSES -->
+            <div id="classes" class="sg-section fb-stack">
+              <span class="fb-kicker">All Classes</span>
+              <h2>115 .fb-* classes.</h2>
+              <div class="sg-class-grid">
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-beam</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-chip</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-chip--amber</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-chip--coral</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-chip--matrix</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-chip--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-chip--signal</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-command</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-command--arrow</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-command--matrix</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-command--none</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-container</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-container--narrow</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-context-rail</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-context-rail__divider</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-context-rail__key</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-context-rail__row</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-context-rail__val</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cta</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cta--coral</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cta--ghost</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cta--matrix</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cta--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cta--pink-solid</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cta--solid</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cursor</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-cursor--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-display</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-display--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-divider</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-divider--signal</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-field</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-field__label</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-footer</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-footer__row</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-form</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-glow</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-glow--coral</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-glow--matrix</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-glow--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-grid</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-grid--2</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-grid--tight</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-grid-bg</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-input</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-kicker</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-kicker--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-label</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-label--amber</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-label--coral</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-label--matrix</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-label--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-label--signal</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-lede</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-mcp-cone</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-mcp-cone--coral</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-mcp-cone--matrix</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-mcp-cone--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-mono</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-mono-label</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-nav</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-nav__brand</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-nav__inner</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-nav__link</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-nav__link--active</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-nav__links</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-nav__links--fade</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-output</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-panel</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-panel--coral</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-panel--lifted</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-panel--loose</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-panel--matrix</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-panel--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-panel--signal</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-panel--tight</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-rise</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-rise--d1</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-rise--d2</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-rise--d3</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-rise--d4</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-row</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-row--between</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-row--wrap</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-scanline</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-section</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-section--loose</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-section--tight</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-select</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-shell</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-signal-card</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-signal-card__body</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-signal-card__cta</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-signal-card__label</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-signal-card__title</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-stack</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-stack--loose</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-stack--tight</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-status</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-status--amber</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-status--pink</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-status--red</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-status--signal</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-terminal</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-terminal__bar</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-terminal__body</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-terminal__dot</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-terminal__dot--amber</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-terminal__dot--matrix</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-terminal__dot--red</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-terminal__dots</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-text-dim</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-text-loud</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-text-mute</span>
+                  <span class="fb-chip" style="font-size: var(--fb-fs-10);">.fb-textarea</span>
+              </div>
+            </div>
+
+            <!-- VOICE -->
+            <div id="voice" class="sg-section fb-stack">
+              <span class="fb-kicker">Voice</span>
+              <h2>How the system talks.</h2>
+              
+            <div class="fb-grid fb-grid--2">
+              <div class="fb-panel fb-panel--matrix">
+                <span class="fb-label fb-label--matrix">USE</span>
+                <ul style="margin-top: var(--fb-s-3); padding-left: 18px; list-style: disc;">
+                    <li>Run the signal</li>
+                    <li>Open the console</li>
+                    <li>Trace the pattern</li>
+                    <li>Send the signal</li>
+                    <li>Enter the room</li>
+                    <li>See what broke</li>
+                    <li>Something broken?</li>
+                    <li>System online</li>
+                </ul>
+              </div>
+              <div class="fb-panel" style="border-color: color-mix(in srgb, var(--fb-red) 30%, var(--fb-hairline));">
+                <span class="fb-label" style="color: var(--fb-red);">AVOID</span>
+                <ul style="margin-top: var(--fb-s-3); padding-left: 18px; list-style: disc;">
+                    <li>Get started today</li>
+                    <li>Learn more</li>
+                    <li>Supercharge your workflow</li>
+                    <li>Unlock AI-powered insights</li>
+                    <li>Revolutionize / disrupt / next-gen</li>
+                    <li>Cutting-edge / best-in-class</li>
+                    <li>Any "AI for everyone" variant</li>
+                </ul>
+              </div>
+            </div>
+            </div>
+
+            <!-- TYPOGRAPHY -->
+            <div id="typography" class="sg-section fb-stack">
+              <span class="fb-kicker">Typography</span>
+              <h2>2 families. No compromise.</h2>
+              
+              <div class="fb-panel">
+                <span class="fb-label">Inter</span>
+                <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim);">human copy (lede, body, headings that need to breathe)</p>
+              </div>
+
+              <div class="fb-panel">
+                <span class="fb-label">JetBrains Mono</span>
+                <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim);">system copy (labels, prompts, commands, chips, statuses)</p>
+              </div>
+              <p class="fb-text-mute" style="font-family: var(--fb-font-mono); font-size: var(--fb-fs-12);">No third family. No decorative fonts. No script.</p>
+            </div>
+
+            <!-- MOTION -->
+            <div id="motion" class="sg-section fb-stack">
+              <span class="fb-kicker">Motion</span>
+              <h2>4 keyframes.</h2>
+              <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-2);">
+                  <span class="fb-chip fb-chip--signal">fb-blink</span>
+                  <span class="fb-chip fb-chip--signal">fb-pulse</span>
+                  <span class="fb-chip fb-chip--signal">fb-sweep</span>
+                  <span class="fb-chip fb-chip--signal">fb-rise</span>
+              </div>
+            </div>
+
+            <!-- BREAKPOINTS -->
+            <div id="breakpoints" class="sg-section fb-stack">
+              <span class="fb-kicker">Responsive</span>
+              <h2>3 breakpoints.</h2>
+              <div class="fb-grid">
+                <div class="fb-panel fb-panel--tight">
+                <span class="fb-label">960px</span>
+                <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-13); color: var(--fb-text-dim);">tablet</p>
+              </div>
+              <div class="fb-panel fb-panel--tight">
+                <span class="fb-label">640px</span>
+                <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-13); color: var(--fb-text-dim);">mobile</p>
+              </div>
+              <div class="fb-panel fb-panel--tight">
+                <span class="fb-label">380px</span>
+                <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-13); color: var(--fb-text-dim);">narrow mobile</p>
+              </div>
+              </div>
+            </div>
+
+            <!-- RULES -->
+            <div id="rules" class="sg-section fb-stack">
+              <span class="fb-kicker">Rules</span>
+              <h2>System constraints.</h2>
+              <div class="fb-stack fb-stack--tight">
+                
+                <div class="fb-panel fb-panel--tight">
+                  <span class="fb-label">namespace</span>
+                  <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-14); color: var(--fb-text-dim);">All public classes use .fb-* prefix</p>
+                </div>
+
+                <div class="fb-panel fb-panel--tight">
+                  <span class="fb-label">overridePattern</span>
+                  <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-14); color: var(--fb-text-dim);">Load project stylesheet AFTER fixbroken-os.css. Override tokens via wrapper class.</p>
+                </div>
+
+                <div class="fb-panel fb-panel--tight">
+                  <span class="fb-label">bannedFonts</span>
+                  <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-14); color: var(--fb-text-dim);">Any font besides Inter and JetBrains Mono</p>
+                </div>
+
+                <div class="fb-panel fb-panel--tight">
+                  <span class="fb-label">bannedColors</span>
+                  <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-14); color: var(--fb-text-dim);">purple, glassmorphism</p>
+                </div>
+
+                <div class="fb-panel fb-panel--tight">
+                  <span class="fb-label">bannedEmoji</span>
+                  <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-14); color: var(--fb-text-dim);">sparkles, rocket, fire, lightbulb, party, handshake</p>
+                </div>
+
+                <div class="fb-panel fb-panel--tight">
+                  <span class="fb-label">mobile</span>
+                  <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-14); color: var(--fb-text-dim);">Every component must be reviewed at 375px before shipping</p>
+                </div>
+
+                <div class="fb-panel fb-panel--tight">
+                  <span class="fb-label">neon</span>
+                  <p style="margin-top: var(--fb-s-1); font-size: var(--fb-fs-14); color: var(--fb-text-dim);">Neon is a signal, not a decoration. If you add glow, it should mean something.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="fb-footer">
+    <div class="fb-footer__row">
+      <span>fixbroken.ai · FixBroken OS v0.1.0</span>
+      <span>auto-generated · 2026-04-26T08:52:15Z</span>
+      <span class="fb-status">system online</span>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>
