@@ -479,6 +479,55 @@ if (auditCore) {
   });
 }
 
+// ---------------------------------------------------------------------------
+// Manifest API endpoint — live design system data
+// ---------------------------------------------------------------------------
+app.get('/api/manifest', (_req, res) => {
+  const manifestPath = path.join(__dirname, 'public', 'design', 'fixbroken-os.manifest.json');
+  try {
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    res.json(manifest);
+  } catch (e) {
+    res.status(500).json({ error: 'manifest not found — run npm run generate:manifest' });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// Design system stats API
+// ---------------------------------------------------------------------------
+app.get('/api/stats', (_req, res) => {
+  const manifestPath = path.join(__dirname, 'public', 'design', 'fixbroken-os.manifest.json');
+  const cssPath = path.join(__dirname, 'public', 'design', 'fixbroken-os.css');
+  try {
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+    const css = fs.readFileSync(cssPath, 'utf8');
+    const cssLines = css.split('\n').length;
+    const tokenCount = Object.values(manifest.tokens).reduce((s, arr) => s + arr.length, 0);
+
+    res.json({
+      version: manifest.version,
+      css: {
+        lines: cssLines,
+        bytes: Buffer.byteLength(css, 'utf8'),
+        sections: 11,
+      },
+      tokens: tokenCount,
+      tokenGroups: Object.keys(manifest.tokens).length,
+      components: manifest.components.length,
+      classes: manifest.allClasses.length,
+      keyframes: manifest.keyframes.length,
+      breakpoints: manifest.breakpoints,
+      typography: manifest.typography.families.length,
+      voice: {
+        use: manifest.voice.use.length,
+        avoid: manifest.voice.avoid.length,
+      },
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, HOST, () => {
