@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fixbroken.ai · ventures</title>
+<meta name="description" content="10 SaaS ventures under fixbroken.ai — executive brief.">
+<meta name="theme-color" content="#05070a">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  .v-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+  }
+  .v-table th {
+    text-align: left;
+    padding: var(--fb-s-2) var(--fb-s-3);
+    color: var(--fb-text-mute);
+    font-weight: 500;
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--fb-hairline);
+    white-space: nowrap;
+  }
+  .v-table td {
+    padding: var(--fb-s-3);
+    border-bottom: 1px solid var(--fb-hairline);
+    color: var(--fb-text-dim);
+    vertical-align: top;
+  }
+  .v-table tr:hover td { background: var(--fb-signal-wash); }
+  .v-table .v-sub { color: var(--fb-signal); font-weight: 500; }
+  .v-table .v-score { font-weight: 600; }
+  .v-table .v-score--high { color: var(--fb-matrix); }
+  .v-table .v-score--mid { color: var(--fb-signal); }
+  .v-table .v-score--low { color: var(--fb-text-mute); }
+
+  .v-card {
+    background: var(--fb-panel);
+    border: 1px solid var(--fb-hairline);
+    border-radius: var(--fb-r-3);
+    padding: var(--fb-s-6) var(--fb-s-8);
+    scroll-margin-top: calc(var(--fb-nav-h) + var(--fb-s-4));
+  }
+  .v-card:target { border-color: var(--fb-signal); box-shadow: var(--fb-glow-signal); }
+  .v-card__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--fb-s-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--fb-s-4);
+  }
+  .v-card__name {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-20);
+    color: var(--fb-signal);
+    font-weight: 600;
+  }
+  .v-card__premise {
+    font-size: var(--fb-fs-16);
+    color: var(--fb-text);
+    line-height: var(--fb-lh-relaxed);
+    max-width: 60ch;
+    margin-bottom: var(--fb-s-5);
+  }
+
+  .v-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--fb-s-4);
+    margin-bottom: var(--fb-s-4);
+  }
+  .v-label {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-10);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+    margin-bottom: var(--fb-s-1);
+  }
+  .v-val {
+    font-size: var(--fb-fs-14);
+    color: var(--fb-text-dim);
+    line-height: var(--fb-lh-relaxed);
+  }
+
+  .v-verdict {
+    padding: var(--fb-s-3) 0 0 0;
+    border-top: 1px solid var(--fb-hairline);
+    font-size: var(--fb-fs-13);
+    color: var(--fb-text-dim);
+    line-height: var(--fb-lh-relaxed);
+    margin-top: var(--fb-s-4);
+  }
+  .v-verdict strong { color: var(--fb-text); }
+  .v-verdict--go { border-color: var(--fb-matrix); }
+  .v-verdict--wait { border-color: var(--fb-amber); }
+  .v-verdict--skip { border-color: var(--fb-text-ghost); }
+
+  .v-rec {
+    background: var(--fb-panel);
+    border: 1px solid color-mix(in srgb, var(--fb-pink) 40%, var(--fb-hairline));
+    border-radius: var(--fb-r-3);
+    padding: var(--fb-s-6);
+    box-shadow: 0 0 48px rgba(255, 62, 201, 0.06);
+  }
+  .v-rec__num {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-48);
+    font-weight: 600;
+    color: var(--fb-pink);
+    line-height: 1;
+    margin-bottom: var(--fb-s-2);
+  }
+  .v-rec__name {
+    font-size: var(--fb-fs-20);
+    color: var(--fb-text-loud);
+    font-weight: 600;
+    margin-bottom: var(--fb-s-3);
+  }
+  .v-rec__why {
+    font-size: var(--fb-fs-14);
+    color: var(--fb-text-dim);
+    line-height: var(--fb-lh-relaxed);
+  }
+
+  @media (max-width: 640px) {
+    .v-table { font-size: var(--fb-fs-11); }
+    .v-table th, .v-table td { padding: var(--fb-s-2); }
+    .v-card { padding: var(--fb-s-5); }
+    .v-row { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fb-grid-bg"></div>
+<div class="fb-scanline"></div>
+
+<div class="fb-shell">
+
+  <nav class="fb-nav">
+    <div class="fb-nav__inner">
+      <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+      <div class="fb-nav__links">
+        <a class="fb-nav__link" href="/">Home</a>
+        <a class="fb-nav__link fb-nav__link--active" href="/ventures">Ventures</a>
+        <a class="fb-nav__link" href="https://vumo.fixbroken.ai">VUMO</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="fb-section" style="padding-top: clamp(64px, 10vh, 100px);">
+      <div class="fb-container">
+        <div class="fb-stack fb-stack--loose">
+
+          <div class="fb-row" style="gap: var(--fb-s-3);">
+            <span class="fb-status">Internal</span>
+            <span class="fb-chip">Executive Brief</span>
+            <span class="fb-chip fb-chip--pink">2026-04-26</span>
+          </div>
+
+          <h1 class="fb-display fb-display--pink fb-rise">
+            <em>Ventures</em>
+          </h1>
+
+          <p class="fb-lede fb-rise fb-rise--d1">
+            10 SaaS products we can ship under fixbroken.ai. All run on existing infrastructure. Three are worth building now. Here's the scorecard.
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SCORECARD -->
+    <section class="fb-section">
+      <div class="fb-container">
+        <div class="fb-stack">
+          <span class="fb-kicker">Scorecard</span>
+          <div style="overflow-x: auto;">
+            <table class="v-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>One-liner</th>
+                  <th>Who pays</th>
+                  <th>Price</th>
+                  <th>Moat</th>
+                  <th>Call</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td class="v-sub"><a href="#comply">comply</a></td>
+                  <td>Automated compliance evidence</td>
+                  <td>Security leads at startups</td>
+                  <td>$149&ndash;399</td>
+                  <td class="v-score v-score--high">9</td>
+                  <td class="v-score v-score--high">Build</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td class="v-sub"><a href="#ledger">ledger</a></td>
+                  <td>AI spend dashboard</td>
+                  <td>Eng managers / finance</td>
+                  <td>$79&ndash;249</td>
+                  <td class="v-score v-score--high">8</td>
+                  <td class="v-score v-score--high">Build</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td class="v-sub"><a href="#census">census</a></td>
+                  <td>Asset inventory + inspections</td>
+                  <td>Fleet / ops managers</td>
+                  <td>$99&ndash;249</td>
+                  <td class="v-score v-score--mid">7</td>
+                  <td class="v-score v-score--high">Build</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td class="v-sub"><a href="#signal">signal</a></td>
+                  <td>LLM output quality scoring</td>
+                  <td>ML / product teams</td>
+                  <td>$99&ndash;299</td>
+                  <td class="v-score v-score--high">8</td>
+                  <td class="v-score v-score--mid">Wait</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td class="v-sub"><a href="#vault">vault</a></td>
+                  <td>Encrypted doc exchange</td>
+                  <td>Legal / consultancies</td>
+                  <td>$99&ndash;299</td>
+                  <td class="v-score v-score--mid">7</td>
+                  <td class="v-score v-score--mid">Wait</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td class="v-sub"><a href="#ingest">ingest</a></td>
+                  <td>Messy CSV &rarr; clean API</td>
+                  <td>Data / ops teams</td>
+                  <td>$49&ndash;199</td>
+                  <td class="v-score v-score--mid">7</td>
+                  <td class="v-score v-score--mid">Wait</td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td class="v-sub"><a href="#pulse">pulse</a></td>
+                  <td>AI endpoint monitoring</td>
+                  <td>DevOps / ML teams</td>
+                  <td>$49&ndash;149</td>
+                  <td class="v-score v-score--low">6</td>
+                  <td class="v-score v-score--low">Skip</td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td class="v-sub"><a href="#pipe">pipe</a></td>
+                  <td>Webhook router</td>
+                  <td>Ops teams</td>
+                  <td>$49&ndash;149</td>
+                  <td class="v-score v-score--low">6</td>
+                  <td class="v-score v-score--low">Skip</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td class="v-sub"><a href="#watch">watch</a></td>
+                  <td>Web page change detection</td>
+                  <td>Competitive intel</td>
+                  <td>$49&ndash;149</td>
+                  <td class="v-score v-score--low">6</td>
+                  <td class="v-score v-score--low">Skip</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td class="v-sub"><a href="#intake">intake</a></td>
+                  <td>Smart data collection forms</td>
+                  <td>B2B teams</td>
+                  <td>$79&ndash;199</td>
+                  <td class="v-score v-score--low">5</td>
+                  <td class="v-score v-score--low">Skip</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOP 3 -->
+    <section class="fb-section fb-section--loose">
+      <div class="fb-container">
+        <div class="fb-stack fb-stack--loose">
+          <span class="fb-kicker fb-kicker--pink">Build these three</span>
+
+          <div class="fb-grid">
+            <div class="v-rec">
+              <div class="v-rec__num">01</div>
+              <div class="v-rec__name">comply</div>
+              <div class="v-rec__why">Compliance automation for startups. Vanta proved this is a billion-dollar market. Nobody sells it at $149/mo. Once a customer has 6 months of evidence history, they can't leave.</div>
+            </div>
+            <div class="v-rec">
+              <div class="v-rec__num">02</div>
+              <div class="v-rec__name">ledger</div>
+              <div class="v-rec__why">AI cost dashboard. Simplest build on the list. Everyone with an OpenAI bill needs this. Existing tools are $500+/mo. $79/mo disappears into an expense report.</div>
+            </div>
+            <div class="v-rec">
+              <div class="v-rec__num">03</div>
+              <div class="v-rec__name">census</div>
+              <div class="v-rec__why">Asset tracking with VUMO built in. VUMO does the inspection, Census stores the record. Nobody else has that integration. $99/mo flat beats Fleetio's per-user pricing.</div>
+            </div>
+          </div>
+
+          <p style="font-family: var(--fb-font-mono); font-size: var(--fb-fs-12); color: var(--fb-text-mute); margin-top: var(--fb-s-4);">
+            Build order: Comply &rarr; Ledger &rarr; Census. Same server. ~$10/mo incremental infra.
+          </p>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAIL: BUILD -->
+    <section class="fb-section">
+      <div class="fb-container">
+        <div class="fb-stack fb-stack--loose">
+          <span class="fb-kicker fb-kicker--matrix">Build now</span>
+
+          <div class="v-card" id="comply">
+            <div class="v-card__head">
+              <span class="v-card__name">comply</span>
+              <span class="fb-chip fb-chip--matrix">Moat: 9</span>
+              <span class="fb-chip">$149&ndash;399/mo</span>
+            </div>
+            <p class="v-card__premise">SOC 2 and ISO 27001 evidence collection that runs automatically. Replaces the compliance spreadsheet.</p>
+            <div class="v-row">
+              <div><div class="v-label">Who pays</div><div class="v-val">Security/ops leads at seed-to-Series B startups prepping for enterprise sales.</div></div>
+              <div><div class="v-label">Why they stay</div><div class="v-val">Can't reconstruct 6 months of compliance evidence retroactively. Their auditor depends on your export format. Switching means starting over.</div></div>
+            </div>
+            <div class="v-row">
+              <div><div class="v-label">Competitive gap</div><div class="v-val">Vanta, Drata, Secureframe proved this at $100M+ ARR. No one offers it at $149/mo for a 12-person startup.</div></div>
+              <div><div class="v-label">MVP scope</div><div class="v-val">GitHub integration only. Pull branch protection, PR settings, team membership nightly. Dashboard + CSV export for auditor. 7 days.</div></div>
+            </div>
+            <div class="v-verdict v-verdict--go"><strong>Strongest moat on the list.</strong> The product itself practices what it sells. Build first.</div>
+          </div>
+
+          <div class="v-card" id="ledger">
+            <div class="v-card__head">
+              <span class="v-card__name">ledger</span>
+              <span class="fb-chip fb-chip--matrix">Moat: 8</span>
+              <span class="fb-chip">$79&ndash;249/mo</span>
+            </div>
+            <p class="v-card__premise">One dashboard for all your AI API spend &mdash; OpenAI, Anthropic, Cohere, Replicate &mdash; broken down by team and feature.</p>
+            <div class="v-row">
+              <div><div class="v-label">Who pays</div><div class="v-val">Engineering managers and finance at companies burning $500&ndash;50K/mo on AI APIs.</div></div>
+              <div><div class="v-label">Why they stay</div><div class="v-val">6 months of cross-provider spend history can't be recreated from any single provider. Finance won't switch mid-fiscal.</div></div>
+            </div>
+            <div class="v-row">
+              <div><div class="v-label">Competitive gap</div><div class="v-val">Helicone and Keywords AI are $500+/mo. Dead-simple $79/mo version doesn't exist.</div></div>
+              <div><div class="v-label">MVP scope</div><div class="v-val">OpenAI usage API only. Connect key, nightly sync, spend chart, model breakdown, Slack alert. 7 days.</div></div>
+            </div>
+            <div class="v-verdict v-verdict--go"><strong>Fastest to validate.</strong> AI spend is exploding, cost visibility is terrible. Build second.</div>
+          </div>
+
+          <div class="v-card" id="census">
+            <div class="v-card__head">
+              <span class="v-card__name">census</span>
+              <span class="fb-chip fb-chip--signal">Moat: 7</span>
+              <span class="fb-chip">$99&ndash;249/mo</span>
+            </div>
+            <p class="v-card__premise">Asset inventory and inspection ledger for vehicles, equipment, devices. Immutable audit trail. VUMO integration built in.</p>
+            <div class="v-row">
+              <div><div class="v-label">Who pays</div><div class="v-val">Fleet and ops managers at 20&ndash;500 asset companies. $99/mo flat vs. competitors' per-user pricing.</div></div>
+              <div><div class="v-label">Why they stay</div><div class="v-val">Complete asset lifecycle history &mdash; inspections, maintenance, condition changes. Insurance and compliance audits depend on it.</div></div>
+            </div>
+            <div class="v-row">
+              <div><div class="v-label">Competitive gap</div><div class="v-val">Fleetio, AssetPanda, UpKeep are $100+/user enterprise. No $99/mo flat-rate version for small fleets.</div></div>
+              <div><div class="v-label">VUMO edge</div><div class="v-val">VUMO does the walkaround. Census stores the results. That integration is the distribution wedge no competitor has.</div></div>
+            </div>
+            <div class="v-verdict v-verdict--go"><strong>VUMO integration makes this defensible.</strong> Build third.</div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAIL: WAIT -->
+    <section class="fb-section">
+      <div class="fb-container">
+        <div class="fb-stack fb-stack--loose">
+          <span class="fb-kicker">Hold &mdash; revisit after top 3 ship</span>
+
+          <div class="v-card" id="signal">
+            <div class="v-card__head">
+              <span class="v-card__name">signal</span>
+              <span class="fb-chip">Moat: 8</span>
+              <span class="fb-chip">$99&ndash;299/mo</span>
+            </div>
+            <p class="v-card__premise">LLM output quality scoring and drift alerts. High moat, but needs a design partner running LLMs in production to validate scoring accuracy. Don't build blind.</p>
+          </div>
+
+          <div class="v-card" id="vault">
+            <div class="v-card__head">
+              <span class="v-card__name">vault</span>
+              <span class="fb-chip">Moat: 7</span>
+              <span class="fb-chip">$99&ndash;299/mo</span>
+            </div>
+            <p class="v-card__premise">Encrypted doc exchange with audit trail. DocSend sold for $165M. Security-first version for legal at $99/mo is a real gap. Solid, but not urgent.</p>
+          </div>
+
+          <div class="v-card" id="ingest">
+            <div class="v-card__head">
+              <span class="v-card__name">ingest</span>
+              <span class="fb-chip">Moat: 7</span>
+              <span class="fb-chip">$49&ndash;199/mo</span>
+            </div>
+            <p class="v-card__premise">Messy CSV to clean JSON. Flatfile raised $50M here. Risk: simple enough that someone bolts it onto existing tooling.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- DETAIL: SKIP -->
+    <section class="fb-section">
+      <div class="fb-container">
+        <div class="fb-stack fb-stack--loose">
+          <span class="fb-kicker" style="color: var(--fb-text-ghost);">Skip &mdash; crowded or unproven</span>
+
+          <div class="v-card" id="pulse">
+            <div class="v-card__head">
+              <span class="v-card__name">pulse</span>
+              <span class="fb-chip">Moat: 6</span>
+              <span class="fb-chip">$49&ndash;149/mo</span>
+            </div>
+            <p class="v-card__premise">AI endpoint monitoring. Uptime monitoring is commoditized. "AI-specific" angle is unproven as a standalone product.</p>
+          </div>
+
+          <div class="v-card" id="pipe">
+            <div class="v-card__head">
+              <span class="v-card__name">pipe</span>
+              <span class="fb-chip">Moat: 6</span>
+              <span class="fb-chip">$49&ndash;149/mo</span>
+            </div>
+            <p class="v-card__premise">Webhook routing. Real market, five funded competitors. Zapier is good enough for most buyers.</p>
+          </div>
+
+          <div class="v-card" id="watch">
+            <div class="v-card__head">
+              <span class="v-card__name">watch</span>
+              <span class="fb-chip">Moat: 6</span>
+              <span class="fb-chip">$49&ndash;149/mo</span>
+            </div>
+            <p class="v-card__premise">Web page change detection. Visualping and Distill.io own this. Hard to differentiate at the low end.</p>
+          </div>
+
+          <div class="v-card" id="intake">
+            <div class="v-card__head">
+              <span class="v-card__name">intake</span>
+              <span class="fb-chip">Moat: 5</span>
+              <span class="fb-chip">$79&ndash;199/mo</span>
+            </div>
+            <p class="v-card__premise">Smart forms. Typeform and Jotform own this. Validation is a feature, not a product. Lowest conviction on the list.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="fb-footer">
+    <div class="fb-container">
+      <span class="fb-footer__copy">fixbroken.ai &middot; internal ventures brief &middot; 2026-04-26</span>
+    </div>
+  </footer>
+
+</div>
+
+</body>
+</html>

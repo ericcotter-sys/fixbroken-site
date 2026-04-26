@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# FixBroken OS — pre-commit hook
+# Runs voice linter on staged HTML/CSS files before allowing commit.
+# Install: cp tools/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit
+#   or:    git config core.hooksPath tools
+
+set -euo pipefail
+
+STAGED=$(git diff --cached --name-only --diff-filter=ACM | grep -E '\.(html|css)$' || true)
+
+if [ -z "$STAGED" ]; then
+  exit 0
+fi
+
+echo "voice-lint: checking staged files..."
+node tools/voice-lint.js $STAGED
+
+EXIT=$?
+if [ $EXIT -ne 0 ]; then
+  echo ""
+  echo "voice-lint: fix violations before committing."
+  exit 1
+fi
