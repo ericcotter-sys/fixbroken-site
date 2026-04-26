@@ -31,7 +31,9 @@
     "deploy:verify": "node tools/deploy-check.js --post",
     "usage": "node tools/usage.js",
     "usage:all": "node tools/usage.js --all",
-    "usage:unused": "node tools/usage.js --unused"
+    "usage:unused": "node tools/usage.js --unused",
+    "contrast": "node tools/contrast.js",
+    "contrast:failures": "node tools/contrast.js --fail-only"
   },
   "dependencies": {
     "express": "^4.21.0",

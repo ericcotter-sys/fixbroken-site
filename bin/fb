@@ -29,6 +29,7 @@ const COMMANDS = {
   validate:   { script: 'validate-manifest.js',   desc: 'Check if manifest is current' },
   deploy:     { script: 'deploy-check.js',        desc: 'Pre/post deploy validation' },
   usage:      { script: 'usage.js',              desc: 'Component usage analyzer' },
+  contrast:   { script: 'contrast.js',           desc: 'WCAG color contrast checker' },
 };
 
 function printHelp() {
