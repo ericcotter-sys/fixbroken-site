@@ -242,6 +242,27 @@ function parseTypography(brandMd) {
 // Main
 // ---------------------------------------------------------------------------
 function main() {
+  if (process.argv.includes('--help') || process.argv.includes('-h')) {
+    console.log(`Usage: generate-manifest [options]
+
+Parses fixbroken-os.css and brand.md to produce a machine-readable JSON manifest.
+
+Options:
+  -h, --help    Show this help
+
+Output: public/design/fixbroken-os.manifest.json`);
+    process.exit(0);
+  }
+
+  if (!fs.existsSync(CSS_PATH)) {
+    console.error(`Error: CSS file not found at ${CSS_PATH}`);
+    process.exit(1);
+  }
+  if (!fs.existsSync(BRAND_PATH)) {
+    console.error(`Error: brand.md not found at ${BRAND_PATH}`);
+    process.exit(1);
+  }
+
   const css = fs.readFileSync(CSS_PATH, 'utf8');
   const brandMd = fs.readFileSync(BRAND_PATH, 'utf8');
 

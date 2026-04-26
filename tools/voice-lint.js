@@ -319,12 +319,13 @@ Examples:
   node tools/voice-lint.js --json             # JSON output for CI`);
       process.exit(0);
     } else {
-      // Could be a file or directory
       const resolved = path.resolve(args[i]);
-      if (fs.existsSync(resolved)) {
-        if (fs.statSync(resolved).isDirectory()) targetDir = resolved;
-        else targetFiles.push(resolved);
+      if (!fs.existsSync(resolved)) {
+        console.error(`Error: ${args[i]} does not exist`);
+        process.exit(1);
       }
+      if (fs.statSync(resolved).isDirectory()) targetDir = resolved;
+      else targetFiles.push(resolved);
     }
   }
 
