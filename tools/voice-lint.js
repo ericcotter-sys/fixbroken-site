@@ -19,9 +19,36 @@ const path = require('path');
 // Exit code 0 = clean, 1 = violations found
 // ---------------------------------------------------------------------------
 
+// ---------------------------------------------------------------------------
+// Load voice rules from manifest if available, with hardcoded fallback
+// ---------------------------------------------------------------------------
+const MANIFEST_PATH = path.join(__dirname, '..', 'public', 'design', 'fixbroken-os.manifest.json');
+
+function loadManifestPhrases() {
+  try {
+    const manifest = JSON.parse(fs.readFileSync(MANIFEST_PATH, 'utf8'));
+    if (manifest.voice && manifest.voice.avoid && manifest.voice.avoid.length > 0) {
+      // Normalize: split compound entries like "Revolutionize / disrupt / next-gen"
+      const phrases = [];
+      for (const raw of manifest.voice.avoid) {
+        const parts = raw.split(/\s*\/\s*/);
+        for (const p of parts) {
+          const cleaned = p.replace(/^any\s+"?/i, '').replace(/"?\s*variant$/i, '').trim().toLowerCase();
+          if (cleaned.length > 2) phrases.push(cleaned);
+        }
+      }
+      return phrases;
+    }
+  } catch {}
+  return null;
+}
+
+const manifestPhrases = loadManifestPhrases();
+
 const RULES = {
-  // Exact banned phrases (case-insensitive substring match)
+  // Exact banned phrases — loaded from manifest if available, hardcoded fallback
   bannedPhrases: [
+    // Always include these (comprehensive list, superset of manifest)
     'get started today',
     'get started now',
     'learn more',
@@ -60,7 +87,9 @@ const RULES = {
     'deep dive into',
     'at the end of the day',
     'it goes without saying',
-  ],
+    // Merge any additional phrases from the manifest
+    ...(manifestPhrases || []),
+  ].filter((v, i, a) => a.indexOf(v) === i), // deduplicate
 
   // Regex patterns for generic AI/marketing sludge
   sludgePatterns: [
