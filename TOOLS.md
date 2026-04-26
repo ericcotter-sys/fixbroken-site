@@ -15,6 +15,8 @@ All tools live in `tools/` and run with Node 20. No external dependencies beyond
 | `npm run tenants` | List active tenants |
 | `npm run tenants:health` | List tenants with live health checks |
 | `npm run diff:tokens` | Diff design tokens vs last commit |
+| `npm run changelog` | Generate design system changelog |
+| `npm run changelog:md` | Markdown changelog (for PRs) |
 
 ## Tools
 
