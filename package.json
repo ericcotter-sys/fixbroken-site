@@ -11,7 +11,8 @@
     "lint:voice:strict": "node tools/voice-lint.js --strict",
     "generate:manifest": "node tools/generate-manifest.js",
     "generate:styleguide": "node tools/generate-styleguide.js",
-    "generate": "node tools/generate-manifest.js && node tools/generate-styleguide.js"
+    "generate": "node tools/generate-manifest.js && node tools/generate-styleguide.js",
+    "scaffold": "node tools/scaffold-tenant.js"
   },
   "dependencies": {
     "express": "^4.21.0",
