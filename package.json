@@ -12,7 +12,10 @@
     "generate:manifest": "node tools/generate-manifest.js",
     "generate:styleguide": "node tools/generate-styleguide.js",
     "generate": "node tools/generate-manifest.js && node tools/generate-styleguide.js",
-    "scaffold": "node tools/scaffold-tenant.js"
+    "scaffold": "node tools/scaffold-tenant.js",
+    "audit": "node tools/audit.js",
+    "audit:json": "node tools/audit.js --json",
+    "audit:verbose": "node tools/audit.js --verbose"
   },
   "dependencies": {
     "express": "^4.21.0",
