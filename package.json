@@ -18,7 +18,9 @@
     "audit:verbose": "node tools/audit.js --verbose",
     "validate:manifest": "node tools/validate-manifest.js",
     "check": "node tools/check.js",
-    "check:fix": "node tools/check.js --fix"
+    "check:fix": "node tools/check.js --fix",
+    "tenants": "node tools/tenants.js",
+    "tenants:health": "node tools/tenants.js --health"
   },
   "dependencies": {
     "express": "^4.21.0",
