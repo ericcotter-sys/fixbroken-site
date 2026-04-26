@@ -2,12 +2,92 @@
   "$schema": "https://fixbroken.ai/design/fixbroken-os.manifest.schema.json",
   "name": "FixBroken OS",
   "version": "0.1.0",
-  "generated": "2026-04-26T16:40:17.054Z",
+  "generated": "2026-04-26T16:57:16.416Z",
   "source": {
     "css": "/design/fixbroken-os.css",
     "brand": "/design/brand.md",
     "styleguide": "/design/",
-    "cssLines": 1175
+    "cssLines": 1175,
+    "cssBytes": 37824,
+    "sections": [
+      {
+        "number": 1,
+        "name": "tokens",
+        "startLine": 33,
+        "endLine": 167,
+        "lines": 135
+      },
+      {
+        "number": 2,
+        "name": "reset",
+        "startLine": 168,
+        "endLine": 191,
+        "lines": 24
+      },
+      {
+        "number": 3,
+        "name": "fonts",
+        "startLine": 192,
+        "endLine": 197,
+        "lines": 6
+      },
+      {
+        "number": 4,
+        "name": "base",
+        "startLine": 198,
+        "endLine": 255,
+        "lines": 58
+      },
+      {
+        "number": 5,
+        "name": "layout",
+        "startLine": 256,
+        "endLine": 310,
+        "lines": 55
+      },
+      {
+        "number": 6,
+        "name": "typography classes",
+        "startLine": 311,
+        "endLine": 398,
+        "lines": 88
+      },
+      {
+        "number": 7,
+        "name": "components",
+        "startLine": 399,
+        "endLine": 874,
+        "lines": 476
+      },
+      {
+        "number": 8,
+        "name": "effects",
+        "startLine": 875,
+        "endLine": 1005,
+        "lines": 131
+      },
+      {
+        "number": 9,
+        "name": "motion",
+        "startLine": 1006,
+        "endLine": 1038,
+        "lines": 33
+      },
+      {
+        "number": 10,
+        "name": "responsive",
+        "startLine": 1039,
+        "endLine": 1142,
+        "lines": 104
+      },
+      {
+        "number": 11,
+        "name": "accessibility",
+        "startLine": 1143,
+        "endLine": 1174,
+        "lines": 32
+      }
+    ]
   },
   "tokens": {
     "color-base-surfaces": [

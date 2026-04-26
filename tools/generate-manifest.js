@@ -128,6 +128,48 @@ function parseKeyframes(css) {
 }
 
 // ---------------------------------------------------------------------------
+// Parse CSS sections with line counts
+// ---------------------------------------------------------------------------
+function parseSections(css) {
+  const sections = [];
+  const lines = css.split('\n');
+  let currentSection = null;
+  let sectionStart = 0;
+
+  for (let i = 0; i < lines.length; i++) {
+    const match = lines[i].match(/^\s*\/\*\s*=+\s*\n?\s*(\d+)\.\s+(\w[\w\s]+)/);
+    if (!match) {
+      const altMatch = lines[i].match(/^\s*(\d+)\.\s+([\w\s]+?)(?:\s*—|\s*$)/);
+      if (altMatch && lines[i - 1] && /=+/.test(lines[i - 1])) {
+        if (currentSection) {
+          currentSection.endLine = i - 2;
+          currentSection.lines = currentSection.endLine - currentSection.startLine + 1;
+          sections.push(currentSection);
+        }
+        currentSection = { number: parseInt(altMatch[1]), name: altMatch[2].trim().toLowerCase(), startLine: i - 1 };
+        continue;
+      }
+    }
+    // Match section headers like: /* ========== \n   1. TOKENS \n   ========== */
+    const sectionHeader = lines[i].match(/^\s*(\d+)\.\s+([\w\s]+?)(?:\s*—|\s*-|\s*$)/);
+    if (sectionHeader && i > 0 && /=+/.test(lines[i - 1])) {
+      if (currentSection) {
+        currentSection.endLine = i - 2;
+        currentSection.lines = currentSection.endLine - currentSection.startLine + 1;
+        sections.push(currentSection);
+      }
+      currentSection = { number: parseInt(sectionHeader[1]), name: sectionHeader[2].trim().toLowerCase(), startLine: i - 1 };
+    }
+  }
+  if (currentSection) {
+    currentSection.endLine = lines.length - 1;
+    currentSection.lines = currentSection.endLine - currentSection.startLine + 1;
+    sections.push(currentSection);
+  }
+  return sections;
+}
+
+// ---------------------------------------------------------------------------
 // Parse responsive breakpoints
 // ---------------------------------------------------------------------------
 function parseBreakpoints(css) {
@@ -270,12 +312,13 @@ Output: public/design/fixbroken-os.manifest.json`);
   const { components, allClasses } = parseComponents(css);
   const keyframes = parseKeyframes(css);
   const breakpoints = parseBreakpoints(css);
+  const sections = parseSections(css);
   const voice = parseVoice(brandMd);
   const palette = parsePalette(brandMd);
   const typography = parseTypography(brandMd);
 
-  // Count CSS lines
   const cssLines = css.split('\n').length;
+  const cssBytes = Buffer.byteLength(css, 'utf8');
 
   const manifest = {
     $schema: 'https://fixbroken.ai/design/fixbroken-os.manifest.schema.json',
@@ -287,6 +330,8 @@ Output: public/design/fixbroken-os.manifest.json`);
       brand: '/design/brand.md',
       styleguide: '/design/',
       cssLines,
+      cssBytes,
+      sections,
     },
     tokens,
     palette,
