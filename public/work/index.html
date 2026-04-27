@@ -9,7 +9,20 @@
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/design/fixbroken-os.css">
 <style>
-  .w-tiles { display: flex; flex-direction: column; gap: var(--fb-s-6); }
+  .w-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .w-slider::-webkit-scrollbar { display: none; }
+
+  .w-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-width: 0;
+  }
 
   .w-tile {
     background: var(--fb-panel);
@@ -17,7 +30,6 @@
     padding: var(--fb-s-8);
     max-width: 1100px;
     margin-inline: auto;
-    width: 100%;
   }
 
   .w-tile__kicker {
@@ -49,6 +61,79 @@
     line-height: var(--fb-lh-relaxed);
     max-width: 64ch;
     margin-bottom: var(--fb-s-6);
+  }
+
+  .w-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--fb-s-6);
+    padding: var(--fb-s-5) 0;
+    border-top: 1px solid var(--fb-hairline);
+    border-bottom: 1px solid var(--fb-hairline);
+    margin-bottom: var(--fb-s-6);
+  }
+  .w-stat { min-width: 80px; }
+  .w-stat__num {
+    font-family: var(--fb-font-sans);
+    font-size: var(--fb-fs-32);
+    font-weight: 600;
+    color: var(--fb-text-loud);
+    line-height: 1;
+  }
+  .w-stat__label {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-10);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+    margin-top: var(--fb-s-1);
+  }
+
+  .w-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--fb-s-4);
+    margin-top: var(--fb-s-6);
+  }
+  .w-nav__arrow {
+    background: none;
+    border: 1px solid var(--fb-hairline);
+    color: var(--fb-text-dim);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-16);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 200ms, color 200ms;
+  }
+  .w-nav__arrow:hover { border-color: var(--fb-signal); color: var(--fb-signal); }
+  .w-nav__arrow:disabled { opacity: 0.25; cursor: default; }
+  .w-nav__arrow:disabled:hover { border-color: var(--fb-hairline); color: var(--fb-text-dim); }
+
+  .w-dots { display: flex; gap: var(--fb-s-2); align-items: center; }
+  .w-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--fb-hairline);
+    border: none; padding: 0; cursor: pointer;
+    transition: background 200ms, box-shadow 200ms;
+  }
+  .w-dot--active {
+    background: var(--fb-signal);
+    box-shadow: 0 0 8px var(--fb-signal-glow);
+  }
+
+  .w-counter {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-11);
+    color: var(--fb-text-mute);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: var(--fb-s-2);
   }
 
   .w-lang {
@@ -92,6 +177,7 @@
   @media (max-width: 640px) {
     .w-tile { padding: var(--fb-s-5); }
     .w-lang { bottom: 72px; }
+    .w-stat__num { font-size: var(--fb-fs-24); }
   }
 </style>
 </head>
@@ -124,102 +210,132 @@
           <span class="fb-mono" style="font-size: var(--fb-fs-11); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide);">names redacted - revealed under NDA on request</span>
         </div>
 
-        <div class="w-tiles">
+        <div class="w-slider" id="w-slider">
 
-        <div class="w-tile">
-
-          <div class="w-tile__kicker">
-            <span class="w-tile__handle">client//0x9f2a</span>
-            <span class="fb-chip fb-chip--matrix">active</span>
-          </div>
-
-          <div class="w-tile__tags">project//walkaround &nbsp; ship//brand + product OS, AI pipeline spec, audit-trail workspace &nbsp; use//operator-grade vehicle ops</div>
-
-          <p class="w-tile__body" data-lang="exec">Product design, AI pipeline spec, brand system, and a live consulting workspace - delivered in the first engagement phase. The client has a working product they can review, challenge, and ship from. Not a deck.</p>
-          <p class="w-tile__body" data-lang="eng">Node/Express tenant on FixBroken OS with scoped overrides. Multi-step guided capture to AI pipeline spec. Static workspace with timestamped deliverables. Hosted as a tenant subsite on the same Lightsail platform.</p>
-
-          <div class="fb-grid fb-grid--2">
-            <div class="fb-stack">
-              <div>
-                <span class="fb-label fb-label--signal">What we built</span>
-                <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">End-to-end product flow. AI-generated content from user input. Full brand identity and voice system. Live consulting workspace with audit trail and deliverable tracking.</p>
+          <!-- SLIDE 1: client engagement -->
+          <div class="w-slide">
+            <div class="w-tile">
+              <div class="w-tile__kicker">
+                <span class="w-tile__handle">client//0x9f2a</span>
+                <span class="fb-chip fb-chip--matrix">active</span>
               </div>
-              <div>
-                <span class="fb-label fb-label--signal">The workspace</span>
-                <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Not a pitch deck. The client sees the product flow, reviews deliverables, reads the audit - all live. Every deliverable has a ticking clock showing time since delivery.</p>
+              <div class="w-tile__tags">project//walkaround &nbsp; ship//brand + product OS, AI pipeline spec, audit-trail workspace &nbsp; use//operator-grade vehicle ops</div>
+
+              <div class="w-stats">
+                <div class="w-stat"><div class="w-stat__num">1</div><div class="w-stat__label">Engagement</div></div>
+                <div class="w-stat"><div class="w-stat__num">5</div><div class="w-stat__label">Deliverables</div></div>
+                <div class="w-stat"><div class="w-stat__num">3</div><div class="w-stat__label">Product flows</div></div>
+                <div class="w-stat"><div class="w-stat__num">Phase 1</div><div class="w-stat__label">Status</div></div>
+              </div>
+
+              <p class="w-tile__body" data-lang="exec">Product design, AI pipeline spec, brand system, and a live consulting workspace - delivered in the first engagement phase. The client has a working product they can review, challenge, and ship from. Not a deck.</p>
+              <p class="w-tile__body" data-lang="eng">Node/Express tenant on FixBroken OS with scoped overrides. Multi-step guided capture to AI pipeline spec. Static workspace with timestamped deliverables. Hosted as a tenant subsite on the same Lightsail platform.</p>
+
+              <div class="fb-grid fb-grid--2">
+                <div class="fb-stack">
+                  <div>
+                    <span class="fb-label fb-label--signal">What we built</span>
+                    <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">End-to-end product flow. AI-generated content from user input. Full brand identity and voice system. Live consulting workspace with audit trail and deliverable tracking.</p>
+                  </div>
+                  <div>
+                    <span class="fb-label fb-label--signal">The workspace</span>
+                    <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Not a pitch deck. The client sees the product flow, reviews deliverables, reads the audit - all live. Every deliverable has a ticking clock showing time since delivery.</p>
+                  </div>
+                </div>
+                <div>
+                  <span class="fb-label fb-label--signal">Stack</span>
+                  <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Node/Express on Lightsail. FixBroken OS design system with scoped tenant overrides. Static workspace with deliverables timestamped to the second.</p>
+                </div>
               </div>
             </div>
-            <div>
-              <span class="fb-label fb-label--signal">Stack</span>
-              <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Node/Express on Lightsail. FixBroken OS design system with scoped tenant overrides. Static workspace with deliverables timestamped to the second.</p>
+          </div>
+
+          <!-- SLIDE 2: internal platform -->
+          <div class="w-slide">
+            <div class="w-tile">
+              <div class="w-tile__kicker">
+                <span class="w-tile__handle">fixbroken//internal</span>
+                <span class="fb-chip fb-chip--matrix">production</span>
+              </div>
+              <div class="w-tile__tags">design system - multi-tenant CSS - 15-tool quality chain - 4 tenants</div>
+
+              <div class="w-stats">
+                <div class="w-stat"><div class="w-stat__num">1,174</div><div class="w-stat__label">Lines of CSS</div></div>
+                <div class="w-stat"><div class="w-stat__num">29</div><div class="w-stat__label">Components</div></div>
+                <div class="w-stat"><div class="w-stat__num">15</div><div class="w-stat__label">CLI tools</div></div>
+                <div class="w-stat"><div class="w-stat__num">3,948</div><div class="w-stat__label">Tool LOC</div></div>
+                <div class="w-stat"><div class="w-stat__num">4</div><div class="w-stat__label">Tenants</div></div>
+                <div class="w-stat"><div class="w-stat__num">80+</div><div class="w-stat__label">Commits</div></div>
+              </div>
+
+              <p class="w-tile__body" data-lang="exec">FixBroken OS, the toolchain that enforces it, and the multi-tenant platform running underneath. The system this page is built on.</p>
+              <p class="w-tile__body" data-lang="eng">Single-file CSS design system with machine-readable JSON manifest. 15 Node.js CLI tools - voice linter, 6-category page audit, WCAG contrast checker, tenant scaffolder, manifest generator. 4 Express tenants on one Lightsail box behind nginx, systemd, webhook auto-deploy.</p>
+
+              <div class="fb-grid fb-grid--2">
+                <div class="fb-stack">
+                  <div>
+                    <span class="fb-label fb-label--signal">The system</span>
+                    <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">One CSS file serves every tenant. 14 token categories, 29 components, 11 organized sections. Overrides happen per-tenant via scoped wrapper classes - never by forking. Machine-readable manifest drives the toolchain.</p>
+                  </div>
+                  <div>
+                    <span class="fb-label fb-label--signal">The toolchain</span>
+                    <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Voice linter catches banned phrases and CSS violations. Page audit scores 6 categories. Tenant scaffolder generates nginx config, systemd unit, deploy script, and override CSS in one command. Pre-commit hook blocks violations.</p>
+                  </div>
+                </div>
+                <div>
+                  <span class="fb-label fb-label--signal">Platform</span>
+                  <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">AWS Lightsail, Ubuntu 24.04. Each tenant is an Express server on its own port, managed by systemd, proxied by nginx. Push to main, live in 10 seconds. Real-time token telemetry at <a href="/tokenz/" style="color: var(--fb-signal-dim); text-decoration: none; border-bottom: 1px solid rgba(0,212,255,0.25);">/tokenz</a>.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- SLIDE 3: console -->
+          <div class="w-slide">
+            <div class="w-tile">
+              <div class="w-tile__kicker">
+                <span class="w-tile__handle">fixbroken//console</span>
+                <span class="fb-chip fb-chip--matrix">production</span>
+              </div>
+              <div class="w-tile__tags">free diagnostic tools - public API - scored results - shareable links</div>
+
+              <div class="w-stats">
+                <div class="w-stat"><div class="w-stat__num">2</div><div class="w-stat__label">Live tools</div></div>
+                <div class="w-stat"><div class="w-stat__num">6</div><div class="w-stat__label">Audit categories</div></div>
+                <div class="w-stat"><div class="w-stat__num">0</div><div class="w-stat__label">Signup required</div></div>
+                <div class="w-stat"><div class="w-stat__num">30s</div><div class="w-stat__label">Time to result</div></div>
+              </div>
+
+              <p class="w-tile__body" data-lang="exec">Free diagnostic tools built on the same engine we use internally. Paste a design system, brand doc, or copy - get a scored, shareable result in 30 seconds. Live at <a href="/console/" style="color: var(--fb-signal-dim); text-decoration: none; border-bottom: 1px solid rgba(0,212,255,0.25);">fixbroken.ai/console</a>.</p>
+              <p class="w-tile__body" data-lang="eng">Browser-based tools backed by the FixBroken OS audit engine and voice linter. POST to /api/audit with raw HTML, get a JSON scorecard. Voice lint checks copy against the manifest ruleset. No auth, no signup - paste and run.</p>
+
+              <div class="fb-grid fb-grid--2">
+                <div class="fb-stack">
+                  <div>
+                    <span class="fb-label fb-label--signal">Audit</span>
+                    <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Paste HTML, get a 6-category scorecard - voice, design, structure, accessibility, responsive, performance. Letter grade, pass/warn/fail per check, actionable findings.</p>
+                  </div>
+                  <div>
+                    <span class="fb-label fb-label--signal">Voice lint</span>
+                    <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Paste copy or markup, get flagged for marketing sludge, banned phrases, emoji violations, and CSS namespace issues. Rules read from the machine-readable manifest.</p>
+                  </div>
+                </div>
+                <div>
+                  <span class="fb-label fb-label--signal">Why free</span>
+                  <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">The tools demonstrate the system. If the audit catches problems you care about, the conversation about fixing them is a natural next step.</p>
+                </div>
+              </div>
             </div>
           </div>
 
         </div>
 
-        <div class="w-tile">
-
-          <div class="w-tile__kicker">
-            <span class="w-tile__handle">fixbroken//internal</span>
-            <span class="fb-chip fb-chip--matrix">production</span>
-          </div>
-
-          <div class="w-tile__tags">design system - multi-tenant CSS - 15-tool quality chain - 4 tenants</div>
-
-          <p class="w-tile__body" data-lang="exec">FixBroken OS, the toolchain that enforces it, and the multi-tenant platform running underneath. 1,174 lines of CSS, 29 components, 4 tenants, 80+ commits. The system this page is built on.</p>
-          <p class="w-tile__body" data-lang="eng">Single-file CSS design system with machine-readable JSON manifest. 15 Node.js CLI tools (3,948 LOC) - voice linter, 6-category page audit, WCAG contrast checker, tenant scaffolder, manifest generator. 4 Express tenants on one Lightsail box behind nginx, systemd, webhook auto-deploy.</p>
-
-          <div class="fb-grid fb-grid--2">
-            <div class="fb-stack">
-              <div>
-                <span class="fb-label fb-label--signal">The system</span>
-                <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">One CSS file serves every tenant. 14 token categories, 29 components, 11 organized sections. Overrides happen per-tenant via scoped wrapper classes - never by forking. Machine-readable manifest drives the toolchain.</p>
-              </div>
-              <div>
-                <span class="fb-label fb-label--signal">The toolchain</span>
-                <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Voice linter catches banned phrases and CSS violations. Page audit scores 6 categories. Tenant scaffolder generates nginx config, systemd unit, deploy script, and override CSS in one command. Pre-commit hook blocks violations.</p>
-              </div>
-            </div>
-            <div>
-              <span class="fb-label fb-label--signal">Platform</span>
-              <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">AWS Lightsail, Ubuntu 24.04. Each tenant is an Express server on its own port, managed by systemd, proxied by nginx. Push to main, live in 10 seconds. Real-time token telemetry at <a href="/tokenz/" style="color: var(--fb-signal-dim); text-decoration: none; border-bottom: 1px solid rgba(0,212,255,0.25);">/tokenz</a>.</p>
-            </div>
-          </div>
-
+        <div class="w-nav">
+          <button class="w-nav__arrow" id="w-prev" aria-label="Previous">&#9664;</button>
+          <div class="w-dots" id="w-dots"></div>
+          <button class="w-nav__arrow" id="w-next" aria-label="Next">&#9654;</button>
         </div>
-
-        <div class="w-tile">
-
-          <div class="w-tile__kicker">
-            <span class="w-tile__handle">fixbroken//console</span>
-            <span class="fb-chip fb-chip--matrix">production</span>
-          </div>
-
-          <div class="w-tile__tags">free diagnostic tools - public API - scored results - shareable links</div>
-
-          <p class="w-tile__body" data-lang="exec">Free diagnostic tools built on the same engine we use internally. Paste a design system, brand doc, or copy - get a scored, shareable result in 30 seconds. Live at <a href="/console/" style="color: var(--fb-signal-dim); text-decoration: none; border-bottom: 1px solid rgba(0,212,255,0.25);">fixbroken.ai/console</a>.</p>
-          <p class="w-tile__body" data-lang="eng">Browser-based tools backed by the FixBroken OS audit engine and voice linter. POST to /api/audit with raw HTML, get a JSON scorecard. Voice lint checks copy against the manifest ruleset. No auth, no signup - paste and run.</p>
-
-          <div class="fb-grid fb-grid--2">
-            <div class="fb-stack">
-              <div>
-                <span class="fb-label fb-label--signal">Audit</span>
-                <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Paste HTML, get a 6-category scorecard - voice, design, structure, accessibility, responsive, performance. Letter grade, pass/warn/fail per check, actionable findings.</p>
-              </div>
-              <div>
-                <span class="fb-label fb-label--signal">Voice lint</span>
-                <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Paste copy or markup, get flagged for marketing sludge, banned phrases, emoji violations, and CSS namespace issues. Rules read from the machine-readable manifest.</p>
-              </div>
-            </div>
-            <div>
-              <span class="fb-label fb-label--signal">Why free</span>
-              <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">The tools demonstrate the system. If the audit catches problems you care about, the conversation about fixing them is a natural next step.</p>
-            </div>
-          </div>
-
-        </div>
-
-        </div>
+        <div class="w-counter" id="w-counter"></div>
 
       </div>
     </section>
@@ -255,6 +371,67 @@
   execBtn.addEventListener('click', function() { applyLang(false); });
   engBtn.addEventListener('click', function() { applyLang(true); });
   try { if (localStorage.getItem(KEY) === 'eng') applyLang(true); } catch(_) {}
+
+  var slider = document.getElementById('w-slider');
+  var slides = slider.querySelectorAll('.w-slide');
+  var dotsWrap = document.getElementById('w-dots');
+  var counter = document.getElementById('w-counter');
+  var prevBtn = document.getElementById('w-prev');
+  var nextBtn = document.getElementById('w-next');
+  var total = slides.length;
+  var current = 0;
+
+  var handles = [];
+  slides.forEach(function(s) {
+    var h = s.querySelector('.w-tile__handle');
+    handles.push(h ? h.textContent.replace('client//', '').replace('fixbroken//', '') : '');
+  });
+
+  for (var i = 0; i < total; i++) {
+    var dot = document.createElement('button');
+    dot.className = 'w-dot' + (i === 0 ? ' w-dot--active' : '');
+    dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+    dot.dataset.idx = i;
+    dot.addEventListener('click', function() { goTo(parseInt(this.dataset.idx)); });
+    dotsWrap.appendChild(dot);
+  }
+
+  function update() {
+    dotsWrap.querySelectorAll('.w-dot').forEach(function(d, i) {
+      d.classList.toggle('w-dot--active', i === current);
+    });
+    var h = handles[current] || '';
+    counter.innerHTML = (current + 1) + ' / ' + total +
+      (h ? ' &middot; <span style="text-transform:none">' + h + '</span>' : '');
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total) return;
+    current = idx;
+    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    update();
+  }
+
+  prevBtn.addEventListener('click', function() { goTo(current - 1); });
+  nextBtn.addEventListener('click', function() { goTo(current + 1); });
+
+  var scrollTimer;
+  slider.addEventListener('scroll', function() {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+      var idx = Math.round(slider.scrollLeft / slider.offsetWidth);
+      if (idx !== current && idx >= 0 && idx < total) { current = idx; update(); }
+    }, 80);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') goTo(current + 1);
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  update();
 })();
 </script>
 
