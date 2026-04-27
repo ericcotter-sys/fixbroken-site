@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>tokenz · fixbroken.ai</title>
+<meta name="description" content="Claude Code token usage dashboard — live from local session logs.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  body {
+    background: var(--fb-black);
+    color: var(--fb-text);
+    font-family: var(--fb-font-mono);
+    margin: 0;
+    padding: var(--fb-s-6);
+    min-height: 100vh;
+  }
+
+  .tz-shell {
+    max-width: 880px;
+    margin: 0 auto;
+  }
+
+  /* ---- Header ---- */
+  .tz-header {
+    margin-bottom: var(--fb-s-8);
+  }
+  .tz-title {
+    font-size: var(--fb-fs-24);
+    font-weight: 600;
+    color: var(--fb-signal);
+    text-shadow: 0 0 24px var(--fb-signal-glow);
+    margin: 0 0 var(--fb-s-2);
+    letter-spacing: var(--fb-tracking-tight);
+    font-family: var(--fb-font-sans);
+  }
+  .tz-subtitle {
+    font-size: var(--fb-fs-13);
+    color: var(--fb-text-dim);
+    margin: 0 0 var(--fb-s-4);
+  }
+  .tz-status {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--fb-s-5);
+    font-size: var(--fb-fs-11);
+    color: var(--fb-text-mute);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+  }
+  .tz-status strong {
+    color: var(--fb-text-dim);
+    font-weight: 500;
+  }
+
+  /* ---- Panels ---- */
+  .tz-panel {
+    background: var(--fb-ink);
+    border: 1px solid var(--fb-hairline);
+    padding: var(--fb-s-5);
+    margin-bottom: var(--fb-s-5);
+    position: relative;
+  }
+  .tz-panel--budget {
+    border-color: rgba(0, 212, 255, 0.15);
+  }
+  .tz-panel--weekly {
+    border-color: rgba(255, 62, 201, 0.15);
+  }
+
+  .tz-panel__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--fb-s-4);
+  }
+  .tz-panel__label {
+    font-size: var(--fb-fs-11);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+  }
+  .tz-panel__badge {
+    font-size: var(--fb-fs-10);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid var(--fb-hairline);
+    color: var(--fb-text-mute);
+  }
+  .tz-panel__badge--idle {
+    border-color: var(--fb-hairline);
+    color: var(--fb-text-mute);
+  }
+  .tz-panel__badge--active {
+    border-color: var(--fb-matrix);
+    color: var(--fb-matrix);
+    text-shadow: 0 0 8px var(--fb-matrix-glow);
+  }
+  .tz-panel__badge--hot {
+    border-color: var(--fb-coral);
+    color: var(--fb-coral);
+    text-shadow: 0 0 8px var(--fb-coral-glow);
+  }
+
+  /* ---- Progress bar ---- */
+  .tz-bar {
+    height: 6px;
+    background: rgba(0, 212, 255, 0.06);
+    margin-bottom: var(--fb-s-4);
+    overflow: hidden;
+  }
+  .tz-bar__fill {
+    height: 100%;
+    width: 0%;
+    transition: width 900ms cubic-bezier(.2,.7,.2,1);
+  }
+  .tz-bar--signal .tz-bar__fill {
+    background: var(--fb-signal);
+    box-shadow: 0 0 12px var(--fb-signal-glow);
+  }
+  .tz-bar--pink .tz-bar__fill {
+    background: var(--fb-pink);
+    box-shadow: 0 0 12px var(--fb-pink-glow);
+  }
+  .tz-bar--warn .tz-bar__fill {
+    background: var(--fb-amber);
+    box-shadow: 0 0 12px rgba(255,182,74,0.4);
+  }
+  .tz-bar--danger .tz-bar__fill {
+    background: var(--fb-red);
+    box-shadow: 0 0 12px rgba(255,74,90,0.4);
+  }
+
+  /* ---- Stat grid inside panels ---- */
+  .tz-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--fb-s-3) var(--fb-s-8);
+    font-size: var(--fb-fs-12);
+  }
+  .tz-stat__label {
+    color: var(--fb-text-mute);
+    font-size: var(--fb-fs-11);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .tz-stat__value {
+    color: var(--fb-text);
+    font-size: var(--fb-fs-14);
+  }
+  .tz-stat__unit {
+    color: var(--fb-text-mute);
+    font-size: var(--fb-fs-11);
+    margin-left: 4px;
+  }
+  .tz-stat__value--signal {
+    color: var(--fb-signal);
+    text-shadow: 0 0 8px var(--fb-signal-glow);
+  }
+  .tz-stat__value--pink {
+    color: var(--fb-pink);
+    text-shadow: 0 0 8px var(--fb-pink-glow);
+  }
+
+  /* ---- Windows grid ---- */
+  .tz-windows {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--fb-s-4);
+    margin-bottom: var(--fb-s-5);
+  }
+
+  .tz-window {
+    background: #020408;
+    border: 1px solid rgba(0, 212, 255, 0.08);
+    padding: var(--fb-s-4);
+    position: relative;
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .tz-window__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: var(--fb-s-3);
+  }
+  .tz-window__label {
+    font-size: var(--fb-fs-10);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+  }
+  .tz-window__label strong {
+    color: var(--cycle-color, var(--fb-signal));
+    text-shadow: 0 0 6px var(--cycle-glow, var(--fb-signal-glow));
+    font-weight: 500;
+  }
+
+  .tz-window__total {
+    font-size: var(--fb-fs-20);
+    font-weight: 600;
+    color: var(--fb-text-loud);
+    font-family: var(--fb-font-sans);
+    line-height: 1;
+  }
+  .tz-window__total small {
+    font-size: var(--fb-fs-11);
+    color: var(--fb-text-mute);
+    font-weight: 400;
+    font-family: var(--fb-font-mono);
+  }
+  .tz-window__rate {
+    font-size: var(--fb-fs-11);
+    color: var(--fb-text-dim);
+    margin-bottom: var(--fb-s-3);
+  }
+
+  /* Trail inside window card */
+  .tz-window__track {
+    height: 4px;
+    background: rgba(0, 212, 255, 0.06);
+    margin-bottom: var(--fb-s-3);
+    position: relative;
+    overflow: visible;
+  }
+  .tz-window__trail {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0%;
+    height: 4px;
+    background: var(--cycle-color, var(--fb-signal));
+    box-shadow:
+      0 0 6px var(--cycle-glow, var(--fb-signal-glow)),
+      0 0 16px var(--cycle-glow, var(--fb-signal-glow));
+    transition: width 900ms cubic-bezier(.2,.7,.2,1);
+  }
+  .tz-window__trail::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: -3px;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--cycle-head, var(--fb-signal-bright));
+    box-shadow:
+      0 0 6px var(--cycle-head, var(--fb-signal-bright)),
+      0 0 16px var(--cycle-glow, var(--fb-signal-glow));
+    animation: tz-pulse 1.2s ease-in-out infinite;
+  }
+
+  @keyframes tz-pulse {
+    0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-50%) scale(1.4); opacity: 1; }
+  }
+
+  /* Breakdown rows */
+  .tz-breakdown {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2px var(--fb-s-3);
+    font-size: var(--fb-fs-11);
+    border-top: 1px solid rgba(0, 212, 255, 0.06);
+    padding-top: var(--fb-s-3);
+  }
+  .tz-breakdown dt {
+    color: var(--fb-text-mute);
+    letter-spacing: var(--fb-tracking-wide);
+  }
+  .tz-breakdown dd {
+    margin: 0;
+    text-align: right;
+    color: var(--fb-text-dim);
+  }
+  .tz-breakdown dd.tz-breakdown--proj {
+    color: var(--fb-text-mute);
+    font-style: italic;
+  }
+
+  /* Color variants for windows */
+  .tz-window--8s    { --cycle-color: var(--fb-signal); --cycle-head: var(--fb-signal-bright); --cycle-glow: var(--fb-signal-glow); }
+  .tz-window--42s   { --cycle-color: var(--fb-coral);  --cycle-head: #ffa088;              --cycle-glow: var(--fb-coral-glow); }
+  .tz-window--80s   { --cycle-color: var(--fb-matrix); --cycle-head: #7dffb7;              --cycle-glow: var(--fb-matrix-glow); }
+  .tz-window--800s  { --cycle-color: var(--fb-pink);   --cycle-head: var(--fb-pink-bright);   --cycle-glow: var(--fb-pink-glow); }
+  .tz-window--8000s { --cycle-color: var(--fb-amber);  --cycle-head: #ffd17a;              --cycle-glow: rgba(255,182,74,0.45); }
+
+  /* ---- Lifetime panel ---- */
+  .tz-lifetime {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--fb-s-4);
+  }
+  .tz-lifetime__item {
+    font-size: var(--fb-fs-12);
+  }
+  .tz-lifetime__label {
+    color: var(--fb-text-mute);
+    font-size: var(--fb-fs-10);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+  .tz-lifetime__val {
+    color: var(--fb-text);
+    font-size: var(--fb-fs-16);
+    font-family: var(--fb-font-sans);
+    font-weight: 500;
+  }
+
+  /* ---- Footer ---- */
+  .tz-footer {
+    margin-top: var(--fb-s-8);
+    padding-top: var(--fb-s-4);
+    border-top: 1px solid var(--fb-hairline);
+    font-size: var(--fb-fs-11);
+    color: var(--fb-text-mute);
+    line-height: var(--fb-lh-relaxed);
+  }
+  .tz-footer a {
+    color: var(--fb-signal-dim);
+    text-decoration: none;
+  }
+  .tz-footer a:hover {
+    color: var(--fb-signal);
+  }
+
+  /* ---- Responsive ---- */
+  @media (max-width: 640px) {
+    body { padding: var(--fb-s-4); }
+    .tz-stats { grid-template-columns: 1fr; }
+    .tz-windows { grid-template-columns: 1fr; }
+    .tz-lifetime { grid-template-columns: 1fr 1fr; }
+    .tz-status { flex-direction: column; gap: var(--fb-s-2); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tz-window__trail::after { animation: none; }
+    .tz-window__trail { transition: width 0ms; }
+    .tz-bar__fill { transition: width 0ms; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fb-shell"><div class="fb-container tz-shell">
+
+  <main>
+
+  <!-- Header -->
+  <header class="tz-header">
+    <h1 class="tz-title">tokenz</h1>
+    <p class="tz-subtitle">Claude Code token usage, live from local session logs.</p>
+    <div class="tz-status">
+      <span>notify: <strong>off</strong></span>
+      <span>last activity: <strong id="tz-last-activity">—</strong></span>
+      <span>polled <strong id="tz-poll-stamp">—</strong></span>
+    </div>
+  </header>
+
+  <!-- Time windows -->
+  <div class="tz-windows" id="tz-windows">
+
+    <div class="tz-window tz-window--8s" data-win="0">
+      <div class="tz-window__head">
+        <span class="tz-window__label">WINDOW · <strong>8 seconds</strong></span>
+      </div>
+      <div class="tz-window__total" data-field="total">0<small>tokens</small></div>
+      <div class="tz-window__rate" data-field="rate">0 tok/s · 0 msg</div>
+      <div class="tz-window__track"><div class="tz-window__trail"></div></div>
+      <dl class="tz-breakdown">
+        <dt>input</dt><dd data-field="input">0</dd>
+        <dt>cache create</dt><dd data-field="cache_create">0</dd>
+        <dt>cache read</dt><dd data-field="cache_read">0</dd>
+        <dt>output</dt><dd data-field="output">0</dd>
+        <dt>proj /hr</dt><dd data-field="proj_hour" class="tz-breakdown--proj">0</dd>
+        <dt>proj /day</dt><dd data-field="proj_day" class="tz-breakdown--proj">0</dd>
+      </dl>
+    </div>
+
+    <div class="tz-window tz-window--80s" data-win="2">
+      <div class="tz-window__head">
+        <span class="tz-window__label">WINDOW · <strong>80 seconds</strong></span>
+      </div>
+      <div class="tz-window__total" data-field="total">0<small>tokens</small></div>
+      <div class="tz-window__rate" data-field="rate">0 tok/s · 0 msg</div>
+      <div class="tz-window__track"><div class="tz-window__trail"></div></div>
+      <dl class="tz-breakdown">
+        <dt>input</dt><dd data-field="input">0</dd>
+        <dt>cache create</dt><dd data-field="cache_create">0</dd>
+        <dt>cache read</dt><dd data-field="cache_read">0</dd>
+        <dt>output</dt><dd data-field="output">0</dd>
+        <dt>proj /hr</dt><dd data-field="proj_hour" class="tz-breakdown--proj">0</dd>
+        <dt>proj /day</dt><dd data-field="proj_day" class="tz-breakdown--proj">0</dd>
+      </dl>
+    </div>
+
+    <div class="tz-window tz-window--800s" data-win="3">
+      <div class="tz-window__head">
+        <span class="tz-window__label">WINDOW · <strong>800 seconds</strong></span>
+      </div>
+      <div class="tz-window__total" data-field="total">0<small>tokens</small></div>
+      <div class="tz-window__rate" data-field="rate">0 tok/s · 0 msg</div>
+      <div class="tz-window__track"><div class="tz-window__trail"></div></div>
+      <dl class="tz-breakdown">
+        <dt>input</dt><dd data-field="input">0</dd>
+        <dt>cache create</dt><dd data-field="cache_create">0</dd>
+        <dt>cache read</dt><dd data-field="cache_read">0</dd>
+        <dt>output</dt><dd data-field="output">0</dd>
+        <dt>proj /hr</dt><dd data-field="proj_hour" class="tz-breakdown--proj">0</dd>
+        <dt>proj /day</dt><dd data-field="proj_day" class="tz-breakdown--proj">0</dd>
+      </dl>
+    </div>
+
+    <div class="tz-window tz-window--8000s" data-win="4">
+      <div class="tz-window__head">
+        <span class="tz-window__label">WINDOW · <strong>8000 seconds</strong></span>
+      </div>
+      <div class="tz-window__total" data-field="total">0<small>tokens</small></div>
+      <div class="tz-window__rate" data-field="rate">0 tok/s · 0 msg</div>
+      <div class="tz-window__track"><div class="tz-window__trail"></div></div>
+      <dl class="tz-breakdown">
+        <dt>input</dt><dd data-field="input">0</dd>
+        <dt>cache create</dt><dd data-field="cache_create">0</dd>
+        <dt>cache read</dt><dd data-field="cache_read">0</dd>
+        <dt>output</dt><dd data-field="output">0</dd>
+        <dt>proj /hr</dt><dd data-field="proj_hour" class="tz-breakdown--proj">0</dd>
+        <dt>proj /day</dt><dd data-field="proj_day" class="tz-breakdown--proj">0</dd>
+      </dl>
+    </div>
+
+  </div>
+
+  <!-- 5-hour budget forecast -->
+  <div class="tz-panel tz-panel--budget" id="tz-budget-panel">
+    <div class="tz-panel__head">
+      <span class="tz-panel__label">5-hour budget forecast</span>
+      <span class="tz-panel__badge tz-panel__badge--idle" id="tz-budget-badge">IDLE</span>
+    </div>
+    <div class="tz-bar tz-bar--signal" id="tz-budget-bar">
+      <div class="tz-bar__fill" id="tz-budget-fill"></div>
+    </div>
+    <div class="tz-stats">
+      <div>
+        <div class="tz-stat__label">Used</div>
+        <div class="tz-stat__value"><span id="tz-budget-used">0</span><span class="tz-stat__unit" id="tz-budget-pct">0.0%</span></div>
+      </div>
+      <div>
+        <div class="tz-stat__label">Budget</div>
+        <div class="tz-stat__value"><span id="tz-budget-total">850.00M</span><span class="tz-stat__unit">rolling 5h</span></div>
+      </div>
+      <div>
+        <div class="tz-stat__label">Rate (blended)</div>
+        <div class="tz-stat__value tz-stat__value--signal"><span id="tz-budget-rate">0</span><span class="tz-stat__unit">tok/sec</span></div>
+      </div>
+      <div>
+        <div class="tz-stat__label">Headroom</div>
+        <div class="tz-stat__value"><span id="tz-budget-headroom">850.00M</span><span class="tz-stat__unit" id="tz-budget-headroom-label">idle</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly limit -->
+  <div class="tz-panel tz-panel--weekly" id="tz-weekly-panel">
+    <div class="tz-panel__head">
+      <span class="tz-panel__label">Weekly limit</span>
+      <span class="tz-panel__badge tz-panel__badge--idle" id="tz-weekly-badge">IDLE</span>
+    </div>
+    <div class="tz-bar tz-bar--pink" id="tz-weekly-bar">
+      <div class="tz-bar__fill" id="tz-weekly-fill"></div>
+    </div>
+    <div class="tz-stats">
+      <div>
+        <div class="tz-stat__label">Used</div>
+        <div class="tz-stat__value"><span id="tz-weekly-used">0</span><span class="tz-stat__unit" id="tz-weekly-pct">0.0%</span></div>
+      </div>
+      <div>
+        <div class="tz-stat__label">Budget</div>
+        <div class="tz-stat__value"><span id="tz-weekly-total">6.90B</span><span class="tz-stat__unit">per week</span></div>
+      </div>
+      <div>
+        <div class="tz-stat__label">Time left</div>
+        <div class="tz-stat__value"><span id="tz-weekly-timeleft">—</span><span class="tz-stat__unit" id="tz-weekly-reset">resets Sun 10:00 AM</span></div>
+      </div>
+      <div>
+        <div class="tz-stat__label">Proj (avg pace)</div>
+        <div class="tz-stat__value"><span id="tz-weekly-proj-avg">0</span><span class="tz-stat__unit" id="tz-weekly-proj-avg-pct">0.0% of budget</span></div>
+      </div>
+      <div>
+        <div class="tz-stat__label">Proj (current)</div>
+        <div class="tz-stat__value"><span id="tz-weekly-proj-cur">0</span><span class="tz-stat__unit" id="tz-weekly-proj-cur-pct">0.0% of budget</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lifetime -->
+  <div class="tz-panel">
+    <div class="tz-panel__head">
+      <span class="tz-panel__label">Lifetime</span>
+    </div>
+    <div class="tz-lifetime">
+      <div class="tz-lifetime__item">
+        <div class="tz-lifetime__label">Messages</div>
+        <div class="tz-lifetime__val" id="tz-lt-messages">—</div>
+      </div>
+      <div class="tz-lifetime__item">
+        <div class="tz-lifetime__label">Total tokens</div>
+        <div class="tz-lifetime__val" id="tz-lt-total">—</div>
+      </div>
+      <div class="tz-lifetime__item">
+        <div class="tz-lifetime__label">First seen</div>
+        <div class="tz-lifetime__val" id="tz-lt-first">—</div>
+      </div>
+      <div class="tz-lifetime__item">
+        <div class="tz-lifetime__label">Last seen</div>
+        <div class="tz-lifetime__val" id="tz-lt-last">—</div>
+      </div>
+    </div>
+  </div>
+
+  </main>
+
+  <footer class="fb-footer tz-footer">
+    Rates are computed over the window. Projections extrapolate that rate to 1h / 24h.
+    Cache reads are counted toward totals but billed at a steep discount by Anthropic.
+    <br><br>
+    <a href="/">fixbroken.ai</a>
+  </footer>
+
+</div></div>
+
+<script>
+(function () {
+  'use strict';
+
+  var BUDGET_5H = 850e6;
+  var BUDGET_WEEK = 6.9e9;
+
+  // Window index mapping: 0=8s, 1=42s, 2=80s, 3=800s, 4=8000s, 5=18000s(5h), 6=604800s(7d)
+  var WIN_5H = 5;
+  var WIN_7D = 6;
+
+  function fmt(n) {
+    if (!n) return '0';
+    if (n >= 1e9) return (n / 1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return (n / 1e6).toFixed(2) + 'M';
+    if (n >= 1e3) return (n / 1e3).toFixed(1) + 'k';
+    return String(Math.round(n));
+  }
+
+  function fmtExact(n) {
+    if (!n) return '0';
+    return Math.round(n).toLocaleString();
+  }
+
+  function fmtPct(n) {
+    if (!n) return '0.0%';
+    return n.toFixed(1) + '%';
+  }
+
+  function fmtDate(ts) {
+    if (!ts) return '—';
+    return new Date(ts).toLocaleString();
+  }
+
+  function timeAgo(ts) {
+    if (!ts) return '—';
+    var diff = Date.now() - ts;
+    if (diff < 0) diff = 0;
+    var sec = Math.floor(diff / 1000);
+    if (sec < 60) return sec + 's ago';
+    var min = Math.floor(sec / 60);
+    if (min < 60) return min + 'm ago';
+    var hr = Math.floor(min / 60);
+    return hr + 'h ago';
+  }
+
+  function getWeekReset() {
+    var now = new Date();
+    var d = new Date(now);
+    d.setHours(10, 0, 0, 0);
+    var day = d.getDay();
+    var daysUntilSun = (7 - day) % 7;
+    if (daysUntilSun === 0 && now >= d) daysUntilSun = 7;
+    d.setDate(d.getDate() + daysUntilSun);
+    return d;
+  }
+
+  function daysLeft() {
+    var reset = getWeekReset();
+    var diff = reset.getTime() - Date.now();
+    if (diff < 0) return '0.0d';
+    return (diff / 86400000).toFixed(1) + 'd';
+  }
+
+  function budgetBadge(pct) {
+    if (pct < 1) return ['IDLE', 'idle'];
+    if (pct < 50) return ['ACTIVE', 'active'];
+    if (pct < 80) return ['WARM', 'active'];
+    return ['HOT', 'hot'];
+  }
+
+  function barClass(pct) {
+    if (pct >= 90) return 'danger';
+    if (pct >= 75) return 'warn';
+    return null;
+  }
+
+  function setText(id, text) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = text;
+  }
+
+  function poll() {
+    fetch('/api/usage', { cache: 'no-store' })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data || !data.windows) return;
+
+        var windows = data.windows;
+        var lt = data.lifetime || {};
+
+        // -- Poll stamp --
+        var secAgo = data.now ? Math.round((Date.now() - data.now) / 1000) : 0;
+        setText('tz-poll-stamp', (secAgo < 60 ? secAgo + 's' : Math.round(secAgo / 60) + 'm') + ' ago');
+        setText('tz-last-activity', timeAgo(lt.last_ts));
+
+        // -- 5h budget --
+        var w5h = windows[WIN_5H];
+        if (w5h) {
+          var used5h = w5h.total || 0;
+          var pct5h = (used5h / BUDGET_5H) * 100;
+          setText('tz-budget-used', fmt(used5h));
+          setText('tz-budget-pct', fmtPct(pct5h));
+          setText('tz-budget-rate', fmtExact(w5h.rate_per_sec || 0));
+          setText('tz-budget-headroom', fmt(Math.max(0, BUDGET_5H - used5h)));
+
+          var state5h = budgetBadge(pct5h);
+          var badge5h = document.getElementById('tz-budget-badge');
+          badge5h.textContent = state5h[0];
+          badge5h.className = 'tz-panel__badge tz-panel__badge--' + state5h[1];
+
+          var headroomLabel = document.getElementById('tz-budget-headroom-label');
+          if (pct5h < 1) headroomLabel.textContent = 'idle';
+          else if (w5h.rate_per_sec > 0) {
+            var secLeft = (BUDGET_5H - used5h) / w5h.rate_per_sec;
+            if (secLeft > 3600) headroomLabel.textContent = (secLeft / 3600).toFixed(1) + 'h at pace';
+            else if (secLeft > 60) headroomLabel.textContent = Math.round(secLeft / 60) + 'm at pace';
+            else headroomLabel.textContent = Math.round(secLeft) + 's at pace';
+          } else {
+            headroomLabel.textContent = 'idle';
+          }
+
+          var fill5h = document.getElementById('tz-budget-fill');
+          fill5h.style.width = Math.min(100, pct5h) + '%';
+          var bar5h = document.getElementById('tz-budget-bar');
+          var bc5h = barClass(pct5h);
+          bar5h.className = 'tz-bar' + (bc5h ? ' tz-bar--' + bc5h : ' tz-bar--signal');
+        }
+
+        // -- Weekly limit --
+        var w7d = windows[WIN_7D];
+        if (w7d) {
+          var usedWeek = w7d.total || 0;
+          var pctWeek = (usedWeek / BUDGET_WEEK) * 100;
+          setText('tz-weekly-used', fmt(usedWeek));
+          setText('tz-weekly-pct', fmtPct(pctWeek));
+          setText('tz-weekly-timeleft', daysLeft());
+
+          var stateWeek = budgetBadge(pctWeek);
+          var badgeWeek = document.getElementById('tz-weekly-badge');
+          badgeWeek.textContent = stateWeek[0];
+          badgeWeek.className = 'tz-panel__badge tz-panel__badge--' + stateWeek[1];
+
+          var fillWeek = document.getElementById('tz-weekly-fill');
+          fillWeek.style.width = Math.min(100, pctWeek) + '%';
+          var barWeek = document.getElementById('tz-weekly-bar');
+          var bcWeek = barClass(pctWeek);
+          barWeek.className = 'tz-bar' + (bcWeek ? ' tz-bar--' + bcWeek : ' tz-bar--pink');
+
+          // Projections: avg pace = total / elapsed days * 7
+          var resetDate = getWeekReset();
+          var weekStart = new Date(resetDate);
+          weekStart.setDate(weekStart.getDate() - 7);
+          var elapsedMs = Date.now() - weekStart.getTime();
+          var elapsedDays = Math.max(elapsedMs / 86400000, 0.01);
+          var avgPace = (usedWeek / elapsedDays) * 7;
+          setText('tz-weekly-proj-avg', fmt(avgPace));
+          setText('tz-weekly-proj-avg-pct', fmtPct((avgPace / BUDGET_WEEK) * 100) + ' of budget');
+
+          // Current rate projection
+          var curPace = (w7d.rate_per_sec || 0) * 604800;
+          setText('tz-weekly-proj-cur', fmt(curPace));
+          setText('tz-weekly-proj-cur-pct', fmtPct((curPace / BUDGET_WEEK) * 100) + ' of budget');
+        }
+
+        // -- Time windows --
+        var displayWins = [0, 2, 3, 4]; // 8s, 80s, 800s, 8000s
+        var maxTotal = 0;
+        displayWins.forEach(function (i) {
+          if (windows[i] && windows[i].total > maxTotal) maxTotal = windows[i].total;
+        });
+
+        document.querySelectorAll('.tz-window').forEach(function (el) {
+          var idx = parseInt(el.getAttribute('data-win'), 10);
+          var w = windows[idx];
+          if (!w) return;
+
+          var totalEl = el.querySelector('[data-field="total"]');
+          totalEl.innerHTML = (w.total ? fmt(w.total) : '0') + '<small>tokens</small>';
+
+          var rateEl = el.querySelector('[data-field="rate"]');
+          rateEl.textContent = fmtExact(w.rate_per_sec || 0) + ' tok/s · ' + (w.messages || 0) + ' msg';
+
+          var trail = el.querySelector('.tz-window__trail');
+          var pct;
+          if (!w.total || maxTotal === 0) {
+            pct = 2;
+          } else {
+            var r = Math.log10(w.total + 1) / Math.log10(maxTotal + 1);
+            pct = Math.max(4, Math.min(98, r * 98));
+          }
+          trail.style.width = pct + '%';
+
+          el.querySelector('[data-field="input"]').textContent = fmtExact(w.input || 0);
+          el.querySelector('[data-field="cache_create"]').textContent = fmtExact(w.cache_create || 0);
+          el.querySelector('[data-field="cache_read"]').textContent = fmtExact(w.cache_read || 0);
+          el.querySelector('[data-field="output"]').textContent = fmtExact(w.output || 0);
+          el.querySelector('[data-field="proj_hour"]').textContent = fmt(w.proj_hour || 0);
+          el.querySelector('[data-field="proj_day"]').textContent = fmt(w.proj_day || 0);
+        });
+
+        // -- Lifetime --
+        setText('tz-lt-messages', lt.messages ? fmt(lt.messages) : '—');
+        setText('tz-lt-total', lt.total ? fmt(lt.total) : '—');
+        setText('tz-lt-first', fmtDate(lt.first_ts));
+        setText('tz-lt-last', fmtDate(lt.last_ts));
+      })
+      .catch(function () {
+        setText('tz-poll-stamp', 'signal lost');
+      });
+  }
+
+  poll();
+  setInterval(poll, 1000);
+})();
+</script>
+
+</body>
+</html>

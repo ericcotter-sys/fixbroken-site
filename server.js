@@ -528,6 +528,9 @@ app.get('/api/stats', (_req, res) => {
   }
 });
 
+app.get('/ventures', (req, res) => res.redirect(301, '/work/'));
+app.get('/ventures/', (req, res) => res.redirect(301, '/work/'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.listen(PORT, HOST, () => {

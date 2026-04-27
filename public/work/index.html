@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>fixbroken.ai - work</title>
+<meta name="description" content="Recent work from fixbroken.ai. Client names redacted - revealed under NDA on request.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  .w-slider-wrap { position: relative; }
+
+  .w-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .w-slider::-webkit-scrollbar { display: none; }
+
+  .w-slide {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    min-width: 0;
+  }
+
+  .w-tile {
+    background: var(--fb-panel);
+    border: 1px solid var(--fb-hairline);
+    padding: var(--fb-s-8);
+    max-width: 980px;
+    margin-inline: auto;
+  }
+
+  .w-tile__kicker {
+    display: flex;
+    align-items: baseline;
+    gap: var(--fb-s-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--fb-s-3);
+  }
+  .w-tile__handle {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-24);
+    color: var(--fb-signal);
+    font-weight: 600;
+  }
+
+  .w-tile__tags {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-12);
+    color: var(--fb-text-mute);
+    letter-spacing: var(--fb-tracking-wide);
+    margin-bottom: var(--fb-s-4);
+    line-height: var(--fb-lh-relaxed);
+  }
+
+  .w-tile__body {
+    font-size: var(--fb-fs-14);
+    color: var(--fb-text-dim);
+    line-height: var(--fb-lh-relaxed);
+    max-width: 60ch;
+  }
+
+  .w-nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--fb-s-4);
+    margin-top: var(--fb-s-6);
+  }
+  .w-nav__arrow {
+    background: none;
+    border: 1px solid var(--fb-hairline);
+    color: var(--fb-text-dim);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-16);
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 200ms, color 200ms;
+  }
+  .w-nav__arrow:hover { border-color: var(--fb-signal); color: var(--fb-signal); }
+  .w-nav__arrow:disabled { opacity: 0.25; cursor: default; }
+  .w-nav__arrow:disabled:hover { border-color: var(--fb-hairline); color: var(--fb-text-dim); }
+
+  .w-dots { display: flex; gap: var(--fb-s-2); align-items: center; }
+  .w-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--fb-hairline);
+    border: none; padding: 0; cursor: pointer;
+    transition: background 200ms, box-shadow 200ms;
+  }
+  .w-dot--active {
+    background: var(--fb-signal);
+    box-shadow: 0 0 8px var(--fb-signal-glow);
+  }
+
+  .w-counter {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-11);
+    color: var(--fb-text-mute);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: var(--fb-s-2);
+  }
+
+  .w-lang {
+    position: fixed;
+    bottom: var(--fb-s-6);
+    right: var(--fb-s-6);
+    z-index: var(--fb-z-overlay);
+    display: inline-flex;
+    background: var(--fb-panel);
+    border: 1px solid var(--fb-hairline);
+    border-radius: var(--fb-r-3);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-11);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    overflow: hidden;
+    box-shadow: var(--fb-lift-strong);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .w-lang__opt {
+    padding: 6px 14px;
+    color: var(--fb-text-mute);
+    background: transparent;
+    border: none;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+    transition: background 200ms, color 200ms;
+  }
+  .w-lang__opt--active {
+    background: var(--fb-signal);
+    color: var(--fb-black);
+  }
+
+  [data-lang="eng"] { display: none; }
+  body.w-eng-on [data-lang="eng"] { display: block; }
+  body.w-eng-on [data-lang="exec"] { display: none; }
+
+  @media (max-width: 640px) {
+    .w-tile { padding: var(--fb-s-5); }
+    .w-lang { bottom: 72px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="fb-grid-bg"></div>
+<div class="fb-scanline"></div>
+
+<div class="fb-shell">
+
+  <nav class="fb-nav">
+    <div class="fb-nav__inner">
+      <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+      <div class="fb-nav__links">
+        <a class="fb-nav__link" href="/">Home</a>
+        <a class="fb-nav__link fb-nav__link--active" href="/work/">Work</a>
+        <a class="fb-nav__link" href="/design/">Design</a>
+        <a class="fb-nav__link" href="mailto:hello@fixbroken.ai?subject=fixbroken.ai">Signal</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <section class="fb-section fb-section--tight">
+      <div class="fb-container">
+
+        <div class="fb-row fb-row--between fb-row--wrap" style="margin-bottom: var(--fb-s-6);">
+          <span class="fb-kicker fb-kicker--signal">recent work</span>
+          <span class="fb-mono" style="font-size: var(--fb-fs-11); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide);">names redacted - revealed under NDA on request</span>
+        </div>
+
+        <div class="w-slider-wrap">
+          <div class="w-slider" id="w-slider">
+
+            <!-- SLIDE 1: 0x9f2a -->
+            <div class="w-slide">
+              <div class="w-tile">
+                <div class="w-tile__kicker">
+                  <span class="w-tile__handle">client//0x9f2a</span>
+                  <span class="fb-chip fb-chip--matrix">active</span>
+                </div>
+                <div class="w-tile__tags">brand + product OS - AI pipeline - operator-grade vehicle ops</div>
+                <p class="w-tile__body" data-lang="exec">Working product, full brand identity, and a live consulting workspace with timestamped deliverables. Not a deck.</p>
+                <p class="w-tile__body" data-lang="eng">Node/Express tenant on FixBroken OS. Multi-step guided capture to AI pipeline spec. Static workspace with timestamped deliverables. Hosted as a tenant subsite.</p>
+              </div>
+            </div>
+
+            <!-- SLIDE 2: placeholder -->
+            <div class="w-slide">
+              <div class="w-tile">
+                <div class="w-tile__kicker">
+                  <span class="w-tile__handle">client//0xb71c</span>
+                  <span class="fb-chip">NDA</span>
+                </div>
+                <div class="w-tile__tags">data platform - compliance automation - evidence pipeline</div>
+                <p class="w-tile__body">Engagement details available under NDA.</p>
+              </div>
+            </div>
+
+            <!-- SLIDE 3: placeholder -->
+            <div class="w-slide">
+              <div class="w-tile">
+                <div class="w-tile__kicker">
+                  <span class="w-tile__handle">client//0x42e8</span>
+                  <span class="fb-chip">NDA</span>
+                </div>
+                <div class="w-tile__tags">design system - multi-tenant CSS - toolchain</div>
+                <p class="w-tile__body">Engagement details available under NDA.</p>
+              </div>
+            </div>
+
+            <!-- SLIDE 4: placeholder -->
+            <div class="w-slide">
+              <div class="w-tile">
+                <div class="w-tile__kicker">
+                  <span class="w-tile__handle">client//0xd3a5</span>
+                  <span class="fb-chip">NDA</span>
+                </div>
+                <div class="w-tile__tags">model observability - drift detection - alerting</div>
+                <p class="w-tile__body">Engagement details available under NDA.</p>
+              </div>
+            </div>
+
+            <!-- SLIDE 5: placeholder -->
+            <div class="w-slide">
+              <div class="w-tile">
+                <div class="w-tile__kicker">
+                  <span class="w-tile__handle">client//0x8f10</span>
+                  <span class="fb-chip">NDA</span>
+                </div>
+                <div class="w-tile__tags">API integration - ingestion pipeline - warehouse</div>
+                <p class="w-tile__body">Engagement details available under NDA.</p>
+              </div>
+            </div>
+
+            <!-- SLIDE 6: placeholder -->
+            <div class="w-slide">
+              <div class="w-tile">
+                <div class="w-tile__kicker">
+                  <span class="w-tile__handle">client//0x1ca7</span>
+                  <span class="fb-chip">NDA</span>
+                </div>
+                <div class="w-tile__tags">product strategy - go-to-market - pricing</div>
+                <p class="w-tile__body">Engagement details available under NDA.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="w-nav">
+            <button class="w-nav__arrow" id="w-prev" aria-label="Previous">&#9664;</button>
+            <div class="w-dots" id="w-dots"></div>
+            <button class="w-nav__arrow" id="w-next" aria-label="Next">&#9654;</button>
+          </div>
+          <div class="w-counter" id="w-counter"></div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="fb-footer">
+    <div class="fb-container">
+      <span class="fb-footer__copy">fixbroken.ai</span>
+    </div>
+  </footer>
+
+</div>
+
+<div class="w-lang" role="group" aria-label="Language toggle">
+  <button class="w-lang__opt w-lang__opt--active" id="w-lang-exec">plain english</button>
+  <button class="w-lang__opt" id="w-lang-eng">technical</button>
+</div>
+
+<script>
+(function(){
+  var execBtn = document.getElementById('w-lang-exec');
+  var engBtn = document.getElementById('w-lang-eng');
+  var KEY = 'fb-lang';
+
+  function applyLang(eng) {
+    document.body.classList.toggle('w-eng-on', eng);
+    execBtn.classList.toggle('w-lang__opt--active', !eng);
+    engBtn.classList.toggle('w-lang__opt--active', eng);
+    try { localStorage.setItem(KEY, eng ? 'eng' : 'exec'); } catch(_) {}
+  }
+
+  execBtn.addEventListener('click', function() { applyLang(false); });
+  engBtn.addEventListener('click', function() { applyLang(true); });
+  try { if (localStorage.getItem(KEY) === 'eng') applyLang(true); } catch(_) {}
+
+  var slider = document.getElementById('w-slider');
+  var slides = slider.querySelectorAll('.w-slide');
+  var dotsWrap = document.getElementById('w-dots');
+  var counter = document.getElementById('w-counter');
+  var prevBtn = document.getElementById('w-prev');
+  var nextBtn = document.getElementById('w-next');
+  var total = slides.length;
+  var current = 0;
+
+  var handles = [];
+  slides.forEach(function(s) {
+    var h = s.querySelector('.w-tile__handle');
+    handles.push(h ? h.textContent.replace('client//', '') : '');
+  });
+
+  for (var i = 0; i < total; i++) {
+    var dot = document.createElement('button');
+    dot.className = 'w-dot' + (i === 0 ? ' w-dot--active' : '');
+    dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+    dot.dataset.idx = i;
+    dot.addEventListener('click', function() { goTo(parseInt(this.dataset.idx)); });
+    dotsWrap.appendChild(dot);
+  }
+
+  function update() {
+    dotsWrap.querySelectorAll('.w-dot').forEach(function(d, i) {
+      d.classList.toggle('w-dot--active', i === current);
+    });
+    var h = handles[current] || '';
+    counter.innerHTML = (current + 1) + ' / ' + total +
+      (h ? ' &middot; <span style="text-transform:none">' + h + '</span>' : '');
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function goTo(idx) {
+    if (idx < 0 || idx >= total) return;
+    current = idx;
+    slides[idx].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    update();
+  }
+
+  prevBtn.addEventListener('click', function() { goTo(current - 1); });
+  nextBtn.addEventListener('click', function() { goTo(current + 1); });
+
+  var scrollTimer;
+  slider.addEventListener('scroll', function() {
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function() {
+      var idx = Math.round(slider.scrollLeft / slider.offsetWidth);
+      if (idx !== current && idx >= 0 && idx < total) { current = idx; update(); }
+    }, 80);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') goTo(current + 1);
+    if (e.key === 'ArrowLeft') goTo(current - 1);
+  });
+
+  update();
+})();
+</script>
+
+</body>
+</html>
