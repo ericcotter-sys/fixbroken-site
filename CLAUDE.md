@@ -26,6 +26,11 @@ vumo-fixbroken-site/
 ├── deploy.sh              webhook-triggered deploy script
 ├── public/
 │   ├── index.html         fixbroken.ai landing
+│   ├── work/index.html    /work/ — recent work slider (client handles obfuscated)
+│   ├── console/index.html /console/ — free diagnostic tools
+│   ├── tokenz/index.html  /tokenz/ — live Claude Code token telemetry
+│   ├── internal/ventures/ old scorecard (not linked, robots.txt blocks crawlers)
+│   ├── robots.txt         Disallow: /internal/
 │   └── design/
 │       ├── fixbroken-os.css          THE design system — do not fork
 │       ├── fixbroken-os.manifest.json machine-readable system manifest
@@ -94,6 +99,44 @@ Every subsite in the fixbroken tenant tree imports it:
 - Do NOT redefine `.fb-*` classes outside of `fixbroken-os.css`. Projects override via wrapper classes (see below).
 - Do NOT introduce a third font family. Inter + JetBrains Mono is the contract.
 - Do NOT use purple, glassmorphism, sparkle icons, emoji decorations, or generic AI tropes. See `brand.md` for the "avoid" list.
+
+### Navigation (CRITICAL - read before touching any page)
+
+The nav is duplicated in every HTML file. There is no server-side include. Every page MUST have identical nav links in the same order:
+
+```
+Home  /
+Work  /work/
+Design  /design/
+Console  /console/
+Signal  /#signal
+```
+
+Rules:
+- The `--active` class goes on the current page's link only.
+- Signal ALWAYS links to `/#signal` (never mailto). The homepage JS opens the contact modal on `#signal` hash. Other pages navigate to the homepage which then opens the modal.
+- Do NOT use `mailto:` hrefs anywhere on the site. All contact goes through the form.
+- When adding a new page to the nav, update ALL pages: `public/index.html`, `public/work/index.html`, `public/design/index.html`, `public/design/generated.html`, `public/console/index.html`, and any future pages.
+- If you add a nav link and forget to update even one page, the nav will be inconsistent and visitors will see different menus on different pages.
+
+### Client handle convention (/work/ page)
+
+Client engagements on `/work/` use obfuscated handles: `0x` + 4 lowercase hex chars (e.g. `client//0x9f2a`). The real client-to-handle mapping is in `/etc/fixbroken/client-handles.md` on the server (never committed, never served).
+
+Rules:
+- Never use real client names, industries, or identifying details on any public page.
+- The section eyebrow says "names redacted - revealed under NDA on request" - that covers confidentiality for every tile.
+- No placeholder tiles. Every tile on /work/ must represent real shipped work.
+- Handle must render lowercase everywhere, including slider breadcrumbs. Use `text-transform: none` spans if the parent has `text-transform: uppercase`.
+
+### Deploy workflow
+
+Do NOT SSH into the prod server to edit files directly. The deploy webhook overwrites prod on every push to main. Direct prod edits get destroyed.
+
+1. Edit files in the repo.
+2. Commit and push to `origin/main`.
+3. Webhook auto-deploys in ~10 seconds.
+4. Verify with `curl -sL -o /dev/null -w "%{http_code}\n" https://fixbroken.ai/<path>`.
 
 ### Override pattern (for projects that need a twist)
 
