@@ -1,10 +1,10 @@
 'use strict';
 
 // ---------------------------------------------------------------------------
-// Console Audit Engine — Design System Rubric Scorer
+// Console Audit Engine  - Design System Rubric Scorer
 // ---------------------------------------------------------------------------
 // Scores a pasted design system / brand doc / CSS against the FixBroken OS
-// 29-item rubric. Pure mechanical scoring — no LLM calls.
+// 29-item rubric. Pure mechanical scoring  - no LLM calls.
 //
 // Input: raw text (any format: YAML, JSON, CSS, prose, mixed)
 // Output: { score, maxScore, verdict, items[], leakPoints[], punchList[], comparison }
@@ -13,7 +13,7 @@
 const crypto = require('crypto');
 
 // ---------------------------------------------------------------------------
-// Input parsing — be liberal
+// Input parsing  - be liberal
 // ---------------------------------------------------------------------------
 
 const CREDENTIAL_PATTERNS = [
@@ -188,7 +188,7 @@ const RUBRIC = [
   },
   {
     id: 4, category: 'Token Foundation', name: 'Font families',
-    execLabel: 'No type contract — each page picks its own fonts',
+    execLabel: 'No type contract  - each page picks its own fonts',
     test(p) {
       if (p.fontFamilies.length >= 1) return { score: 2, evidence: `Font families declared: ${p.fontFamilies.length}` };
       if (p.mentions.font) return { score: 1, evidence: 'Fonts mentioned in prose but not declared' };
@@ -364,7 +364,7 @@ const RUBRIC = [
   // --- 4. GOVERNANCE (6 items) ---
   {
     id: 21, category: 'Governance', name: 'Naming convention',
-    execLabel: 'Class names are inconsistent — no one knows what to use',
+    execLabel: 'Class names are inconsistent  - no one knows what to use',
     test(p) {
       const prefixed = p.cssClasses.filter(c => /^[a-z]+-[a-z]/i.test(c));
       const ratio = p.cssClasses.length > 0 ? prefixed.length / p.cssClasses.length : 0;
@@ -375,7 +375,7 @@ const RUBRIC = [
   },
   {
     id: 22, category: 'Governance', name: 'Override / extension pattern',
-    execLabel: 'No guidance on how teams customize — they fork instead',
+    execLabel: 'No guidance on how teams customize  - they fork instead',
     test(p) {
       if (p.mentions.override || p.mentions.extend || p.mentions.theme) {
         const hasDetail = /override|extend|theme|wrapper|scope/i.test(p.raw) && p.raw.length > 200;
@@ -387,7 +387,7 @@ const RUBRIC = [
   },
   {
     id: 23, category: 'Governance', name: 'Responsive breakpoints',
-    execLabel: 'Mobile behavior is undefined — every page does its own thing',
+    execLabel: 'Mobile behavior is undefined  - every page does its own thing',
     test(p) {
       if (p.mediaQueries.length >= 2) return { score: 2, evidence: `${p.mediaQueries.length} media queries defined` };
       if (p.mediaQueries.length > 0 || p.mentions.breakpoint || p.mentions.responsive || p.mentions.mobile) return { score: 1, evidence: 'Responsive mentioned but breakpoints not fully defined' };
@@ -413,7 +413,7 @@ const RUBRIC = [
   },
   {
     id: 25, category: 'Governance', name: 'Voice / tone guidelines',
-    execLabel: 'Copy reads differently on every page — no shared voice',
+    execLabel: 'Copy reads differently on every page  - no shared voice',
     test(p) {
       if (p.mentions.voice && p.mentions.tone) return { score: 2, evidence: 'Voice and tone guidelines present' };
       if (p.mentions.voice || p.mentions.tone || p.mentions.brand) return { score: 1, evidence: 'Brand voice partially addressed' };
@@ -422,7 +422,7 @@ const RUBRIC = [
   },
   {
     id: 26, category: 'Governance', name: 'Banned patterns',
-    execLabel: 'No guardrails — anything goes',
+    execLabel: 'No guardrails  - anything goes',
     test(p) {
       const banSignals = [
         p.mentions.avoid > 0,
@@ -440,19 +440,19 @@ const RUBRIC = [
   // --- 5. IMPLEMENTATION EVIDENCE (3 items) ---
   {
     id: 27, category: 'Implementation Evidence', name: 'Machine-readable format',
-    execLabel: 'Your design system only exists as a PDF — machines can\'t use it',
+    execLabel: 'Your design system only exists as a PDF  - machines can\'t use it',
     test(p) {
       const hasCSSVars = p.cssVars.length >= 5;
       const hasJSON = p.formats.some(f => f.format === 'json');
       const hasYAML = p.formats.some(f => f.format === 'yaml');
       if (hasCSSVars || hasJSON) return { score: 2, evidence: hasCSSVars ? `${p.cssVars.length} CSS custom properties (machine-readable)` : 'JSON token structure detected' };
       if (hasYAML || p.cssVars.length > 0) return { score: 1, evidence: 'Partially machine-readable' };
-      return { score: 0, evidence: 'Not machine-readable — prose only' };
+      return { score: 0, evidence: 'Not machine-readable  - prose only' };
     }
   },
   {
     id: 28, category: 'Implementation Evidence', name: 'Agent / LLM session prompt',
-    execLabel: 'Your LLM has no instructions — it guesses your brand every session',
+    execLabel: 'Your LLM has no instructions  - it guesses your brand every session',
     test(p) {
       const promptSignals = [
         p.mentions.claude > 0,
@@ -519,11 +519,11 @@ function runAudit(rawText) {
   if (nothingFound) {
     verdict = 'No design system detected. This input contains no structured tokens, components, or governance rules. That itself is the finding.';
   } else if (pct >= 0.85) {
-    verdict = 'Solid foundation. Your system covers most bases — tighten the gaps below and you\'re operating at high level.';
+    verdict = 'Solid foundation. Your system covers most bases  - tighten the gaps below and you\'re operating at high level.';
   } else if (pct >= 0.6) {
     verdict = 'Partial system. You have pieces, but your team is still improvising in the gaps. Every gap is a place where output drifts.';
   } else if (pct >= 0.35) {
-    verdict = 'Fragments, not a system. What you have doesn\'t connect — your team rebuilds from scratch more than they reuse.';
+    verdict = 'Fragments, not a system. What you have doesn\'t connect  - your team rebuilds from scratch more than they reuse.';
   } else {
     verdict = 'No operating system. Your LLM and your team are guessing every session. Output will be inconsistent by default.';
   }
@@ -611,7 +611,7 @@ function runAudit(rawText) {
 // Slug generation
 // ---------------------------------------------------------------------------
 function generateSlug() {
-  return crypto.randomBytes(6).toString('base64url').toLowerCase().slice(0, 10);
+  const raw = crypto.randomBytes(8).toString("base64url").toLowerCase().replace(/[^a-z0-9]/g, "").slice(0, 10); return raw.length >= 8 ? raw : raw + "x";
 }
 
 

@@ -118,3 +118,27 @@ Each new tool gets a one-paragraph addition to Section 6 of this brief.
 ## 11. The rule
 
 If a tool can't be built to pattern-match the conventions in Sections 3-7, it doesn't belong in The Console. Either rewrite the tool or rewrite the brief. Don't fork the conventions.
+
+## 12. The honest catch
+
+The Console is free but not charity. Every result page costs tokens. We say so.
+
+### Console home manifesto
+
+Rendered in a `.fb-panel` below the hero `h1`, above the tool grid. Mono kicker label `// the honest catch`.
+
+> Yeah, you caught us. This isn't free.
+>
+> We're burning tokens so you don't have to. You've heard "AI" enough times this quarter to be tired of it. Most of them are pitching. We're the ones who open the laptop.
+>
+> Paste in whatever your team gave you. We'll show you what's working and what's drifting. Most of it you can fix yourself. The hard part, you know where to find us.
+
+### Token-burn footer line
+
+Every result page footer includes a cost line above the CTAs:
+
+```
+We burned ~Nc of tokens so you could see this. Pay it back when you're ready.
+```
+
+Where `N` is computed at audit time. Audit: ~3c. Voice Lint: ~1c.

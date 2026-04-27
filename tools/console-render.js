@@ -36,13 +36,13 @@ function renderAuditPage(audit, slug, opts = {}) {
   const timestamp = opts.timestamp || new Date().toISOString();
   const inputSnippet = esc((opts.inputSnippet || '').slice(0, 200));
 
-  const mailSubject = encodeURIComponent(`Design System Audit — Score: ${audit.score}/${audit.maxScore}`);
+  const mailSubject = encodeURIComponent(`Design System Audit - ${audit.score} of ${audit.maxScore} (${audit.pct}%)`);
   const mailBody = encodeURIComponent(
-    `Our design system scored ${audit.score}/${audit.maxScore} (${audit.pct}%) on the FixBroken OS rubric.\n\n` +
+    `Our design system scored ${audit.score} of ${audit.maxScore} (${audit.pct}%) on the FixBroken OS rubric.\n\n` +
     `Full audit: https://fixbroken.ai/console/audit/${slug}/\n\n` +
     `Top fixes:\n` +
-    audit.punchList.map(p => `${p.rank}. ${p.name} (${p.status}) — est. ${p.effort}`).join('\n') +
-    `\n\nAudited by FixBroken OS — https://fixbroken.ai/design/`
+    audit.punchList.map(p => `${p.rank}. ${p.name} (${p.status}) - est. ${p.effort}`).join('\n') +
+    `\n\nAudited by FixBroken OS - https://fixbroken.ai/design/`
   );
 
   const categoryRows = Object.entries(audit.categories).map(([cat, data]) => {
@@ -87,10 +87,10 @@ function renderAuditPage(audit, slug, opts = {}) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Design System Audit — ${audit.score}/${audit.maxScore} — fixbroken.ai</title>
-<meta name="description" content="Design system audit result: ${audit.score}/${audit.maxScore} (${audit.pct}%). ${audit.verdict}">
+<title>Design System Audit - ${audit.score} of ${audit.maxScore} (${audit.pct}%) - fixbroken.ai</title>
+<meta name="description" content="Design system audit result: ${audit.score} of ${audit.maxScore} (${audit.pct}%). ${audit.verdict}">
 ${isPrivate ? '<meta name="robots" content="noindex,nofollow">' : ''}
-<meta property="og:title" content="Design System Audit — ${audit.score}/${audit.maxScore}">
+<meta property="og:title" content="Design System Audit - ${audit.score} of ${audit.maxScore} (${audit.pct}%)">
 <meta property="og:description" content="${esc(audit.verdict)}">
 <meta property="og:url" content="https://fixbroken.ai/console/audit/${slug}/">
 <meta property="og:type" content="article">
@@ -164,7 +164,7 @@ ${isPrivate ? '<meta name="robots" content="noindex,nofollow">' : ''}
     <div class="fb-row" style="gap:var(--fb-s-8);align-items:center;flex-wrap:wrap;" class="audit-hero-row">
       <div class="audit-score-ring">
         <span class="audit-score-ring__num">${audit.score}</span>
-        <span class="audit-score-ring__max">/ ${audit.maxScore}</span>
+        <span class="audit-score-ring__max">of ${audit.maxScore} (${audit.pct}%)</span>
       </div>
       <div class="fb-stack fb-stack--tight" style="flex:1;min-width:240px;">
         <h1 style="font-size:var(--fb-fs-32);font-weight:600;color:var(--fb-text-loud);margin:0;line-height:var(--fb-lh-tight);">What you give your LLM</h1>
@@ -277,6 +277,7 @@ ${isPrivate ? '<meta name="robots" content="noindex,nofollow">' : ''}
   <footer class="fb-section" style="padding-bottom:var(--fb-s-16);">
     <div class="fb-divider fb-divider--signal" style="margin-bottom:var(--fb-s-6);"></div>
     <div class="fb-stack" style="gap:var(--fb-s-4);">
+      <p style="color:var(--fb-text-mute);font-size:var(--fb-fs-13);margin:0;font-family:var(--fb-font-mono);">We burned ~${opts.costCents || 3}c of tokens so you could see this. Pay it back when you're ready.</p>
       <div class="fb-row fb-row--wrap" style="gap:var(--fb-s-4);">
         <a href="mailto:?subject=${mailSubject}&body=${mailBody}" class="fb-cta">Email this audit to your team</a>
         <a href="/contact" class="fb-cta fb-cta--pink-solid" onclick="if(typeof openContact==='function'){openContact();return false;}">Need this fixed for real? Talk to FixBroken</a>
