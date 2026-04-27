@@ -67,10 +67,9 @@
     display: flex;
     flex-wrap: wrap;
     gap: var(--fb-s-6);
-    padding: var(--fb-s-5) 0;
+    padding-top: var(--fb-s-5);
     border-top: 1px solid var(--fb-hairline);
-    border-bottom: 1px solid var(--fb-hairline);
-    margin-bottom: var(--fb-s-6);
+    margin-top: var(--fb-s-6);
   }
   .w-stat { min-width: 80px; }
   .w-stat__num {
@@ -221,13 +220,6 @@
               </div>
               <div class="w-tile__tags">project//walkaround &nbsp; ship//brand + product OS, AI pipeline spec, audit-trail workspace &nbsp; use//operator-grade vehicle ops</div>
 
-              <div class="w-stats">
-                <div class="w-stat"><div class="w-stat__num">1</div><div class="w-stat__label">Engagement</div></div>
-                <div class="w-stat"><div class="w-stat__num">5</div><div class="w-stat__label">Deliverables</div></div>
-                <div class="w-stat"><div class="w-stat__num">3</div><div class="w-stat__label">Product flows</div></div>
-                <div class="w-stat"><div class="w-stat__num">Phase 1</div><div class="w-stat__label">Status</div></div>
-              </div>
-
               <p class="w-tile__body" data-lang="exec">Product design, AI pipeline spec, brand system, and a live consulting workspace - delivered in the first engagement phase. The client has a working product they can review, challenge, and ship from. Not a deck.</p>
               <p class="w-tile__body" data-lang="eng">Node/Express tenant on FixBroken OS with scoped overrides. Multi-step guided capture to AI pipeline spec. Static workspace with timestamped deliverables. Hosted as a tenant subsite on the same Lightsail platform.</p>
 
@@ -247,6 +239,13 @@
                   <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">Node/Express on Lightsail. FixBroken OS design system with scoped tenant overrides. Static workspace with deliverables timestamped to the second.</p>
                 </div>
               </div>
+
+              <div class="w-stats">
+                <div class="w-stat"><div class="w-stat__num">1</div><div class="w-stat__label">Engagement</div></div>
+                <div class="w-stat"><div class="w-stat__num">5</div><div class="w-stat__label">Deliverables</div></div>
+                <div class="w-stat"><div class="w-stat__num">3</div><div class="w-stat__label">Product flows</div></div>
+                <div class="w-stat"><div class="w-stat__num">Phase 1</div><div class="w-stat__label">Status</div></div>
+              </div>
             </div>
           </div>
 
@@ -258,15 +257,6 @@
                 <span class="fb-chip fb-chip--matrix">production</span>
               </div>
               <div class="w-tile__tags">design system - multi-tenant CSS - 15-tool quality chain - 4 tenants</div>
-
-              <div class="w-stats">
-                <div class="w-stat"><div class="w-stat__num">1,174</div><div class="w-stat__label">Lines of CSS</div></div>
-                <div class="w-stat"><div class="w-stat__num">29</div><div class="w-stat__label">Components</div></div>
-                <div class="w-stat"><div class="w-stat__num">15</div><div class="w-stat__label">CLI tools</div></div>
-                <div class="w-stat"><div class="w-stat__num">3,948</div><div class="w-stat__label">Tool LOC</div></div>
-                <div class="w-stat"><div class="w-stat__num">4</div><div class="w-stat__label">Tenants</div></div>
-                <div class="w-stat"><div class="w-stat__num">80+</div><div class="w-stat__label">Commits</div></div>
-              </div>
 
               <p class="w-tile__body" data-lang="exec">FixBroken OS, the toolchain that enforces it, and the multi-tenant platform running underneath. The system this page is built on.</p>
               <p class="w-tile__body" data-lang="eng">Single-file CSS design system with machine-readable JSON manifest. 15 Node.js CLI tools - voice linter, 6-category page audit, WCAG contrast checker, tenant scaffolder, manifest generator. 4 Express tenants on one Lightsail box behind nginx, systemd, webhook auto-deploy.</p>
@@ -287,6 +277,15 @@
                   <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">AWS Lightsail, Ubuntu 24.04. Each tenant is an Express server on its own port, managed by systemd, proxied by nginx. Push to main, live in 10 seconds. Real-time token telemetry at <a href="/tokenz/" style="color: var(--fb-signal-dim); text-decoration: none; border-bottom: 1px solid rgba(0,212,255,0.25);">/tokenz</a>.</p>
                 </div>
               </div>
+
+              <div class="w-stats">
+                <div class="w-stat"><div class="w-stat__num">1,174</div><div class="w-stat__label">Lines of CSS</div></div>
+                <div class="w-stat"><div class="w-stat__num">29</div><div class="w-stat__label">Components</div></div>
+                <div class="w-stat"><div class="w-stat__num">15</div><div class="w-stat__label">CLI tools</div></div>
+                <div class="w-stat"><div class="w-stat__num">3,948</div><div class="w-stat__label">Tool LOC</div></div>
+                <div class="w-stat"><div class="w-stat__num">4</div><div class="w-stat__label">Tenants</div></div>
+                <div class="w-stat"><div class="w-stat__num">80+</div><div class="w-stat__label">Commits</div></div>
+              </div>
             </div>
           </div>
 
@@ -298,13 +297,6 @@
                 <span class="fb-chip fb-chip--matrix">production</span>
               </div>
               <div class="w-tile__tags">free diagnostic tools - public API - scored results - shareable links</div>
-
-              <div class="w-stats">
-                <div class="w-stat"><div class="w-stat__num">2</div><div class="w-stat__label">Live tools</div></div>
-                <div class="w-stat"><div class="w-stat__num">6</div><div class="w-stat__label">Audit categories</div></div>
-                <div class="w-stat"><div class="w-stat__num">0</div><div class="w-stat__label">Signup required</div></div>
-                <div class="w-stat"><div class="w-stat__num">30s</div><div class="w-stat__label">Time to result</div></div>
-              </div>
 
               <p class="w-tile__body" data-lang="exec">Free diagnostic tools built on the same engine we use internally. Paste a design system, brand doc, or copy - get a scored, shareable result in 30 seconds. Live at <a href="/console/" style="color: var(--fb-signal-dim); text-decoration: none; border-bottom: 1px solid rgba(0,212,255,0.25);">fixbroken.ai/console</a>.</p>
               <p class="w-tile__body" data-lang="eng">Browser-based tools backed by the FixBroken OS audit engine and voice linter. POST to /api/audit with raw HTML, get a JSON scorecard. Voice lint checks copy against the manifest ruleset. No auth, no signup - paste and run.</p>
@@ -324,6 +316,13 @@
                   <span class="fb-label fb-label--signal">Why free</span>
                   <p style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">The tools demonstrate the system. If the audit catches problems you care about, the conversation about fixing them is a natural next step.</p>
                 </div>
+              </div>
+
+              <div class="w-stats">
+                <div class="w-stat"><div class="w-stat__num">2</div><div class="w-stat__label">Live tools</div></div>
+                <div class="w-stat"><div class="w-stat__num">6</div><div class="w-stat__label">Audit categories</div></div>
+                <div class="w-stat"><div class="w-stat__num">0</div><div class="w-stat__label">Signup required</div></div>
+                <div class="w-stat"><div class="w-stat__num">30s</div><div class="w-stat__label">Time to result</div></div>
               </div>
             </div>
           </div>
