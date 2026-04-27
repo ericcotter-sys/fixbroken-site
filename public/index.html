@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>fixbroken.ai · product · brand · system</title>
-<meta name="description" content="We turn impressive AI into a product real people choose, trust, and pay for. A boutique product, brand, and system shop for AI teams that have shipped but stalled.">
+<meta name="description" content="Your AI shipped but users don't trust it. I open the product and fix what's broken. UX, positioning, go-to-market, the whole stack.">
 <meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="fixbroken.ai">
 <meta property="og:title" content="fixbroken.ai · product · brand · system">
-<meta property="og:description" content="We turn impressive AI into a product real people choose, trust, and pay for.">
+<meta property="og:description" content="Your AI shipped but users don't trust it. I open the product and fix what's broken. UX, positioning, go-to-market.">
 <meta property="og:url" content="https://fixbroken.ai/">
 <meta property="og:image" content="https://fixbroken.ai/og-image.png">
 <meta property="og:image:type" content="image/png">
@@ -23,7 +23,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="fixbroken.ai · product · brand · system">
-<meta name="twitter:description" content="We turn impressive AI into a product real people choose, trust, and pay for.">
+<meta name="twitter:description" content="Your AI shipped but users don't trust it. I open the product and fix what's broken. UX, positioning, go-to-market.">
 <meta name="twitter:image" content="https://fixbroken.ai/og-image.png">
 <link rel="stylesheet" href="/design/fixbroken-os.css">
 <style>
@@ -762,6 +762,11 @@
     .hp-status__cone { width: 48px; height: 64px; }
     .hp-h1 { font-size: clamp(40px, 10vw, 56px); }
   }
+
+  @media (max-width: 640px) {
+    .hp-hero { padding-bottom: clamp(32px, 6vh, 48px); }
+    .hp-ops-section { padding-top: var(--fb-s-10) !important; }
+  }
 </style>
 </head>
 <body>
@@ -800,19 +805,14 @@
 
         <div class="hp-kicker">product · brand · system</div>
 
-        <h1 class="hp-h1 fb-rise">Fix broken <em>AI.</em><span class="fb-cursor fb-cursor--pink" aria-hidden="true"></span></h1>
+        <h1 class="hp-h1 fb-rise" id="hp-h1">Fix broken <em>AI.</em></h1>
 
-        <p class="hp-body fb-rise fb-rise--d1">
-          We turn impressive AI into a product real people choose, trust, and pay for.
-        </p>
-        <p class="fb-text-dim fb-rise fb-rise--d1" style="font-size: var(--fb-fs-14); max-width: 58ch;">
-          A boutique product, brand, and system shop for AI teams that have shipped but stalled.
-        </p>
+        <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">Your AI shipped. Users don't trust it, the team can't explain it, the roadmap is stuck. I open the product and fix what's broken. UX, positioning, go-to-market, the whole stack.</p>
 
         <div class="fb-rise fb-rise--d2">
           <!-- href is a JS-off fallback; JS intercepts and opens the modal -->
           <a class="fb-cta fb-cta--pink-solid" href="/#signal" id="hp-hero-cta" data-open-modal="contact">
-            Start a conversation
+            Tell me what's broken
           </a>
         </div>
 
@@ -959,14 +959,6 @@
             </div>
           </div>
 
-          <!-- Verbose toggle + delayed cheeky hint -->
-          <div class="hp-toggle-wrap">
-            <button class="hp-toggle" id="hp-toggle-btn" aria-pressed="false">
-              <span class="hp-toggle__dot"></span>
-              <span>verbose</span>
-              <span class="hp-toggle__label"></span>
-            </button>
-          </div>
         </div>
 
       </div>
@@ -984,7 +976,7 @@
           <span class="fb-kicker fb-kicker--pink">Signal · Contact</span>
           <h2 id="hp-modal-title" style="font-size: var(--fb-fs-32);">Start a conversation.</h2>
           <p class="fb-text-dim" style="max-width: 58ch;">
-            Tell me what's broken. One email back within 48h if it's the right shape of problem.
+            One email back within 48h if it's the right shape of problem.
           </p>
         </div>
 
@@ -1044,6 +1036,70 @@
 
       </div>
     </div>
+
+    <!-- ====================================================================
+         OPERATIONS - always visible. The offer.
+         ==================================================================== -->
+    <section class="hp-ops-section fb-container" style="padding-top: var(--fb-s-16);">
+
+      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
+        <div class="fb-stack fb-stack--tight">
+          <span class="fb-kicker">Output · Operations</span>
+          <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
+          <p class="fb-text-dim" style="max-width: 58ch;">
+            We don't deliver decks. We work in the actual product, brand, and system until it behaves.
+          </p>
+        </div>
+
+        <div class="fb-grid">
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 01 · Product</span>
+            <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
+            <p class="fb-signal-card__body">We redesign how people actually use your AI - where they get stuck, where they lose trust, where they bail. The goal is a product that feels like a reliable tool, not a tech demo.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 02 · Brand</span>
+            <h4 class="fb-signal-card__title">Earn the room.</h4>
+            <p class="fb-signal-card__body">Positioning, language, visual identity. We replace the vague AI messaging with a voice that sounds credible to the people who actually buy, use, and sell your product.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 03 · System</span>
+            <h4 class="fb-signal-card__title">Make it shippable.</h4>
+            <p class="fb-signal-card__body">Pilot programs, pricing, go-to-market structure. We help translate what the technology can do into something a sales team can sell and a customer can adopt.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+        </div>
+      </div>
+
+      <!-- Credential line -->
+      <p class="fb-mono" style="font-size: var(--fb-fs-14); color: var(--fb-text-dim); max-width: 58ch;">
+        20 years shipping product. Fractional CPO. Hands-on, not advisory.
+      </p>
+
+      <!-- Closing CTA + roster -->
+      <div style="margin-top: var(--fb-s-8);">
+        <a class="fb-cta fb-cta--pink-solid" href="/#signal" data-open-modal="contact">
+          Tell me what's broken
+        </a>
+        <p class="fb-mono" style="margin-top: var(--fb-s-4); font-size: var(--fb-fs-12); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide);">
+          Taking 1 new engagement per quarter
+        </p>
+      </div>
+
+      <!-- Verbose toggle -->
+      <div style="margin-top: var(--fb-s-10);">
+        <div class="hp-toggle-wrap">
+          <button class="hp-toggle" id="hp-toggle-btn" aria-pressed="false">
+            <span class="hp-toggle__dot"></span>
+            <span>verbose</span>
+            <span class="hp-toggle__label"></span>
+          </button>
+        </div>
+      </div>
+
+    </section>
 
     <!-- ====================================================================
          VERBOSE - hidden by default. The "flex" layer.
@@ -1116,38 +1172,6 @@
       <a href="/work/" class="fb-cta fb-cta--pink-solid" style="display: inline-flex; align-items: center; gap: var(--fb-s-3); margin-bottom: var(--fb-s-10); font-size: var(--fb-fs-14);">
         Recent work - what we've shipped →
       </a>
-
-      <!-- Operations - what I actually do -->
-      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
-        <div class="fb-stack fb-stack--tight">
-          <span class="fb-kicker">Output · Operations</span>
-          <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
-          <p class="fb-text-dim" style="max-width: 58ch;">
-            We don't deliver decks. We work in the actual product, brand, and system until it behaves.
-          </p>
-        </div>
-
-        <div class="fb-grid">
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 01 · Product</span>
-            <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
-            <p class="fb-signal-card__body">We redesign how people actually use your AI - where they get stuck, where they lose trust, where they bail. The goal is a product that feels like a reliable tool, not a tech demo.</p>
-            <span class="fb-signal-card__cta">Start a conversation →</span>
-          </article>
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 02 · Brand</span>
-            <h4 class="fb-signal-card__title">Earn the room.</h4>
-            <p class="fb-signal-card__body">Positioning, language, visual identity. We replace the vague AI messaging with a voice that sounds credible to the people who actually buy, use, and sell your product.</p>
-            <span class="fb-signal-card__cta">Start a conversation →</span>
-          </article>
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 03 · System</span>
-            <h4 class="fb-signal-card__title">Make it shippable.</h4>
-            <p class="fb-signal-card__body">Pilot programs, pricing, go-to-market structure. We help translate what the technology can do into something a sales team can sell and a customer can adopt.</p>
-            <span class="fb-signal-card__cta">Start a conversation →</span>
-          </article>
-        </div>
-      </div>
 
       <!-- How we ship - plain-language quality block -->
       <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
@@ -2508,6 +2532,147 @@
       });
     });
   })();
+</script>
+
+<script>
+(function () {
+  var TYPE_MS   = 42;
+  var BKSP_MS   = 60;
+  var PAUSE_A   = 400;
+  var PAUSE_B   = 300;
+  var PAUSE_C   = 200;
+
+  var h1       = document.getElementById('hp-h1');
+  var subline  = document.getElementById('hp-subline');
+  var anchor   = document.getElementById('hp-anchor');
+  var hero     = h1 && h1.closest('.hp-hero');
+  if (!h1 || !subline || !anchor || !hero) return;
+
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+
+  var subText    = subline.textContent;
+  var anchorText = anchor.textContent;
+
+  var h1Prefix = 'Fix broken ';
+  var h1Em     = 'AI.';
+
+  var cursor = document.createElement('span');
+  cursor.className = 'fb-cursor fb-cursor--pink';
+  cursor.setAttribute('aria-hidden', 'true');
+
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+
+  function hideCursor() { cursor.remove(); }
+
+  function showCursorIn(el) { el.appendChild(cursor); }
+
+  function typeInto(el, text, ms) {
+    return new Promise(function (resolve) {
+      el.textContent = '';
+      showCursorIn(el);
+      var i = 0;
+      (function tick() {
+        if (i < text.length) {
+          el.insertBefore(document.createTextNode(text[i]), cursor);
+          i++;
+          setTimeout(tick, ms);
+        } else {
+          resolve();
+        }
+      })();
+    });
+  }
+
+  function rebuildH1(prefix, em) {
+    h1.textContent = '';
+    if (prefix) h1.appendChild(document.createTextNode(prefix));
+    if (em) {
+      var emEl = document.createElement('em');
+      emEl.textContent = em;
+      h1.appendChild(emEl);
+    }
+  }
+
+  function backspaceH1(n, ms) {
+    var full = h1Prefix + h1Em;
+    var keep = full.length - n;
+    return new Promise(function (resolve) {
+      var remaining = full.length;
+      (function tick() {
+        if (remaining > keep) {
+          remaining--;
+          var pre = full.slice(0, remaining);
+          var pLen = Math.min(pre.length, h1Prefix.length);
+          var eLen = Math.max(0, pre.length - h1Prefix.length);
+          rebuildH1(h1Prefix.slice(0, pLen), eLen > 0 ? h1Em.slice(0, eLen) : '');
+          showCursorIn(h1);
+          setTimeout(tick, ms);
+        } else {
+          resolve(keep);
+        }
+      })();
+    });
+  }
+
+  function retypeH1(fromIdx, ms) {
+    var full = h1Prefix + h1Em;
+    return new Promise(function (resolve) {
+      var i = fromIdx;
+      (function tick() {
+        if (i < full.length) {
+          i++;
+          var pre = full.slice(0, i);
+          var pLen = Math.min(pre.length, h1Prefix.length);
+          var eLen = Math.max(0, pre.length - h1Prefix.length);
+          rebuildH1(h1Prefix.slice(0, pLen), eLen > 0 ? h1Em.slice(0, eLen) : '');
+          showCursorIn(h1);
+          setTimeout(tick, ms);
+        } else {
+          resolve();
+        }
+      })();
+    });
+  }
+
+  function runSequence() {
+    subline.textContent = '';
+    anchor.textContent = '';
+    rebuildH1(h1Prefix, h1Em);
+    hideCursor();
+
+    wait(200)
+      .then(function () { return typeInto(subline, subText, TYPE_MS); })
+      .then(function () { return wait(PAUSE_A); })
+      .then(function () { hideCursor(); return typeInto(anchor, anchorText, TYPE_MS); })
+      .then(function () { return wait(PAUSE_A); })
+      .then(function () {
+        hideCursor();
+        showCursorIn(h1);
+        return wait(PAUSE_B);
+      })
+      .then(function () {
+        var n = 2 + Math.floor(Math.random() * 4);
+        return backspaceH1(n, BKSP_MS)
+          .then(function (keep) { return wait(PAUSE_C).then(function () { return keep; }); })
+          .then(function (keep) { return retypeH1(keep, TYPE_MS); });
+      });
+  }
+
+  runSequence();
+
+  var hasLeft = false;
+  var obs = new IntersectionObserver(function (entries) {
+    var e = entries[0];
+    if (!e.isIntersecting) {
+      hasLeft = true;
+    } else if (hasLeft) {
+      hasLeft = false;
+      runSequence();
+    }
+  }, { threshold: 0 });
+  obs.observe(hero);
+})();
 </script>
 
 </body>
