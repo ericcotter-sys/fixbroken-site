@@ -294,4 +294,49 @@ ${isPrivate ? '<meta name="robots" content="noindex,nofollow">' : ''}
 </html>`;
 }
 
-module.exports = { renderAuditPage, esc };
+function renderVoiceLintPage(lint, slug, opts) {
+  opts = opts || {};
+  var isPrivate = opts['private'] || false;
+  var timestamp = opts.timestamp || new Date().toISOString();
+  var inputText = opts.inputText || '';
+  var costCents = opts.costCents || 1;
+
+  var mailSubject = encodeURIComponent('Voice Lint - ' + lint.hitCount + ' banned phrases found');
+  var mailBody = encodeURIComponent(
+    'Voice lint found ' + lint.hitCount + ' banned phrase(s) in our copy.\n\n' +
+    'Full result: https://fixbroken.ai/console/voice-lint/' + slug + '/\n\n' +
+    'Unique phrases found:\n' +
+    lint.uniquePhrases.map(function(p) { return '- ' + p; }).join('\n') +
+    '\n\nLinted by FixBroken OS - https://fixbroken.ai/design/'
+  );
+
+  var annotated = esc(inputText);
+  if (lint.hits.length > 0) {
+    var parts = [];
+    var lastEnd = 0;
+    var sortedHits = lint.hits.slice().sort(function(a, b) { return a.pos - b.pos; });
+    for (var i = 0; i < sortedHits.length; i++) {
+      var h = sortedHits[i];
+      if (h.pos < lastEnd) continue;
+      parts.push(esc(inputText.slice(lastEnd, h.pos)));
+      parts.push('<mark style="background:rgba(255,74,90,0.2);color:var(--fb-red);border-bottom:2px solid var(--fb-red);padding:1px 2px;border-radius:2px;" title="' + esc(h.replacement) + '">' + esc(inputText.slice(h.pos, h.pos + h.len)) + '</mark>');
+      lastEnd = h.pos + h.len;
+    }
+    parts.push(esc(inputText.slice(lastEnd)));
+    annotated = parts.join('');
+  }
+
+  var hitRows = lint.hits.map(function(h) {
+    var chipColor = h.type === 'emoji' ? '--fb-amber' : '--fb-red';
+    return '<tr><td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-mute);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">L' + h.line + '</td><td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(' + chipColor + ');color:var(' + chipColor + ');">' + esc(h.type) + '</span></td><td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-mono);font-size:var(--fb-fs-13);">' + esc(h.matched) + '</td><td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-sans);font-size:var(--fb-fs-13);">' + esc(h.replacement) + '</td></tr>';
+  }).join('\n');
+
+  var hitSection = lint.hits.length > 0 ? '<section class="fb-section"><h2 style="font-size:var(--fb-fs-20);font-weight:600;color:var(--fb-text-loud);margin:0 0 var(--fb-s-4);">Hit list</h2><div class="fb-panel"><div style="padding:20px;overflow-x:auto;"><table style="width:100%;border-collapse:collapse;"><thead><tr><th style="text-align:left;padding:8px 12px;font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);border-bottom:1px solid var(--fb-hairline-hot);">Line</th><th style="text-align:left;padding:8px 12px;font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);border-bottom:1px solid var(--fb-hairline-hot);">Type</th><th style="text-align:left;padding:8px 12px;font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);border-bottom:1px solid var(--fb-hairline-hot);">Found</th><th style="text-align:left;padding:8px 12px;font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);border-bottom:1px solid var(--fb-hairline-hot);">Instead</th></tr></thead><tbody>' + hitRows + '</tbody></table></div></div></section>' : '';
+
+  var headline = lint.clean ? 'Clean copy.' : lint.hitCount + ' banned phrase' + (lint.hitCount === 1 ? '' : 's') + ' found.';
+  var hitColor = lint.hitCount === 0 ? 'var(--fb-matrix)' : 'var(--fb-red)';
+
+  return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Voice Lint - ' + lint.hitCount + ' phrases found - fixbroken.ai</title><meta name="description" content="Voice lint result: ' + lint.hitCount + ' banned phrases. ' + esc(lint.verdict) + '">' + (isPrivate ? '<meta name="robots" content="noindex,nofollow">' : '') + '<meta property="og:title" content="Voice Lint - ' + lint.hitCount + ' banned phrases"><meta property="og:description" content="' + esc(lint.verdict) + '"><meta property="og:url" content="https://fixbroken.ai/console/voice-lint/' + slug + '/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="stylesheet" href="/design/fixbroken-os.css"><style>.lint-annotated{white-space:pre-wrap;font-family:var(--fb-font-sans);font-size:var(--fb-fs-15);color:var(--fb-text);line-height:var(--fb-lh-relaxed);word-break:break-word}.lint-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:var(--fb-s-3)}.lint-stat{padding:16px;background:var(--fb-panel);border:1px solid var(--fb-hairline);border-radius:var(--fb-r-3)}.lint-stat__num{font-family:var(--fb-font-mono);font-size:var(--fb-fs-32);font-weight:600;color:var(--fb-text-loud);line-height:1}.lint-stat__label{font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);margin-top:var(--fb-s-2)}' + (isPrivate ? '.lint-private-badge{display:inline-block;padding:4px 10px;border:1px solid var(--fb-amber);color:var(--fb-amber);font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;border-radius:var(--fb-r-2)}' : '') + '</style></head><body class="fb-shell"><div class="fb-grid-bg"></div><nav class="fb-nav"><div class="fb-nav__inner"><a href="/" class="fb-nav__brand">fixbroken.ai</a><div class="fb-nav__links"><a class="fb-nav__link" href="/">Home</a><a class="fb-nav__link" href="/design/">Design</a><a class="fb-nav__link fb-nav__link--active" href="/console/">Console</a></div></div></nav><main class="fb-container" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-12));"><section class="fb-section">' + (isPrivate ? '<div style="margin-bottom:var(--fb-s-4);"><span class="lint-private-badge">Private result</span></div>' : '') + '<span class="fb-kicker">Console - Voice Lint</span><h1 style="font-size:var(--fb-fs-32);font-weight:600;color:var(--fb-text-loud);margin:0 0 var(--fb-s-3);line-height:var(--fb-lh-tight);">' + headline + '</h1><p style="color:var(--fb-text-dim);font-size:var(--fb-fs-16);margin:0;line-height:var(--fb-lh-relaxed);max-width:52ch;font-family:var(--fb-font-sans);">' + esc(lint.verdict) + '</p></section><section class="fb-section"><div class="lint-stats-grid"><div class="lint-stat"><div class="lint-stat__num" style="color:' + hitColor + ';">' + lint.hitCount + '</div><div class="lint-stat__label">Hits</div></div><div class="lint-stat"><div class="lint-stat__num">' + lint.uniqueCount + '</div><div class="lint-stat__label">Unique phrases</div></div><div class="lint-stat"><div class="lint-stat__num">' + lint.wordCount + '</div><div class="lint-stat__label">Words</div></div><div class="lint-stat"><div class="lint-stat__num">' + lint.density + '%</div><div class="lint-stat__label">Sludge density</div></div></div></section><section class="fb-section"><h2 style="font-size:var(--fb-fs-20);font-weight:600;color:var(--fb-text-loud);margin:0 0 var(--fb-s-4);">Annotated text</h2><p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:0 0 var(--fb-s-3);font-family:var(--fb-font-mono);">Red highlights are banned phrases. Hover for replacement suggestion.</p><div class="fb-panel"><div style="padding:20px;"><div class="lint-annotated">' + annotated + '</div></div></div></section>' + hitSection + '<footer class="fb-section" style="padding-bottom:var(--fb-s-16);"><div class="fb-divider fb-divider--signal" style="margin-bottom:var(--fb-s-6);"></div><div class="fb-stack" style="gap:var(--fb-s-4);"><p style="color:var(--fb-text-mute);font-size:var(--fb-fs-13);margin:0;font-family:var(--fb-font-mono);">We burned ~' + costCents + 'c of tokens so you could see this. Pay it back when you\'re ready.</p><div class="fb-row fb-row--wrap" style="gap:var(--fb-s-4);"><a href="mailto:?subject=' + mailSubject + '&body=' + mailBody + '" class="fb-cta">Email this to your team</a><a href="/contact" class="fb-cta fb-cta--pink-solid">Need this fixed for real? Talk to FixBroken</a></div><div class="fb-row fb-row--wrap" style="gap:var(--fb-s-4);align-items:center;"><a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);text-decoration:none;">Linted by FixBroken OS</a><span class="fb-mono" style="color:var(--fb-text-ghost);font-size:var(--fb-fs-11);">' + timestamp + '</span></div></div></footer></main></body></html>';
+}
+
+module.exports = { renderAuditPage, renderVoiceLintPage, esc };

@@ -388,7 +388,7 @@ function aggregateUsage() {
     } catch {}
   }
 
-  const windows = [8, 42, 80, 800, 8000, 18000, 604800].map(sec => {
+  const windows = [8, 42, 80, 800, 8000, 18000, 80000, 604800, 800000].map(sec => {
     const cutoff = now - sec * 1000;
     const inWindow = messages.filter(m => m.ts >= cutoff);
     const total = inWindow.reduce((s, m) => s + m.input + m.output + m.cache_read + m.cache_create, 0);
@@ -671,6 +671,69 @@ app.post('/api/console/audit', function(req, res) {
   } else {
     processInput(input);
   }
+});
+
+// ---------------------------------------------------------------------------
+// Console Voice Lint - banned phrase scanner
+// ---------------------------------------------------------------------------
+var consoleVoiceLint = require('./tools/console-voice-lint');
+
+app.post('/api/console/voice-lint', function(req, res) {
+  var ip = req.ip || 'unknown';
+  if (!auditRateLimitOK(ip)) {
+    return res.status(429).json({ ok: false, err: 'Rate limit reached (5 per day). Try again tomorrow.' });
+  }
+
+  var body = req.body || {};
+  var input = body.input;
+  var isPrivate = body['private'];
+
+  if (!input || typeof input !== 'string') {
+    return res.status(400).json({ ok: false, err: 'Missing input.' });
+  }
+  if (input.length > 200000) {
+    return res.status(413).json({ ok: false, err: 'Input too large (max 200 KB).' });
+  }
+
+  var lint = consoleVoiceLint.runVoiceLint(input);
+  var slug = consoleAudit.generateSlug();
+  var timestamp = new Date().toISOString();
+
+  var resultHtml = consoleRender.renderVoiceLintPage(lint, slug, {
+    'private': isPrivate,
+    timestamp: timestamp,
+    inputText: input,
+    costCents: 1,
+  });
+
+  var manifest = {
+    slug: slug,
+    tool: 'voice-lint',
+    hitCount: lint.hitCount,
+    uniqueCount: lint.uniqueCount,
+    wordCount: lint.wordCount,
+    verdict: lint.verdict,
+    timestamp: timestamp,
+    'private': !!isPrivate,
+  };
+
+  var dir = path.join(__dirname, 'public', 'console', 'voice-lint', slug);
+  try {
+    fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(path.join(dir, 'index.html'), resultHtml, 'utf8');
+    fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify(manifest, null, 2), 'utf8');
+    fs.writeFileSync(path.join(dir, 'source.txt'), input.slice(0, 100000), { encoding: 'utf8', mode: 0o600 });
+  } catch (e) {
+    return res.status(500).json({ ok: false, err: 'Failed to persist result.' });
+  }
+
+  res.json({
+    ok: true,
+    slug: slug,
+    url: '/console/voice-lint/' + slug + '/',
+    hitCount: lint.hitCount,
+    clean: lint.clean,
+  });
 });
 
 app.use(express.static(path.join(__dirname, 'public')));

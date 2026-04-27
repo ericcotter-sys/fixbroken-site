@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Voice Lint - Console - fixbroken.ai</title>
+<meta name="description" content="Paste any copy and see which phrases read like generic SaaS marketing instead of your brand. Highlights banned phrases with replacement suggestions.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:title" content="Voice Lint - fixbroken.ai">
+<meta property="og:description" content="Find banned SaaS phrases in your copy. Paste text, get an annotated result.">
+<meta property="og:url" content="https://fixbroken.ai/console/voice-lint/">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  .lint-error {
+    display: none;
+    padding: 12px 16px;
+    background: rgba(255, 74, 90, 0.08);
+    border: 1px solid var(--fb-red);
+    border-radius: var(--fb-r-2);
+    color: var(--fb-red);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-13);
+    margin-top: var(--fb-s-3);
+  }
+  .lint-spinner {
+    display: none;
+    align-items: center; gap: var(--fb-s-3);
+    margin-top: var(--fb-s-4);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-13);
+    color: var(--fb-signal);
+  }
+  .lint-spinner.active { display: flex; }
+  .lint-spinner__dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--fb-signal);
+    animation: fb-pulse 1.2s ease-in-out infinite;
+  }
+</style>
+</head>
+<body class="fb-shell">
+<div class="fb-grid-bg"></div>
+
+<nav class="fb-nav">
+  <div class="fb-nav__inner">
+    <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+    <div class="fb-nav__links">
+      <a class="fb-nav__link" href="/">Home</a>
+      <a class="fb-nav__link" href="/design/">Design</a>
+      <a class="fb-nav__link fb-nav__link--active" href="/console/">Console</a>
+    </div>
+  </div>
+</nav>
+
+<main class="fb-container fb-container--narrow" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-12));">
+
+  <section class="fb-section">
+    <span class="fb-kicker">Console - Voice Lint</span>
+    <h1 class="fb-display" style="font-size:var(--fb-fs-48);">Lint your copy.</h1>
+    <p class="fb-lede" style="max-width:52ch;">Paste any text block - landing page copy, email draft, pitch deck script, about page. We highlight every phrase that reads like generic SaaS marketing instead of your actual brand.</p>
+  </section>
+
+  <section class="fb-section">
+    <div class="fb-panel">
+      <div style="padding:24px;">
+        <div class="fb-stack">
+          <label class="fb-field">
+            <span class="fb-field__label">Paste your copy</span>
+            <textarea id="lint-input" class="fb-textarea" rows="14" placeholder="Paste any text - marketing copy, email draft, landing page, about section. We check for banned SaaS phrases and generic AI marketing sludge."></textarea>
+          </label>
+
+          <div id="lint-error" class="lint-error"></div>
+
+          <div style="display:flex;gap:var(--fb-s-4);align-items:center;flex-wrap:wrap;margin-top:var(--fb-s-4);">
+            <button id="run-btn" class="fb-cta fb-cta--solid" onclick="runLint()">Run voice lint</button>
+            <label style="display:flex;align-items:center;gap:var(--fb-s-2);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);color:var(--fb-text-dim);cursor:pointer;">
+              <input type="checkbox" id="private-check" style="accent-color:var(--fb-signal);width:16px;height:16px;">
+              Private (noindex)
+            </label>
+          </div>
+
+          <div id="lint-spinner" class="lint-spinner">
+            <span class="lint-spinner__dot"></span>
+            <span>Scanning for banned phrases...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fb-section">
+    <h2 style="font-size:var(--fb-fs-18);color:var(--fb-text);margin:0 0 var(--fb-s-4);">What we catch</h2>
+    <!-- voice-lint: these panels document the avoid list, not violate it -->
+    <span class="fb-label" style="color:var(--fb-red);display:none;">AVOID</span>
+    <div class="fb-stack fb-stack--tight">
+      <div class="fb-panel fb-panel--tight">
+        <div style="padding:16px 20px;">
+          <span class="fb-label fb-label--signal">Banned phrases</span>
+          <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:8px 0 0;">Phrases from the FixBroken OS avoid list: marketing cliches, generic AI phrasing, and SaaS sludge. 30+ patterns matched mechanically.</p>
+        </div>
+      </div>
+      <div class="fb-panel fb-panel--tight">
+        <div style="padding:16px 20px;">
+          <span class="fb-label fb-label--signal">Sludge patterns</span>
+          <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:8px 0 0;">Regex patterns that catch generic marketing constructions - the kind of copy that sounds like every other company's landing page.</p>
+        </div>
+      </div>
+      <div class="fb-panel fb-panel--tight">
+        <div style="padding:16px 20px;">
+          <span class="fb-label fb-label--signal">Banned emoji</span>
+          <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:8px 0 0;">Sparkles, rockets, fire, lightbulbs, party poppers. If your copy has them, they're decoration - not signal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="fb-footer" style="margin-top:var(--fb-s-16);">
+    <div class="fb-footer__row">
+      <a href="/console/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Console</a>
+      <a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Powered by FixBroken OS</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+function showError(msg) {
+  var el = document.getElementById('lint-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function hideError() {
+  document.getElementById('lint-error').style.display = 'none';
+}
+
+async function runLint() {
+  hideError();
+  var text = document.getElementById('lint-input').value.trim();
+  var isPrivate = document.getElementById('private-check').checked;
+
+  if (!text) { showError('Paste some copy to lint.'); return; }
+  if (text.length > 200000) { showError('Input too large. Maximum 200 KB.'); return; }
+
+  var btn = document.getElementById('run-btn');
+  var spinner = document.getElementById('lint-spinner');
+  btn.disabled = true;
+  btn.textContent = 'Running...';
+  spinner.classList.add('active');
+
+  try {
+    var res = await fetch('/api/console/voice-lint', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ input: text, private: isPrivate }),
+    });
+    var data = await res.json();
+    if (!data.ok) {
+      showError(data.err || 'Lint failed. Try again.');
+      btn.disabled = false;
+      btn.textContent = 'Run voice lint';
+      spinner.classList.remove('active');
+      return;
+    }
+    window.location.href = data.url + (isPrivate ? '?private=1' : '');
+  } catch (e) {
+    showError('Network error. Check your connection and try again.');
+    btn.disabled = false;
+    btn.textContent = 'Run voice lint';
+    spinner.classList.remove('active');
+  }
+}
+
+document.getElementById('lint-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) runLint();
+});
+</script>
+</body>
+</html>
