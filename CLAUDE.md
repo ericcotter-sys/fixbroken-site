@@ -27,7 +27,7 @@ vumo-fixbroken-site/
 ├── public/
 │   ├── index.html         fixbroken.ai landing
 │   ├── work/index.html    /work/ — recent work slider (client handles obfuscated)
-│   ├── console/index.html /console/ — free diagnostic tools
+│   ├── free/index.html    /free/ — free diagnostic tools (formerly /console/)
 │   ├── tokenz/index.html  /tokenz/ — live Claude Code token telemetry
 │   ├── internal/ventures/ old scorecard (not linked, robots.txt blocks crawlers)
 │   ├── robots.txt         Disallow: /internal/
@@ -105,10 +105,10 @@ Every subsite in the fixbroken tenant tree imports it:
 The nav is duplicated in every HTML file. There is no server-side include. Every page MUST have identical nav links in the same order:
 
 ```
-Home  /
-Work  /work/
+Home    /
+Work    /work/
 Design  /design/
-Console  /console/
+Free    /free/
 Signal  /#signal
 ```
 
@@ -116,8 +116,9 @@ Rules:
 - The `--active` class goes on the current page's link only.
 - Signal ALWAYS links to `/#signal` (never mailto). The homepage JS opens the contact modal on `#signal` hash. Other pages navigate to the homepage which then opens the modal.
 - Do NOT use `mailto:` hrefs anywhere on the site. All contact goes through the form.
-- When adding a new page to the nav, update ALL pages: `public/index.html`, `public/work/index.html`, `public/design/index.html`, `public/design/generated.html`, `public/console/index.html`, and any future pages.
+- When adding a new page to the nav, update ALL pages: `public/index.html`, `public/work/index.html`, `public/design/index.html`, `public/design/generated.html`, `public/free/index.html`, and any future pages.
 - If you add a nav link and forget to update even one page, the nav will be inconsistent and visitors will see different menus on different pages.
+- `/console/` was renamed to `/free/`. If you see references to `/console/` anywhere, update them to `/free/`.
 
 ### Client handle convention (/work/ page)
 
