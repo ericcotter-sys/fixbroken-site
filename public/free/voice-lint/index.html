@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Free voice lint | fixbroken.ai</title>
+<title>Free jargon sludge detector | fixbroken.ai</title>
 <meta name="description" content="Paste any copy and see which phrases read like generic SaaS marketing instead of your brand. Highlights banned phrases with replacement suggestions.">
 <meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta property="og:title" content="Free voice lint | fixbroken.ai">
+<meta property="og:title" content="Free jargon sludge detector | fixbroken.ai">
 <meta property="og:description" content="Find banned SaaS phrases in your copy. Paste text, get an annotated result.">
 <meta property="og:url" content="https://fixbroken.ai/free/voice-lint/">
 <link rel="stylesheet" href="/design/fixbroken-os.css">
@@ -57,7 +57,7 @@
 <main class="fb-container fb-container--narrow" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-12));">
 
   <section class="fb-section">
-    <span class="fb-kicker">Free tools - Voice Lint</span>
+    <span class="fb-kicker">Free tools - Jargon Sludge</span>
     <h1 class="fb-display" style="font-size:var(--fb-fs-48);">Lint your copy.</h1>
     <p class="fb-lede" style="max-width:52ch;">Paste any block of copy. We flag every banned SaaS phrase, with suggested rewrites in your brand voice.</p>
   </section>
@@ -74,7 +74,7 @@
           <div id="lint-error" class="lint-error"></div>
 
           <div style="display:flex;gap:var(--fb-s-4);align-items:center;flex-wrap:wrap;margin-top:var(--fb-s-4);">
-            <button id="run-btn" class="fb-cta fb-cta--solid" onclick="runLint()">Run voice lint</button>
+            <button id="run-btn" class="fb-cta fb-cta--solid" onclick="runLint()">Run sludge detector</button>
             <label style="display:flex;align-items:center;gap:var(--fb-s-2);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);color:var(--fb-text-dim);cursor:pointer;">
               <input type="checkbox" id="private-check" style="accent-color:var(--fb-signal);width:16px;height:16px;">
               Private (noindex)
@@ -158,7 +158,7 @@ async function runLint() {
     if (!data.ok) {
       showError(data.err || 'Lint failed. Try again.');
       btn.disabled = false;
-      btn.textContent = 'Run voice lint';
+      btn.textContent = 'Run sludge detector';
       spinner.classList.remove('active');
       return;
     }
@@ -166,7 +166,7 @@ async function runLint() {
   } catch (e) {
     showError('Network error. Check your connection and try again.');
     btn.disabled = false;
-    btn.textContent = 'Run voice lint';
+    btn.textContent = 'Run sludge detector';
     spinner.classList.remove('active');
   }
 }
