@@ -121,6 +121,26 @@
   }
   .ds-ref-link:hover { color: var(--fb-signal); }
 
+  .hp-ladder { display: flex; flex-direction: column; gap: 0; margin-top: var(--fb-s-4); }
+  .hp-ladder__rung {
+    display: grid; grid-template-columns: 32px 1fr; gap: var(--fb-s-3);
+    padding: var(--fb-s-3) 0; border-left: 2px solid var(--fb-hairline);
+    margin-left: 6px; padding-left: var(--fb-s-4); position: relative;
+  }
+  .hp-ladder__rung::before {
+    content: ""; position: absolute; left: -5px; top: 50%; transform: translateY(-50%);
+    width: 8px; height: 8px; border-radius: 50%; background: var(--fb-hairline);
+  }
+  .hp-ladder__rung:last-child { border-left-color: transparent; }
+  .hp-ladder__rung:nth-child(1)::before { background: var(--fb-text-mute); }
+  .hp-ladder__rung:nth-child(2)::before { background: var(--fb-text-dim); }
+  .hp-ladder__rung:nth-child(3)::before { background: var(--fb-signal-dim); }
+  .hp-ladder__rung:nth-child(4)::before { background: var(--fb-signal); box-shadow: 0 0 6px var(--fb-signal-glow); }
+  .hp-ladder__num { font-family: var(--fb-font-mono); font-size: var(--fb-fs-11); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide); }
+  .hp-ladder__body { display: flex; flex-direction: column; gap: var(--fb-s-1); }
+  .hp-ladder__label { font-family: var(--fb-font-mono); font-size: var(--fb-fs-13); color: var(--fb-text-loud); font-weight: 500; }
+  .hp-ladder__desc { font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed); }
+
   @media (max-width: 640px) {
     .ds-type-row { flex-direction: column; gap: var(--fb-s-1); }
     .ds-type-label { min-width: 0; }
@@ -168,47 +188,6 @@
             <span class="fb-chip">brand architecture</span>
             <span class="fb-chip">component libraries</span>
             <span class="fb-chip">UX engineering</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         HOW WE WORK
-         ==================================================================== -->
-    <section class="fb-section">
-      <div class="fb-container">
-        <div class="fb-stack fb-stack--loose">
-          <div>
-            <span class="fb-kicker">Approach · what you actually get</span>
-            <h2 style="margin-top: var(--fb-s-2);">Four principles. Zero fluff.</h2>
-          </div>
-
-          <div class="fb-grid fb-grid--2">
-            <div class="fb-panel fb-panel--signal">
-              <span class="fb-label fb-label--signal">01 · Signal over spectacle</span>
-              <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">
-                Every pixel earns its place. If a visual element doesn't help the user understand state, hierarchy, or next action - it gets cut. No decoration tax. No gradient for vibes.
-              </p>
-            </div>
-            <div class="fb-panel fb-panel--signal">
-              <span class="fb-label fb-label--signal">02 · Systems, not pages</span>
-              <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">
-                We don't design screens. We design the tokens, components, and rules that generate screens. Build it once, deploy it everywhere. Your third page should take ten minutes, not ten days.
-              </p>
-            </div>
-            <div class="fb-panel fb-panel--signal">
-              <span class="fb-label fb-label--signal">03 · Code is the deliverable</span>
-              <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">
-                The design system ships as CSS, not a PDF. Variables, not hex values. Components, not screenshots. Your engineers import it and start building. No translation layer. No drift.
-              </p>
-            </div>
-            <div class="fb-panel fb-panel--signal">
-              <span class="fb-label fb-label--signal">04 · Human-readable intelligence</span>
-              <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed);">
-                Executive, engineer, operator, customer - they all need to feel at home. We build interfaces that are information-dense without being intimidating. Terminal clarity meets boardroom restraint.
-              </p>
-            </div>
           </div>
         </div>
       </div>
@@ -439,6 +418,50 @@
           <p style="color: var(--fb-text-mute); font-family: var(--fb-font-mono); font-size: var(--fb-fs-12); margin-top: var(--fb-s-3);">
             Every file in this list exists in the repo you're looking at right now. We ship what we use. Now you can too.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         PRINCIPLES - LADDER
+         ==================================================================== -->
+    <section class="fb-section" style="border-top: 1px solid var(--fb-hairline);">
+      <div class="fb-container">
+        <div class="fb-stack fb-stack--loose">
+          <div>
+            <span class="fb-kicker">How we work</span>
+            <h2 style="margin-top: var(--fb-s-2);">Four rules. Everything else follows.</h2>
+          </div>
+          <div class="hp-ladder">
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">01</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Signal over spectacle</div>
+                <div class="hp-ladder__desc">Every pixel earns its place. If it doesn't help the user understand state, hierarchy, or next action - it gets cut.</div>
+              </div>
+            </div>
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">02</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Systems, not pages</div>
+                <div class="hp-ladder__desc">We design the tokens, components, and rules that generate screens. Your third page should take ten minutes, not ten days.</div>
+              </div>
+            </div>
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">03</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Code is the deliverable</div>
+                <div class="hp-ladder__desc">The system ships as CSS, not a PDF. Variables, not hex values. Components, not screenshots. No translation layer. No drift.</div>
+              </div>
+            </div>
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">04</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Human-readable intelligence</div>
+                <div class="hp-ladder__desc">Executive, engineer, operator, customer - they all need to feel at home. Information-dense without being intimidating.</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
