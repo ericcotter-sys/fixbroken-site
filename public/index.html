@@ -778,15 +778,17 @@
   <nav class="fb-nav">
     <div class="fb-nav__inner">
       <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+      <button class="fb-nav__burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
       <div class="fb-nav__links">
         <a class="fb-nav__link fb-nav__link--active" href="/">Home</a>
         <a class="fb-nav__link" href="/work/">Work</a>
         <a class="fb-nav__link" href="/design/">Design</a>
-        <a class="fb-nav__link" href="/free/">Free</a>
+        <a class="fb-nav__link" href="/free/">Free shit</a>
         <a class="fb-nav__link" href="/#signal" data-open-modal="contact">Signal</a>
       </div>
     </div>
   </nav>
+  <script>(function(){var n=document.querySelector('.fb-nav'),b=n&&n.querySelector('.fb-nav__burger');if(!b)return;b.addEventListener('click',function(){var o=n.classList.toggle('fb-nav--open');b.setAttribute('aria-expanded',o)});n.addEventListener('click',function(e){if(e.target.classList.contains('fb-nav__link')){n.classList.remove('fb-nav--open');b.setAttribute('aria-expanded','false')}});document.addEventListener('click',function(e){if(!n.contains(e.target)){n.classList.remove('fb-nav--open');b.setAttribute('aria-expanded','false')}})})();</script>
 
   <main>
 
