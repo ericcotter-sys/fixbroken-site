@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Audit — Console — fixbroken.ai</title>
+<title>Free design system audit | fixbroken.ai</title>
 <meta name="description" content="Score your design system against the FixBroken OS 29-point rubric. Paste a brand doc, CSS, JSON tokens, or URL. See what your LLM is actually working with.">
 <meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta property="og:title" content="Design System Audit — fixbroken.ai">
-<meta property="og:description" content="Score your design system against 29 rubric items. Paste anything — get a shareable result in 30 seconds.">
-<meta property="og:url" content="https://fixbroken.ai/console/audit/">
+<meta property="og:title" content="Free design system audit | fixbroken.ai">
+<meta property="og:description" content="Score your design system against 29 rubric items. Paste anything - get a shareable result in 30 seconds.">
+<meta property="og:url" content="https://fixbroken.ai/free/audit/">
 <link rel="stylesheet" href="/design/fixbroken-os.css">
 <style>
   .audit-mode-tabs {
@@ -89,7 +89,7 @@
     <div class="fb-nav__links">
       <a class="fb-nav__link" href="/">Home</a>
       <a class="fb-nav__link" href="/design/">Design</a>
-      <a class="fb-nav__link fb-nav__link--active" href="/console/">Console</a>
+      <a class="fb-nav__link fb-nav__link--active" href="/free/">Free</a>
     </div>
   </div>
 </nav>
@@ -97,9 +97,9 @@
 <main class="fb-container fb-container--narrow" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-12));">
 
   <section class="fb-section">
-    <span class="fb-kicker">Console · Audit</span>
+    <span class="fb-kicker">Free tools - Audit</span>
     <h1 class="fb-display" style="font-size:var(--fb-fs-48);">Score your design system.</h1>
-    <p class="fb-lede" style="max-width:52ch;">Paste your brand doc, CSS file, JSON tokens, or any text your team calls "the design system." We score it against 29 rubric items. No AI. Pure mechanical parsing.</p>
+    <p class="fb-lede" style="max-width:52ch;">Paste a brand doc, CSS, or URL. We score it against 29 rubric items in 30 seconds. No signup. No AI calls. Pure mechanical parsing.</p>
   </section>
 
   <section class="fb-section">
@@ -183,7 +183,7 @@
 
   <footer class="fb-footer" style="margin-top:var(--fb-s-16);">
     <div class="fb-footer__row">
-      <a href="/console/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Console</a>
+      <a href="/free/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Free</a>
       <a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Powered by FixBroken OS</a>
     </div>
   </footer>
@@ -231,7 +231,7 @@ async function runAudit() {
   spinner.classList.add('active');
 
   try {
-    const res = await fetch('/api/console/audit', {
+    const res = await fetch('/api/free/audit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

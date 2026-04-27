@@ -1,27 +1,27 @@
-# The Console - FixBroken Tools Brief
+# Free tools - FixBroken Tools Brief
 
-The brief that governs every tool shipped at `fixbroken.ai/console/`. Read this before adding tool N+1. Save at repo root: `vumo-fixbroken-site/CONSOLE.md`.
+The brief that governs every tool shipped at `fixbroken.ai/free/`. Read this before adding tool N+1. Save at repo root: `vumo-fixbroken-site/FREE.md`.
 
 ---
 
 ## 1. Thesis
 
-The Console is a free, public set of diagnostic tools built on FixBroken OS. Anyone can paste an artifact (design doc, brand guide, URL, copy block) and get a scored, shareable result page in under 30 seconds. The result demonstrates the FixBroken methodology by applying it to the visitor's own work. The methodology IS the marketing.
+Free tools is a free, public set of diagnostic tools built on FixBroken OS. Anyone can paste an artifact (design doc, brand guide, URL, copy block) and get a scored, shareable result page in under 30 seconds. The result demonstrates the FixBroken methodology by applying it to the visitor's own work. The methodology IS the marketing.
 
 ## 2. Why it exists
 
 - **Lead gen.** Every audit URL footers `fixbroken.ai` with a "fix this for real" CTA. The share mechanic distributes the URL through the visitor's network back to the consulting brand.
-- **Methodology demo.** Prospects don't trust consultants who tell them their stuff is broken. They trust tools that show them. The Console lets prospects diagnose themselves.
+- **Methodology demo.** Prospects don't trust consultants who tell them their stuff is broken. They trust tools that show them. Free tools lets prospects diagnose themselves.
 - **Self-disqualification.** Some visitors will use the audit, get the punch list, fix it themselves, and never become customers. That's fine. They weren't the buyer. The audit clears the funnel.
 - **SEO ownership.** Every audit URL is a permanent, indexable page targeting "design system audit," "brand doc review," "LLM ruleset," etc. Compounds over time.
 
 ## 3. URL convention
 
 ```
-fixbroken.ai/console/                           Console home (tool index)
-fixbroken.ai/console/<tool>/                    Tool landing + input form
-fixbroken.ai/console/<tool>/<slug>/             Result page (shareable, permanent)
-fixbroken.ai/console/<tool>/<slug>/?private=1   Noindexed result (exec-safe)
+fixbroken.ai/free/                           Console home (tool index)
+fixbroken.ai/free/<tool>/                    Tool landing + input form
+fixbroken.ai/free/<tool>/<slug>/             Result page (shareable, permanent)
+fixbroken.ai/free/<tool>/<slug>/?private=1   Noindexed result (exec-safe)
 ```
 
 Slugs are random tokens, not predictable IDs. No slug enumeration.
@@ -84,12 +84,12 @@ Building both together forces the shared pattern. Tool #3+ becomes copy-paste.
 
 ## 7. Anti-patterns
 
-- **No paid tier in v1.** The Console is free. Period. Conversion happens through consulting inquiry, not subscriptions.
+- **No paid tier in v1.** Free tools is free. Period. Conversion happens through consulting inquiry, not subscriptions.
 - **No email gate.** The share URL IS the capture. Forcing email loses 80% of visitors and dilutes the share mechanic.
 - **No fake AI mystique.** Don't pretend the tools use a model when they don't. The brand is mechanical clarity.
 - **No "Get started today," "Learn more," "Supercharge," "Unlock," "Revolutionize," "Next-gen,"** or any phrase from `brand.md` Avoid list. The tool itself must pass Voice Lint.
 - **No designer jargon in headlines.** Depth in the body, exec language up top.
-- **No subdomain.** `fixbroken.ai/console/` consolidates SEO and traffic. Promote to subdomain only if Console becomes a separable product line.
+- **No subdomain.** `fixbroken.ai/free/` consolidates SEO and traffic. Promote to subdomain only if Console becomes a separable product line.
 
 ## 8. Build order
 
@@ -104,7 +104,7 @@ Each new tool gets a one-paragraph addition to Section 6 of this brief.
 
 - **Brief owner:** Eric Cotter
 - **Build agent:** Box Claude (server-side Claude Code session inside `vumo-fixbroken-site`)
-- **Repo:** `vumo-fixbroken-site` (the flagship, since `/console/` lives on `fixbroken.ai`)
+- **Repo:** `vumo-fixbroken-site` (the flagship, since `/free/` lives on `fixbroken.ai`)
 - **Deploy:** push to `main` -> webhook -> live within ~10s
 - **Testing:** every new tool must pass against 6 test inputs before declaring shipped (see Audit spec for the pattern)
 
@@ -117,11 +117,11 @@ Each new tool gets a one-paragraph addition to Section 6 of this brief.
 
 ## 11. The rule
 
-If a tool can't be built to pattern-match the conventions in Sections 3-7, it doesn't belong in The Console. Either rewrite the tool or rewrite the brief. Don't fork the conventions.
+If a tool can't be built to pattern-match the conventions in Sections 3-7, it doesn't belong in Free tools. Either rewrite the tool or rewrite the brief. Don't fork the conventions.
 
 ## 12. The honest catch
 
-The Console is free but not charity. Every result page costs tokens. We say so.
+Free tools is free but not charity. Every result page costs tokens. We say so.
 
 ### Console home manifesto
 

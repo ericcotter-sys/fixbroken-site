@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Design System Audit — 5/58 — fixbroken.ai</title>
+<meta name="description" content="Design system audit result: 5/58 (9%). No operating system. Your LLM and your team are guessing every session. Output will be inconsistent by default.">
+
+<meta property="og:title" content="Design System Audit — 5/58">
+<meta property="og:description" content="No operating system. Your LLM and your team are guessing every session. Output will be inconsistent by default.">
+<meta property="og:url" content="https://fixbroken.ai/console/audit/gsc1lva-/">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  .audit-score-ring {
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--fb-red);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    box-shadow: 0 0 32px var(--fb-red)33;
+    flex-shrink: 0;
+  }
+  .audit-score-ring__num {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-40);
+    font-weight: 600;
+    color: var(--fb-text-loud);
+    line-height: 1;
+  }
+  .audit-score-ring__max {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-13);
+    color: var(--fb-text-mute);
+  }
+  .audit-cmp-table { width: 100%; border-collapse: collapse; }
+  .audit-cmp-table th {
+    text-align: left; padding: 8px 12px;
+    font-family: var(--fb-font-mono); font-size: var(--fb-fs-11);
+    letter-spacing: var(--fb-tracking-wide); text-transform: uppercase;
+    color: var(--fb-text-mute); border-bottom: 1px solid var(--fb-hairline-hot);
+  }
+  .audit-cmp-table td {
+    padding: 8px 12px; border-bottom: 1px solid var(--fb-hairline);
+    font-family: var(--fb-font-mono); font-size: var(--fb-fs-13);
+    color: var(--fb-text);
+  }
+  .audit-rubric-table { width: 100%; border-collapse: collapse; }
+  .audit-rubric-table td, .audit-rubric-table th { text-align: left; }
+  .audit-punch-table { width: 100%; border-collapse: collapse; }
+  .audit-migration { white-space: pre-wrap; font-family: var(--fb-font-mono); font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed); }
+  
+  @media (max-width: 640px) {
+    .audit-hero-row { flex-direction: column !important; align-items: flex-start !important; }
+    .audit-cmp-grid { grid-template-columns: 1fr !important; }
+  }
+</style>
+</head>
+<body class="fb-shell">
+<div class="fb-grid-bg"></div>
+
+<nav class="fb-nav">
+  <div class="fb-nav__inner">
+    <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+    <div class="fb-nav__links">
+      <a class="fb-nav__link" href="/">Home</a>
+      <a class="fb-nav__link" href="/design/">Design</a>
+      <a class="fb-nav__link fb-nav__link--active" href="/console/">Console</a>
+    </div>
+  </div>
+</nav>
+
+<main class="fb-container" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-12));">
+
+  <!-- HERO -->
+  <section class="fb-section">
+    
+    <span class="fb-kicker">Console · Audit</span>
+    <div class="fb-row" style="gap:var(--fb-s-8);align-items:center;flex-wrap:wrap;" class="audit-hero-row">
+      <div class="audit-score-ring">
+        <span class="audit-score-ring__num">5</span>
+        <span class="audit-score-ring__max">/ 58</span>
+      </div>
+      <div class="fb-stack fb-stack--tight" style="flex:1;min-width:240px;">
+        <h1 style="font-size:var(--fb-fs-32);font-weight:600;color:var(--fb-text-loud);margin:0;line-height:var(--fb-lh-tight);">What you give your LLM</h1>
+        <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-16);margin:0;line-height:var(--fb-lh-relaxed);max-width:52ch;font-family:var(--fb-font-sans);">No operating system. Your LLM and your team are guessing every session. Output will be inconsistent by default.</p>
+      </div>
+    </div>
+    <div class="fb-panel fb-panel--tight" style="margin-top:var(--fb-s-6);">
+      <div style="padding:12px 16px;">
+        <span class="fb-label fb-label--signal" style="margin-bottom:4px;display:block;">Input snippet</span>
+        <p class="fb-mono" style="color:var(--fb-text-dim);font-size:var(--fb-fs-12);margin:0;word-break:break-all;">--vp-primary: #101820;
+--vp-action: #FF4713;
+button.primary { background: var(--vp-action); }</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON -->
+  <section class="fb-section">
+    <h2 style="font-size:var(--fb-fs-20);font-weight:600;color:var(--fb-text-loud);margin:0 0 var(--fb-s-4);">Side by side</h2>
+    <div class="fb-panel">
+      <div style="padding:20px;overflow-x:auto;">
+        <table class="audit-cmp-table">
+          <thead>
+            <tr>
+              <th style="width:35%;">Metric</th>
+              <th style="color:var(--fb-coral);">Your input</th>
+              <th style="color:var(--fb-signal);">FixBroken OS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Files</td><td>1</td><td>5</td></tr>
+            <tr><td>Size</td><td>0.1 KB</td><td>37.8 KB</td></tr>
+            <tr><td>Formats</td><td>none</td><td>css, json, markdown</td></tr>
+            <tr><td>Tokens</td><td>2</td><td>89</td></tr>
+            <tr><td>Components</td><td>1</td><td>28</td></tr>
+            <tr><td>Colors</td><td>2</td><td>24</td></tr>
+            <tr><td>CLAUDE.md</td><td><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">No</span></td><td><span class="fb-chip fb-chip--matrix">Yes</span></td></tr>
+            <tr><td>brand.md</td><td><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">No</span></td><td><span class="fb-chip fb-chip--matrix">Yes</span></td></tr>
+            <tr><td>CSS source</td><td><span class="fb-chip fb-chip--matrix">Yes</span></td><td><span class="fb-chip fb-chip--matrix">Yes</span></td></tr>
+            <tr><td>Session prompt</td><td><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">No</span></td><td><span class="fb-chip fb-chip--matrix">Yes</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- RUBRIC SCORECARD -->
+  <section class="fb-section">
+    <h2 style="font-size:var(--fb-fs-20);font-weight:600;color:var(--fb-text-loud);margin:0 0 var(--fb-s-4);">Rubric scorecard</h2>
+    <div class="fb-panel">
+      <div style="padding:20px;overflow-x:auto;">
+        <table class="audit-rubric-table">
+          
+            <tr>
+              <td colspan="3" style="padding:16px 12px 8px;border-bottom:1px solid var(--fb-hairline-hot);">
+                <span class="fb-label fb-label--signal">Token Foundation</span>
+                <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);margin-left:8px;">0 yes · 1 weak · 7 no</span>
+              </td>
+            </tr>
+            
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-amber);color:var(--fb-amber);">WEAK</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Color tokens</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">Colors mentioned but not structured</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Typography scale</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No typography scale detected</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Spacing scale</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No spacing scale detected</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Font families</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No font family declarations</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Border radius tokens</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No radius tokens detected</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Shadow / elevation tokens</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No shadow/elevation tokens</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Motion / transition tokens</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No motion/transition tokens</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Z-index layers</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No z-index layer system</td>
+              </tr>
+            <tr>
+              <td colspan="3" style="padding:16px 12px 8px;border-bottom:1px solid var(--fb-hairline-hot);">
+                <span class="fb-label fb-label--signal">Color System</span>
+                <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);margin-left:8px;">1 yes · 0 weak · 3 no</span>
+              </td>
+            </tr>
+            
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Surface palette</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No surface color hierarchy</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Text color hierarchy</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No text color hierarchy</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Semantic / state colors</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No semantic state colors</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-matrix);color:var(--fb-matrix);">YES</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Accent / signal color</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">Accent/primary color defined: --vp-primary: #101820</td>
+              </tr>
+            <tr>
+              <td colspan="3" style="padding:16px 12px 8px;border-bottom:1px solid var(--fb-hairline-hot);">
+                <span class="fb-label fb-label--signal">Component Library</span>
+                <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);margin-left:8px;">0 yes · 1 weak · 7 no</span>
+              </td>
+            </tr>
+            
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Layout primitives</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No layout primitives</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Navigation component</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No navigation component</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-amber);color:var(--fb-amber);">WEAK</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Button / CTA component</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">Buttons mentioned but not componentized</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Card / panel component</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No card/panel component</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Form controls</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No form control components</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Typography classes</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No typography classes</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Status / badge component</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No status/badge component</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Footer component</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No footer component</td>
+              </tr>
+            <tr>
+              <td colspan="3" style="padding:16px 12px 8px;border-bottom:1px solid var(--fb-hairline-hot);">
+                <span class="fb-label fb-label--signal">Governance</span>
+                <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);margin-left:8px;">0 yes · 0 weak · 6 no</span>
+              </td>
+            </tr>
+            
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Naming convention</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No consistent naming convention detected</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Override / extension pattern</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No override/extension guidance</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Responsive breakpoints</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No responsive breakpoints</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Accessibility</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No accessibility provisions</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Voice / tone guidelines</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No voice/tone guidelines</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Banned patterns</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No banned patterns documented</td>
+              </tr>
+            <tr>
+              <td colspan="3" style="padding:16px 12px 8px;border-bottom:1px solid var(--fb-hairline-hot);">
+                <span class="fb-label fb-label--signal">Implementation Evidence</span>
+                <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);margin-left:8px;">0 yes · 1 weak · 2 no</span>
+              </td>
+            </tr>
+            
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-amber);color:var(--fb-amber);">WEAK</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Machine-readable format</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">Partially machine-readable</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Agent / LLM session prompt</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No LLM session prompt or agent instructions</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);font-size:var(--fb-fs-14);">Living reference / style guide</td>
+                <td style="padding:8px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">No living reference or style guide</td>
+              </tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- LEAK POINTS -->
+  
+  <section class="fb-section">
+    <h2 style="font-size:var(--fb-fs-20);font-weight:600;color:var(--fb-text-loud);margin:0 0 var(--fb-s-4);">Top leak points</h2>
+    <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-14);margin:0 0 var(--fb-s-4);font-family:var(--fb-font-sans);">These are the places where your team's output will drift the most.</p>
+    <div class="fb-stack" style="gap:var(--fb-s-3);">
+      
+          <div class="fb-panel fb-panel--tight" style="border-left:3px solid var(--fb-red);">
+            <div class="fb-stack fb-stack--tight" style="padding:16px 20px;">
+              <span class="fb-label" style="color:var(--fb-red);">Leak 1</span>
+              <p style="color:var(--fb-text-loud);font-size:var(--fb-fs-16);margin:0;font-family:var(--fb-font-sans);">Font sizes are improvised per page</p>
+              <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:0;font-family:var(--fb-font-mono);">Missing: Typography scale · Token Foundation</p>
+            </div>
+          </div>
+          <div class="fb-panel fb-panel--tight" style="border-left:3px solid var(--fb-red);">
+            <div class="fb-stack fb-stack--tight" style="padding:16px 20px;">
+              <span class="fb-label" style="color:var(--fb-red);">Leak 2</span>
+              <p style="color:var(--fb-text-loud);font-size:var(--fb-fs-16);margin:0;font-family:var(--fb-font-sans);">Whitespace is eyeballed every time</p>
+              <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:0;font-family:var(--fb-font-mono);">Missing: Spacing scale · Token Foundation</p>
+            </div>
+          </div>
+          <div class="fb-panel fb-panel--tight" style="border-left:3px solid var(--fb-red);">
+            <div class="fb-stack fb-stack--tight" style="padding:16px 20px;">
+              <span class="fb-label" style="color:var(--fb-red);">Leak 3</span>
+              <p style="color:var(--fb-text-loud);font-size:var(--fb-fs-16);margin:0;font-family:var(--fb-font-sans);">No type contract — each page picks its own fonts</p>
+              <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:0;font-family:var(--fb-font-mono);">Missing: Font families · Token Foundation</p>
+            </div>
+          </div>
+    </div>
+  </section>
+
+  <!-- PUNCH LIST -->
+  <section class="fb-section">
+    <h2 style="font-size:var(--fb-fs-20);font-weight:600;color:var(--fb-text-loud);margin:0 0 var(--fb-s-4);">Punch list</h2>
+    <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-14);margin:0 0 var(--fb-s-4);font-family:var(--fb-font-sans);">Five highest-impact fixes, ranked. Estimated effort assumes one person with design system experience.</p>
+    <div class="fb-panel">
+      <div style="padding:20px;overflow-x:auto;">
+        <table class="audit-punch-table">
+          <thead>
+            <tr>
+              <th style="padding:8px 12px;font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);border-bottom:1px solid var(--fb-hairline-hot);text-align:left;">#</th>
+              <th style="padding:8px 12px;font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);border-bottom:1px solid var(--fb-hairline-hot);text-align:left;">Fix</th>
+              <th style="padding:8px 12px;font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);border-bottom:1px solid var(--fb-hairline-hot);text-align:left;">Status</th>
+              <th style="padding:8px 12px;font-family:var(--fb-font-mono);font-size:var(--fb-fs-11);letter-spacing:var(--fb-tracking-wide);text-transform:uppercase;color:var(--fb-text-mute);border-bottom:1px solid var(--fb-hairline-hot);text-align:left;">Effort</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-signal);font-family:var(--fb-font-mono);font-weight:600;">#1</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);">Typography scale</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">1-2 hours</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-signal);font-family:var(--fb-font-mono);font-weight:600;">#2</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);">Spacing scale</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">1-2 hours</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-signal);font-family:var(--fb-font-mono);font-weight:600;">#3</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);">Font families</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">1-2 hours</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-signal);font-family:var(--fb-font-mono);font-weight:600;">#4</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);">Border radius tokens</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">1-2 hours</td>
+              </tr>
+              <tr>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-signal);font-family:var(--fb-font-mono);font-weight:600;">#5</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text);font-family:var(--fb-font-sans);">Shadow / elevation tokens</td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);"><span class="fb-chip" style="border-color:var(--fb-red);color:var(--fb-red);">NO</span></td>
+                <td style="padding:10px 12px;border-bottom:1px solid var(--fb-hairline);color:var(--fb-text-dim);font-family:var(--fb-font-mono);font-size:var(--fb-fs-12);">1-2 hours</td>
+              </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- MIGRATION PROMPT -->
+  <section class="fb-section">
+    <h2 style="font-size:var(--fb-fs-20);font-weight:600;color:var(--fb-text-loud);margin:0 0 var(--fb-s-4);">Migration prompt</h2>
+    <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-14);margin:0 0 var(--fb-s-4);font-family:var(--fb-font-sans);">Paste this into your LLM to start closing the gaps.</p>
+    <div class="fb-terminal">
+      <div class="fb-terminal__bar">
+        <div class="fb-terminal__dots">
+          <span class="fb-terminal__dot fb-terminal__dot--red"></span>
+          <span class="fb-terminal__dot fb-terminal__dot--amber"></span>
+          <span class="fb-terminal__dot fb-terminal__dot--matrix"></span>
+        </div>
+      </div>
+      <div class="fb-terminal__body">
+        <pre class="audit-migration" id="migration-prompt">You are building a design system. The current system scored 5/58 on the FixBroken OS rubric.
+
+MISSING (add these):
+- Typography scale
+- Spacing scale
+- Font families
+- Border radius tokens
+- Shadow / elevation tokens
+- Motion / transition tokens
+- Z-index layers
+- Surface palette
+- Text color hierarchy
+- Semantic / state colors
+- Layout primitives
+- Navigation component
+- Card / panel component
+- Form controls
+- Typography classes
+- Status / badge component
+- Footer component
+- Naming convention
+- Override / extension pattern
+- Responsive breakpoints
+- Accessibility
+- Voice / tone guidelines
+- Banned patterns
+- Agent / LLM session prompt
+- Living reference / style guide
+
+WEAK (strengthen these):
+- Color tokens
+- Button / CTA component
+- Machine-readable format
+
+Requirements:
+- Define all tokens as CSS custom properties with a consistent prefix
+- Include at minimum: color, typography, spacing, radius, shadow, motion, z-index tokens
+- Create reusable component classes for: layout, nav, buttons, cards, forms, typography, status indicators, footer
+- Document naming convention, override pattern, responsive breakpoints, and accessibility rules
+- Add voice/tone guidelines and banned patterns
+- Output a machine-readable manifest (JSON) alongside the CSS
+- Write a CLAUDE.md or equivalent agent prompt so LLMs can use the system correctly
+- Create a living style guide page that renders every component
+</pre>
+      </div>
+    </div>
+    <button onclick="navigator.clipboard.writeText(document.getElementById('migration-prompt').textContent).then(()=>{this.textContent='Copied';setTimeout(()=>this.textContent='Copy prompt',2000)})" class="fb-cta fb-cta--ghost" style="margin-top:var(--fb-s-3);">Copy prompt</button>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="fb-section" style="padding-bottom:var(--fb-s-16);">
+    <div class="fb-divider fb-divider--signal" style="margin-bottom:var(--fb-s-6);"></div>
+    <div class="fb-stack" style="gap:var(--fb-s-4);">
+      <div class="fb-row fb-row--wrap" style="gap:var(--fb-s-4);">
+        <a href="mailto:?subject=Design%20System%20Audit%20%E2%80%94%20Score%3A%205%2F58&body=Our%20design%20system%20scored%205%2F58%20(9%25)%20on%20the%20FixBroken%20OS%20rubric.%0A%0AFull%20audit%3A%20https%3A%2F%2Ffixbroken.ai%2Fconsole%2Faudit%2Fgsc1lva-%2F%0A%0ATop%20fixes%3A%0A1.%20Typography%20scale%20(NO)%20%E2%80%94%20est.%201-2%20hours%0A2.%20Spacing%20scale%20(NO)%20%E2%80%94%20est.%201-2%20hours%0A3.%20Font%20families%20(NO)%20%E2%80%94%20est.%201-2%20hours%0A4.%20Border%20radius%20tokens%20(NO)%20%E2%80%94%20est.%201-2%20hours%0A5.%20Shadow%20%2F%20elevation%20tokens%20(NO)%20%E2%80%94%20est.%201-2%20hours%0A%0AAudited%20by%20FixBroken%20OS%20%E2%80%94%20https%3A%2F%2Ffixbroken.ai%2Fdesign%2F" class="fb-cta">Email this audit to your team</a>
+        <a href="/contact" class="fb-cta fb-cta--pink-solid" onclick="if(typeof openContact==='function'){openContact();return false;}">Need this fixed for real? Talk to FixBroken</a>
+      </div>
+      <div class="fb-row fb-row--wrap" style="gap:var(--fb-s-4);align-items:center;">
+        <a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);text-decoration:none;">Audited by FixBroken OS</a>
+        <span class="fb-mono" style="color:var(--fb-text-ghost);font-size:var(--fb-fs-11);">2026-04-27T18:52:29.497Z</span>
+      </div>
+    </div>
+  </footer>
+
+</main>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "slug": "gsc1lva-",
+  "tool": "audit",
+  "score": 5,
+  "maxScore": 58,
+  "pct": 9,
+  "verdict": "No operating system. Your LLM and your team are guessing every session. Output will be inconsistent by default.",
+  "timestamp": "2026-04-27T18:52:29.497Z",
+  "private": false,
+  "inputStats": {
+    "length": 93,
+    "lineCount": 3,
+    "formats": [],
+    "colorCount": 2,
+    "cssVarCount": 2,
+    "classCount": 1
+  }
+}

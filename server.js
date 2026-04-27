@@ -593,7 +593,7 @@ function extractTextFromHtml(rawHtml) {
   return styles.join('\n\n') + '\n\n' + text;
 }
 
-app.post('/api/console/audit', function(req, res) {
+app.post('/api/free/audit', function(req, res) {
   var ip = req.ip || 'unknown';
   if (!auditRateLimitOK(ip)) {
     return res.status(429).json({ ok: false, err: 'Rate limit reached (5 audits per day). Try again tomorrow.' });
@@ -641,7 +641,7 @@ app.post('/api/console/audit', function(req, res) {
       inputStats: audit.inputStats,
     };
 
-    var dir = path.join(__dirname, 'public', 'console', 'audit', slug);
+    var dir = path.join(__dirname, 'public', 'free', 'audit', slug);
     try {
       fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(path.join(dir, 'index.html'), resultHtml, 'utf8');
@@ -654,7 +654,7 @@ app.post('/api/console/audit', function(req, res) {
     res.json({
       ok: true,
       slug: slug,
-      url: '/console/audit/' + slug + '/',
+      url: '/free/audit/' + slug + '/',
       score: audit.score,
       maxScore: audit.maxScore,
       pct: audit.pct,
@@ -678,7 +678,7 @@ app.post('/api/console/audit', function(req, res) {
 // ---------------------------------------------------------------------------
 var consoleVoiceLint = require('./tools/console-voice-lint');
 
-app.post('/api/console/voice-lint', function(req, res) {
+app.post('/api/free/voice-lint', function(req, res) {
   var ip = req.ip || 'unknown';
   if (!auditRateLimitOK(ip)) {
     return res.status(429).json({ ok: false, err: 'Rate limit reached (5 per day). Try again tomorrow.' });
@@ -717,7 +717,7 @@ app.post('/api/console/voice-lint', function(req, res) {
     'private': !!isPrivate,
   };
 
-  var dir = path.join(__dirname, 'public', 'console', 'voice-lint', slug);
+  var dir = path.join(__dirname, 'public', 'free', 'voice-lint', slug);
   try {
     fs.mkdirSync(dir, { recursive: true });
     fs.writeFileSync(path.join(dir, 'index.html'), resultHtml, 'utf8');
@@ -730,11 +730,15 @@ app.post('/api/console/voice-lint', function(req, res) {
   res.json({
     ok: true,
     slug: slug,
-    url: '/console/voice-lint/' + slug + '/',
+    url: '/free/voice-lint/' + slug + '/',
     hitCount: lint.hitCount,
     clean: lint.clean,
   });
 });
+
+// 301 redirects: /console/* -> /free/*
+app.get("/console", function(req, res) { res.redirect(301, "/free/"); });
+app.get("/console/*", function(req, res) { res.redirect(301, req.originalUrl.replace(/^\/console/, "/free")); });
 
 app.use(express.static(path.join(__dirname, 'public')));
 

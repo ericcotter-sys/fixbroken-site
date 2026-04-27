@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Voice Lint - Console - fixbroken.ai</title>
+<title>Free voice lint | fixbroken.ai</title>
 <meta name="description" content="Paste any copy and see which phrases read like generic SaaS marketing instead of your brand. Highlights banned phrases with replacement suggestions.">
 <meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-<meta property="og:title" content="Voice Lint - fixbroken.ai">
+<meta property="og:title" content="Free voice lint | fixbroken.ai">
 <meta property="og:description" content="Find banned SaaS phrases in your copy. Paste text, get an annotated result.">
-<meta property="og:url" content="https://fixbroken.ai/console/voice-lint/">
+<meta property="og:url" content="https://fixbroken.ai/free/voice-lint/">
 <link rel="stylesheet" href="/design/fixbroken-os.css">
 <style>
   .lint-error {
@@ -49,7 +49,7 @@
     <div class="fb-nav__links">
       <a class="fb-nav__link" href="/">Home</a>
       <a class="fb-nav__link" href="/design/">Design</a>
-      <a class="fb-nav__link fb-nav__link--active" href="/console/">Console</a>
+      <a class="fb-nav__link fb-nav__link--active" href="/free/">Free</a>
     </div>
   </div>
 </nav>
@@ -57,9 +57,9 @@
 <main class="fb-container fb-container--narrow" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-12));">
 
   <section class="fb-section">
-    <span class="fb-kicker">Console - Voice Lint</span>
+    <span class="fb-kicker">Free tools - Voice Lint</span>
     <h1 class="fb-display" style="font-size:var(--fb-fs-48);">Lint your copy.</h1>
-    <p class="fb-lede" style="max-width:52ch;">Paste any text block - landing page copy, email draft, pitch deck script, about page. We highlight every phrase that reads like generic SaaS marketing instead of your actual brand.</p>
+    <p class="fb-lede" style="max-width:52ch;">Paste any block of copy. We flag every banned SaaS phrase, with suggested rewrites in your brand voice.</p>
   </section>
 
   <section class="fb-section">
@@ -118,7 +118,7 @@
 
   <footer class="fb-footer" style="margin-top:var(--fb-s-16);">
     <div class="fb-footer__row">
-      <a href="/console/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Console</a>
+      <a href="/free/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Free</a>
       <a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Powered by FixBroken OS</a>
     </div>
   </footer>
@@ -149,7 +149,7 @@ async function runLint() {
   spinner.classList.add('active');
 
   try {
-    var res = await fetch('/api/console/voice-lint', {
+    var res = await fetch('/api/free/voice-lint', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ input: text, private: isPrivate }),
