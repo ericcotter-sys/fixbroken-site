@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Audit — Console — fixbroken.ai</title>
+<meta name="description" content="Score your design system against the FixBroken OS 29-point rubric. Paste a brand doc, CSS, JSON tokens, or URL. See what your LLM is actually working with.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:title" content="Design System Audit — fixbroken.ai">
+<meta property="og:description" content="Score your design system against 29 rubric items. Paste anything — get a shareable result in 30 seconds.">
+<meta property="og:url" content="https://fixbroken.ai/console/audit/">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+<style>
+  .audit-mode-tabs {
+    display: flex; gap: 0;
+    border: 1px solid var(--fb-hairline);
+    border-radius: var(--fb-r-3);
+    overflow: hidden;
+    width: fit-content;
+  }
+  .audit-mode-tab {
+    padding: 10px 24px;
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-13);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all var(--fb-t-fast);
+  }
+  .audit-mode-tab:hover { color: var(--fb-text); }
+  .audit-mode-tab.active {
+    background: var(--fb-signal-wash);
+    color: var(--fb-signal);
+    border-color: var(--fb-signal);
+  }
+  .audit-input-area { display: none; }
+  .audit-input-area.active { display: block; }
+  .audit-form-footer {
+    display: flex; gap: var(--fb-s-4); align-items: center; flex-wrap: wrap;
+    margin-top: var(--fb-s-4);
+  }
+  .audit-private-check {
+    display: flex; align-items: center; gap: var(--fb-s-2);
+    font-family: var(--fb-font-mono); font-size: var(--fb-fs-12);
+    color: var(--fb-text-dim); cursor: pointer;
+  }
+  .audit-private-check input {
+    accent-color: var(--fb-signal);
+    width: 16px; height: 16px;
+  }
+  .audit-error {
+    display: none;
+    padding: 12px 16px;
+    background: rgba(255, 74, 90, 0.08);
+    border: 1px solid var(--fb-red);
+    border-radius: var(--fb-r-2);
+    color: var(--fb-red);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-13);
+    margin-top: var(--fb-s-3);
+  }
+  .audit-spinner {
+    display: none;
+    align-items: center; gap: var(--fb-s-3);
+    margin-top: var(--fb-s-4);
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-13);
+    color: var(--fb-signal);
+  }
+  .audit-spinner.active { display: flex; }
+  .audit-spinner__dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--fb-signal);
+    animation: fb-pulse 1.2s ease-in-out infinite;
+  }
+</style>
+</head>
+<body class="fb-shell">
+<div class="fb-grid-bg"></div>
+
+<nav class="fb-nav">
+  <div class="fb-nav__inner">
+    <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+    <div class="fb-nav__links">
+      <a class="fb-nav__link" href="/">Home</a>
+      <a class="fb-nav__link" href="/design/">Design</a>
+      <a class="fb-nav__link fb-nav__link--active" href="/console/">Console</a>
+    </div>
+  </div>
+</nav>
+
+<main class="fb-container fb-container--narrow" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-12));">
+
+  <section class="fb-section">
+    <span class="fb-kicker">Console · Audit</span>
+    <h1 class="fb-display" style="font-size:var(--fb-fs-48);">Score your design system.</h1>
+    <p class="fb-lede" style="max-width:52ch;">Paste your brand doc, CSS file, JSON tokens, or any text your team calls "the design system." We score it against 29 rubric items. No AI. Pure mechanical parsing.</p>
+  </section>
+
+  <section class="fb-section">
+    <div class="fb-panel">
+      <div style="padding:24px;">
+        <div class="fb-stack">
+          <div class="audit-mode-tabs">
+            <button class="audit-mode-tab active" data-mode="paste" onclick="switchMode('paste')">Paste</button>
+            <button class="audit-mode-tab" data-mode="url" onclick="switchMode('url')">URL</button>
+          </div>
+
+          <div id="paste-area" class="audit-input-area active">
+            <label class="fb-field">
+              <span class="fb-field__label">Paste your design system, brand doc, CSS, or tokens</span>
+              <textarea id="paste-input" class="fb-textarea" rows="14" placeholder="Paste anything — CSS variables, JSON tokens, YAML config, a brand guide, or just the messy Google Doc your designer sent you."></textarea>
+            </label>
+          </div>
+
+          <div id="url-area" class="audit-input-area">
+            <label class="fb-field">
+              <span class="fb-field__label">Design system URL</span>
+              <input id="url-input" class="fb-input" type="url" placeholder="https://example.com/design-system">
+            </label>
+            <p style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);margin-top:var(--fb-s-2);">We fetch the page, extract text and CSS, and audit the content.</p>
+          </div>
+
+          <div id="audit-error" class="audit-error"></div>
+
+          <div class="audit-form-footer">
+            <button id="run-btn" class="fb-cta fb-cta--solid" onclick="runAudit()">Run audit</button>
+            <label class="audit-private-check">
+              <input type="checkbox" id="private-check">
+              Private (noindex)
+            </label>
+          </div>
+
+          <div id="audit-spinner" class="audit-spinner">
+            <span class="audit-spinner__dot"></span>
+            <span>Scoring against 29 rubric items...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="fb-section">
+    <h2 style="font-size:var(--fb-fs-18);color:var(--fb-text);margin:0 0 var(--fb-s-4);">What we score</h2>
+    <div class="fb-grid fb-grid--2">
+      <div class="fb-panel fb-panel--tight">
+        <div style="padding:16px 20px;">
+          <span class="fb-label fb-label--signal">Token Foundation</span>
+          <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:8px 0 0;">Color, typography, spacing, radius, shadows, motion, z-index, font families</p>
+        </div>
+      </div>
+      <div class="fb-panel fb-panel--tight">
+        <div style="padding:16px 20px;">
+          <span class="fb-label fb-label--signal">Color System</span>
+          <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:8px 0 0;">Surface palette, text hierarchy, semantic states, accent/signal color</p>
+        </div>
+      </div>
+      <div class="fb-panel fb-panel--tight">
+        <div style="padding:16px 20px;">
+          <span class="fb-label fb-label--signal">Component Library</span>
+          <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:8px 0 0;">Layout, nav, buttons, cards, forms, typography, status, footer</p>
+        </div>
+      </div>
+      <div class="fb-panel fb-panel--tight">
+        <div style="padding:16px 20px;">
+          <span class="fb-label fb-label--signal">Governance</span>
+          <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:8px 0 0;">Naming, overrides, responsive, accessibility, voice, banned patterns</p>
+        </div>
+      </div>
+      <div class="fb-panel fb-panel--tight" style="grid-column: 1 / -1;">
+        <div style="padding:16px 20px;">
+          <span class="fb-label fb-label--signal">Implementation Evidence</span>
+          <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);margin:8px 0 0;">Machine-readable tokens, LLM session prompt, living style guide</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="fb-footer" style="margin-top:var(--fb-s-16);">
+    <div class="fb-footer__row">
+      <a href="/console/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Console</a>
+      <a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Powered by FixBroken OS</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+function switchMode(mode) {
+  document.querySelectorAll('.audit-mode-tab').forEach(t => t.classList.toggle('active', t.dataset.mode === mode));
+  document.querySelectorAll('.audit-input-area').forEach(a => a.classList.remove('active'));
+  document.getElementById(mode + '-area').classList.add('active');
+  hideError();
+}
+
+function showError(msg) {
+  const el = document.getElementById('audit-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+function hideError() {
+  document.getElementById('audit-error').style.display = 'none';
+}
+
+async function runAudit() {
+  hideError();
+  const mode = document.querySelector('.audit-mode-tab.active').dataset.mode;
+  const isPrivate = document.getElementById('private-check').checked;
+
+  let payload;
+  if (mode === 'paste') {
+    const text = document.getElementById('paste-input').value.trim();
+    if (!text) { showError('Paste your design system content to audit.'); return; }
+    if (text.length > 500000) { showError('Input too large. Maximum 500 KB.'); return; }
+    payload = { mode: 'paste', input: text, private: isPrivate };
+  } else {
+    const url = document.getElementById('url-input').value.trim();
+    if (!url) { showError('Enter a URL to audit.'); return; }
+    try { new URL(url); } catch { showError('Enter a valid URL.'); return; }
+    payload = { mode: 'url', input: url, private: isPrivate };
+  }
+
+  const btn = document.getElementById('run-btn');
+  const spinner = document.getElementById('audit-spinner');
+  btn.disabled = true;
+  btn.textContent = 'Running...';
+  spinner.classList.add('active');
+
+  try {
+    const res = await fetch('/api/console/audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!data.ok) {
+      showError(data.err || 'Audit failed. Try again.');
+      btn.disabled = false;
+      btn.textContent = 'Run audit';
+      spinner.classList.remove('active');
+      return;
+    }
+    window.location.href = data.url + (isPrivate ? '?private=1' : '');
+  } catch (e) {
+    showError('Network error. Check your connection and try again.');
+    btn.disabled = false;
+    btn.textContent = 'Run audit';
+    spinner.classList.remove('active');
+  }
+}
+
+document.getElementById('paste-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) runAudit();
+});
+document.getElementById('url-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') runAudit();
+});
+</script>
+</body>
+</html>

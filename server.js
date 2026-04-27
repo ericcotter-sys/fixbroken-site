@@ -531,8 +531,150 @@ app.get('/api/stats', (_req, res) => {
 app.get('/ventures', (req, res) => res.redirect(301, '/work/'));
 app.get('/ventures/', (req, res) => res.redirect(301, '/work/'));
 
+// ---------------------------------------------------------------------------
+// Console Audit — productized design system audit tool
+// ---------------------------------------------------------------------------
+const consoleAudit = require('./tools/console-audit');
+const consoleRender = require('./tools/console-render');
+const https = require('https');
+const http = require('http');
+
+const auditRateMap = new Map();
+function auditRateLimitOK(ip) {
+  const now = Date.now();
+  const key = ip;
+  const record = auditRateMap.get(key);
+  const dayMs = 86400_000;
+  if (!record || now - record.start > dayMs) {
+    auditRateMap.set(key, { start: now, count: 1 });
+    return true;
+  }
+  if (record.count >= 5) return false;
+  record.count++;
+  return true;
+}
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of auditRateMap) if (now - v.start > 86400_000) auditRateMap.delete(k);
+}, 3600_000);
+
+function fetchUrl(url, timeoutMs) {
+  timeoutMs = timeoutMs || 10000;
+  return new Promise(function(resolve, reject) {
+    var mod = url.startsWith('https') ? https : http;
+    var req = mod.get(url, { timeout: timeoutMs, headers: { 'User-Agent': 'FixBroken-Audit/1.0' } }, function(res) {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
+        return fetchUrl(res.headers.location, timeoutMs).then(resolve, reject);
+      }
+      if (res.statusCode !== 200) return reject(new Error('HTTP ' + res.statusCode));
+      var chunks = [];
+      var size = 0;
+      res.on('data', function(chunk) {
+        size += chunk.length;
+        if (size > 500000) { req.destroy(); reject(new Error('Response too large')); }
+        chunks.push(chunk);
+      });
+      res.on('end', function() { resolve(Buffer.concat(chunks).toString('utf8')); });
+    });
+    req.on('error', reject);
+    req.on('timeout', function() { req.destroy(); reject(new Error('Timeout')); });
+  });
+}
+
+function extractTextFromHtml(rawHtml) {
+  var styles = [];
+  rawHtml.replace(/<style[^>]*>([\s\S]*?)<\/style>/gi, function(_, css) { styles.push(css); return ''; });
+  var text = rawHtml
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/<style[\s\S]*?<\/style>/gi, '')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return styles.join('\n\n') + '\n\n' + text;
+}
+
+app.post('/api/console/audit', function(req, res) {
+  var ip = req.ip || 'unknown';
+  if (!auditRateLimitOK(ip)) {
+    return res.status(429).json({ ok: false, err: 'Rate limit reached (5 audits per day). Try again tomorrow.' });
+  }
+
+  var body = req.body || {};
+  var mode = body.mode;
+  var input = body.input;
+  var isPrivate = body['private'];
+
+  if (!mode || !input || typeof input !== 'string') {
+    return res.status(400).json({ ok: false, err: 'Missing mode or input.' });
+  }
+  if (input.length > 500000) {
+    return res.status(413).json({ ok: false, err: 'Input too large (max 500 KB).' });
+  }
+
+  if (consoleAudit.containsCredentials(input)) {
+    return res.status(400).json({ ok: false, err: 'Your input contains what looks like API keys or credentials. Remove them and retry.' });
+  }
+
+  function processInput(rawText) {
+    var sanitized = consoleAudit.sanitizeInput(rawText);
+    var audit = consoleAudit.runAudit(sanitized);
+    var migrationPrompt = consoleAudit.generateMigrationPrompt(audit);
+    var slug = consoleAudit.generateSlug();
+    var timestamp = new Date().toISOString();
+
+    var resultHtml = consoleRender.renderAuditPage(audit, slug, {
+      'private': isPrivate,
+      timestamp: timestamp,
+      inputSnippet: sanitized.slice(0, 300),
+      migrationPrompt: migrationPrompt,
+    });
+
+    var manifest = {
+      slug: slug,
+      tool: 'audit',
+      score: audit.score,
+      maxScore: audit.maxScore,
+      pct: audit.pct,
+      verdict: audit.verdict,
+      timestamp: timestamp,
+      'private': !!isPrivate,
+      inputStats: audit.inputStats,
+    };
+
+    var dir = path.join(__dirname, 'public', 'console', 'audit', slug);
+    try {
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, 'index.html'), resultHtml, 'utf8');
+      fs.writeFileSync(path.join(dir, 'manifest.json'), JSON.stringify(manifest, null, 2), 'utf8');
+      fs.writeFileSync(path.join(dir, 'source.txt'), sanitized.slice(0, 100000), { encoding: 'utf8', mode: 0o600 });
+    } catch (e) {
+      return res.status(500).json({ ok: false, err: 'Failed to persist audit result.' });
+    }
+
+    res.json({
+      ok: true,
+      slug: slug,
+      url: '/console/audit/' + slug + '/',
+      score: audit.score,
+      maxScore: audit.maxScore,
+      pct: audit.pct,
+    });
+  }
+
+  if (mode === 'url') {
+    try { new URL(input); } catch (e) { return res.status(400).json({ ok: false, err: 'Invalid URL.' }); }
+    fetchUrl(input).then(function(html) {
+      processInput(extractTextFromHtml(html));
+    }).catch(function(e) {
+      res.status(502).json({ ok: false, err: 'Could not fetch URL: ' + e.message });
+    });
+  } else {
+    processInput(input);
+  }
+});
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(PORT, HOST, () => {
-  console.log(`fixbroken listening on http://${HOST}:${PORT}`);
+app.listen(PORT, HOST, function() {
+  console.log('fixbroken listening on http://' + HOST + ':' + PORT);
 });

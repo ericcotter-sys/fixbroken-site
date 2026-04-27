@@ -1,0 +1,36 @@
+# Acme Corp Brand Guidelines v2.3
+Updated: March 2024
+
+## Colors
+Our primary brand color is #3366FF (Acme Blue).
+Secondary: #FF6633 (Acme Orange)
+We also use:
+- Light gray for backgrounds: #F5F5F5
+- Dark text: #333333
+- Muted text: #999999
+
+## Typography
+We use Roboto for headings and Open Sans for body copy.
+Heading sizes: 32px, 24px, 18px, 16px
+Body: 14px, line-height 1.5
+
+## Buttons
+Primary buttons are Acme Blue with white text, rounded corners (8px).
+Secondary buttons have a border only.
+
+## Spacing
+Use 8px grid. Common values: 8, 16, 24, 32, 48, 64.
+
+## Logo
+The Acme wordmark should have 24px clear space on all sides.
+Never stretch, rotate, or recolor the logo.
+
+## Voice
+- Be friendly but professional
+- Avoid jargon when possible
+- Short sentences preferred
+
+## Don'ts
+- Don't use Comic Sans
+- Don't use more than 3 colors on a single page
+- Never put text on busy backgrounds
