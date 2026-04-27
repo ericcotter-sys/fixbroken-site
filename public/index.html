@@ -718,7 +718,9 @@
   .hp-cycle--42s   { --cycle-color: var(--fb-coral);  --cycle-head: #ffa088;              --cycle-glow: var(--fb-coral-glow); }
   .hp-cycle--80s   { --cycle-color: var(--fb-matrix); --cycle-head: #7dffb7;              --cycle-glow: var(--fb-matrix-glow); }
   .hp-cycle--800s  { --cycle-color: var(--fb-pink);   --cycle-head: var(--fb-pink-bright);   --cycle-glow: var(--fb-pink-glow); }
-  .hp-cycle--8000s { --cycle-color: var(--fb-amber);  --cycle-head: #ffd17a;              --cycle-glow: rgba(255,182,74,0.45); }
+  .hp-cycle--8000s  { --cycle-color: var(--fb-amber);  --cycle-head: #ffd17a;              --cycle-glow: rgba(255,182,74,0.45); }
+  .hp-cycle--80000s { --cycle-color: var(--fb-red);    --cycle-head: #ff7a88;              --cycle-glow: rgba(255,74,90,0.45); }
+  .hp-cycle--800000s{ --cycle-color: #ffffff;           --cycle-head: #ffffff;              --cycle-glow: rgba(255,255,255,0.30); }
 
   .hp-arena__foot {
     margin-top: var(--fb-s-5);
@@ -781,7 +783,7 @@
         <a class="fb-nav__link" href="/work/">Work</a>
         <a class="fb-nav__link" href="/design/">Design</a>
         <a class="fb-nav__link" href="/console/">Console</a>
-        <a class="fb-nav__link" href="mailto:hello@fixbroken.ai?subject=fixbroken.ai" data-open-modal="contact">Signal</a>
+        <a class="fb-nav__link" href="/#signal" data-open-modal="contact">Signal</a>
       </div>
     </div>
   </nav>
@@ -804,7 +806,7 @@
 
         <div class="fb-rise fb-rise--d2">
           <!-- href is a JS-off fallback; JS intercepts and opens the modal -->
-          <a class="fb-cta fb-cta--pink-solid" href="mailto:hello@fixbroken.ai?subject=fixbroken.ai" id="hp-hero-cta" data-open-modal="contact">
+          <a class="fb-cta fb-cta--pink-solid" href="/#signal" id="hp-hero-cta" data-open-modal="contact">
             Start a conversation
           </a>
         </div>
@@ -1380,6 +1382,26 @@
           <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
         </div>
 
+        <div class="hp-cycle hp-cycle--80000s" data-cycle="6">
+          <span class="hp-cycle__label">80ks</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--800000s" data-cycle="8">
+          <span class="hp-cycle__label">800ks</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+        </div>
+
         <div class="hp-arena__foot">
           <span>lifetime <strong id="hp-tkn-lifetime">—</strong></span>
           <span>proj/day <strong id="hp-tkn-projday">—</strong></span>
@@ -1790,6 +1812,13 @@
       setTimeout(function() {
         var arena = document.getElementById('hp-arena');
         if (arena) arena.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 300);
+    }
+
+    if (location.hash === '#signal') {
+      setTimeout(function() {
+        var modal = document.getElementById('hp-contact-modal');
+        if (modal) { modal.classList.add('hp-modal--open'); modal.setAttribute('aria-hidden', 'false'); }
       }, 300);
     }
 
