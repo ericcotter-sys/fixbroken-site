@@ -2,13 +2,13 @@
   "$schema": "https://fixbroken.ai/design/fixbroken-os.manifest.schema.json",
   "name": "FixBroken OS",
   "version": "0.1.0",
-  "generated": "2026-04-26T16:57:16.416Z",
+  "generated": "2026-04-27T20:28:36.061Z",
   "source": {
     "css": "/design/fixbroken-os.css",
     "brand": "/design/brand.md",
     "styleguide": "/design/",
-    "cssLines": 1175,
-    "cssBytes": 37824,
+    "cssLines": 1212,
+    "cssBytes": 38923,
     "sections": [
       {
         "number": 1,
@@ -56,35 +56,35 @@
         "number": 7,
         "name": "components",
         "startLine": 399,
-        "endLine": 874,
-        "lines": 476
+        "endLine": 905,
+        "lines": 507
       },
       {
         "number": 8,
         "name": "effects",
-        "startLine": 875,
-        "endLine": 1005,
+        "startLine": 906,
+        "endLine": 1036,
         "lines": 131
       },
       {
         "number": 9,
         "name": "motion",
-        "startLine": 1006,
-        "endLine": 1038,
+        "startLine": 1037,
+        "endLine": 1069,
         "lines": 33
       },
       {
         "number": 10,
         "name": "responsive",
-        "startLine": 1039,
-        "endLine": 1142,
-        "lines": 104
+        "startLine": 1070,
+        "endLine": 1179,
+        "lines": 110
       },
       {
         "number": 11,
         "name": "accessibility",
-        "startLine": 1143,
-        "endLine": 1174,
+        "startLine": 1180,
+        "endLine": 1211,
         "lines": 32
       }
     ]
@@ -241,12 +241,12 @@
       },
       {
         "name": "--fb-text-mute",
-        "value": "#556070",
+        "value": "#708090",
         "description": "tertiary / labels"
       },
       {
         "name": "--fb-text-ghost",
-        "value": "#354050",
+        "value": "#506070",
         "description": "placeholder / disabled"
       }
     ],
@@ -747,12 +747,13 @@
     "fb-mono",
     "fb-mono-label",
     "fb-nav",
+    "fb-nav--open",
     "fb-nav__brand",
+    "fb-nav__burger",
     "fb-nav__inner",
     "fb-nav__link",
     "fb-nav__link--active",
     "fb-nav__links",
-    "fb-nav__links--fade",
     "fb-output",
     "fb-panel",
     "fb-panel--coral",

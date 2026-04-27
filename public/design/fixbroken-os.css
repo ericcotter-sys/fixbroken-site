@@ -82,8 +82,8 @@
   --fb-text:         #e4eaf2;  /* primary — soft white with blue hint */
   --fb-text-loud:    #ffffff;  /* extreme emphasis */
   --fb-text-dim:     #8a97a8;  /* secondary copy */
-  --fb-text-mute:    #556070;  /* tertiary / labels */
-  --fb-text-ghost:   #354050;  /* placeholder / disabled */
+  --fb-text-mute:    #708090;  /* tertiary / labels */
+  --fb-text-ghost:   #506070;  /* placeholder / disabled */
 
   /* ------ Typography ------------------------------------------------------ */
   --fb-font-mono: "JetBrains Mono", "SF Mono", ui-monospace, Menlo, Consolas, monospace;
