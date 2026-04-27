@@ -4,3 +4,4 @@ signups.log
 .env.*
 *.log
 .DS_Store
+.claude-deploy
