@@ -30,14 +30,38 @@
 </nav>
 <script>(function(){var n=document.querySelector('.fb-nav'),b=n&&n.querySelector('.fb-nav__burger');if(!b)return;b.addEventListener('click',function(){var o=n.classList.toggle('fb-nav--open');b.setAttribute('aria-expanded',o)});n.addEventListener('click',function(e){if(e.target.classList.contains('fb-nav__link')){n.classList.remove('fb-nav--open');b.setAttribute('aria-expanded','false')}});document.addEventListener('click',function(e){if(!n.contains(e.target)){n.classList.remove('fb-nav--open');b.setAttribute('aria-expanded','false')}})})();</script>
 
-<main class="fb-container" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-12));">
-  <section class="fb-section">
+<main class="fb-container" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-8));">
+  <section style="padding-bottom:var(--fb-s-4);">
     <span class="fb-kicker">Free tools</span>
-    <h1 class="fb-display" style="font-size:var(--fb-fs-48);">Free shit.</h1>
-    <p class="fb-lede" style="max-width:56ch;">Free diagnostic tools. Paste anything your team gave you - a design doc, a brand guide, a block of copy. We'll tell you what's missing. 30 seconds. No signup.</p>
+    <h1 class="fb-display" style="font-size:var(--fb-fs-48);margin-bottom:var(--fb-s-2);">Free shit.</h1>
+    <p class="fb-lede" style="max-width:56ch;margin:0;">Free diagnostic tools. Paste anything your team gave you - a design doc, a brand guide, a block of copy. We'll tell you what's missing. 30 seconds. No signup.</p>
   </section>
 
-  <section class="fb-section">
+  <section class="fb-section fb-section--tight">
+    <div class="fb-grid fb-grid--2">
+
+      <a href="/free/audit/" class="fb-signal-card" style="text-decoration:none;">
+        <span class="fb-signal-card__label fb-label--signal">Tool 01</span>
+        <h2 class="fb-signal-card__title">Audit</h2>
+        <p class="fb-signal-card__body">Paste your design system. See what's broken in 30 seconds. Free, brutal, on a permanent URL you can share with your team.</p>
+        <span class="fb-signal-card__cta">Run audit</span>
+      </a>
+
+      <!-- voice-lint: this card quotes banned phrases as examples, not violations -->
+      <span class="fb-label" style="color:var(--fb-red);display:none;">AVOID</span>
+      <a href="/free/voice-lint/" class="fb-signal-card" style="text-decoration:none;">
+        <span class="fb-signal-card__label fb-label--signal">Tool 02</span>
+        <h2 class="fb-signal-card__title">Voice Lint</h2>
+        <p class="fb-signal-card__body">Paste your copy. See every "Get started today," "Unlock," and "Supercharge" your team accidentally wrote. With suggested rewrites.</p>
+        <span class="fb-signal-card__cta">Run voice lint</span>
+      </a>
+
+    </div>
+  </section>
+
+  <div class="fb-divider" style="margin:var(--fb-s-8) 0;"></div>
+
+  <section class="fb-section fb-section--tight">
     <div class="fb-panel" style="border-left:3px solid var(--fb-pink);">
       <div class="fb-stack" style="padding:24px 28px;gap:var(--fb-s-4);">
         <span class="fb-label fb-label--pink">// the honest catch</span>
@@ -45,26 +69,6 @@
         <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-15);margin:0;line-height:var(--fb-lh-relaxed);font-family:var(--fb-font-sans);max-width:56ch;">We're burning tokens so you don't have to. You've heard "AI" enough times this quarter to be tired of it. Most of them are pitching. We're the ones who open the laptop.</p>
         <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-15);margin:0;line-height:var(--fb-lh-relaxed);font-family:var(--fb-font-sans);max-width:56ch;">Paste in whatever your team gave you. We'll show you what's working and what's drifting. Most of it you can fix yourself. The hard part, you know where to find us.</p>
       </div>
-    </div>
-  </section>
-
-  <section class="fb-section">
-    <div class="fb-grid fb-grid--2">
-
-      <a href="/free/audit/" class="fb-signal-card" style="text-decoration:none;">
-        <span class="fb-signal-card__label fb-label--signal">Tool 01</span>
-        <h2 class="fb-signal-card__title">Audit</h2>
-        <p class="fb-signal-card__body">Score your design system against the FixBroken OS 29-point rubric. Paste a brand doc, CSS file, or URL. See what your LLM is actually working with.</p>
-        <span class="fb-signal-card__cta">Run audit</span>
-      </a>
-
-      <a href="/free/voice-lint/" class="fb-signal-card" style="text-decoration:none;">
-        <span class="fb-signal-card__label fb-label--signal">Tool 02</span>
-        <h2 class="fb-signal-card__title">Voice Lint</h2>
-        <p class="fb-signal-card__body">Highlight banned SaaS phrases in your copy. Paste any text block and see what reads like every other AI company instead of yours.</p>
-        <span class="fb-signal-card__cta">Run voice lint</span>
-      </a>
-
     </div>
   </section>
 
@@ -92,7 +96,7 @@
 
   <footer class="fb-footer" style="margin-top:var(--fb-s-16);">
     <div class="fb-footer__row">
-      <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);">Console · fixbroken.ai</span>
+      <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);">Free shit · fixbroken.ai</span>
       <a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Powered by FixBroken OS</a>
     </div>
   </footer>

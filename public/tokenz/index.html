@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>tokenz · fixbroken.ai</title>
-<meta name="description" content="Claude Code token usage dashboard — live from local session logs.">
+<meta name="description" content="Claude Code token usage dashboard - live from local session logs.">
 <meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="stylesheet" href="/design/fixbroken-os.css">
@@ -290,7 +290,9 @@
   .tz-window--42s   { --cycle-color: var(--fb-coral);  --cycle-head: #ffa088;              --cycle-glow: var(--fb-coral-glow); }
   .tz-window--80s   { --cycle-color: var(--fb-matrix); --cycle-head: #7dffb7;              --cycle-glow: var(--fb-matrix-glow); }
   .tz-window--800s  { --cycle-color: var(--fb-pink);   --cycle-head: var(--fb-pink-bright);   --cycle-glow: var(--fb-pink-glow); }
-  .tz-window--8000s { --cycle-color: var(--fb-amber);  --cycle-head: #ffd17a;              --cycle-glow: rgba(255,182,74,0.45); }
+  .tz-window--8000s  { --cycle-color: var(--fb-amber);  --cycle-head: #ffd17a;              --cycle-glow: rgba(255,182,74,0.45); }
+  .tz-window--80000s { --cycle-color: var(--fb-coral);  --cycle-head: #ffa088;              --cycle-glow: var(--fb-coral-glow); }
+  .tz-window--800000s{ --cycle-color: var(--fb-matrix); --cycle-head: #7dffb7;              --cycle-glow: var(--fb-matrix-glow); }
 
   /* ---- Lifetime panel ---- */
   .tz-lifetime {
@@ -360,8 +362,8 @@
     <p class="tz-subtitle">Claude Code token usage, live from local session logs.</p>
     <div class="tz-status">
       <span>notify: <strong>off</strong></span>
-      <span>last activity: <strong id="tz-last-activity">—</strong></span>
-      <span>polled <strong id="tz-poll-stamp">—</strong></span>
+      <span>last activity: <strong id="tz-last-activity">-</strong></span>
+      <span>polled <strong id="tz-poll-stamp">-</strong></span>
     </div>
   </header>
 
@@ -436,6 +438,40 @@
       </dl>
     </div>
 
+    <div class="tz-window tz-window--80000s" data-win="6">
+      <div class="tz-window__head">
+        <span class="tz-window__label">WINDOW · <strong>80k seconds</strong></span>
+      </div>
+      <div class="tz-window__total" data-field="total">0<small>tokens</small></div>
+      <div class="tz-window__rate" data-field="rate">0 tok/s · 0 msg</div>
+      <div class="tz-window__track"><div class="tz-window__trail"></div></div>
+      <dl class="tz-breakdown">
+        <dt>input</dt><dd data-field="input">0</dd>
+        <dt>cache create</dt><dd data-field="cache_create">0</dd>
+        <dt>cache read</dt><dd data-field="cache_read">0</dd>
+        <dt>output</dt><dd data-field="output">0</dd>
+        <dt>proj /hr</dt><dd data-field="proj_hour" class="tz-breakdown--proj">0</dd>
+        <dt>proj /day</dt><dd data-field="proj_day" class="tz-breakdown--proj">0</dd>
+      </dl>
+    </div>
+
+    <div class="tz-window tz-window--800000s" data-win="8">
+      <div class="tz-window__head">
+        <span class="tz-window__label">WINDOW · <strong>800k seconds</strong></span>
+      </div>
+      <div class="tz-window__total" data-field="total">0<small>tokens</small></div>
+      <div class="tz-window__rate" data-field="rate">0 tok/s · 0 msg</div>
+      <div class="tz-window__track"><div class="tz-window__trail"></div></div>
+      <dl class="tz-breakdown">
+        <dt>input</dt><dd data-field="input">0</dd>
+        <dt>cache create</dt><dd data-field="cache_create">0</dd>
+        <dt>cache read</dt><dd data-field="cache_read">0</dd>
+        <dt>output</dt><dd data-field="output">0</dd>
+        <dt>proj /hr</dt><dd data-field="proj_hour" class="tz-breakdown--proj">0</dd>
+        <dt>proj /day</dt><dd data-field="proj_day" class="tz-breakdown--proj">0</dd>
+      </dl>
+    </div>
+
   </div>
 
   <!-- 5-hour budget forecast -->
@@ -487,7 +523,7 @@
       </div>
       <div>
         <div class="tz-stat__label">Time left</div>
-        <div class="tz-stat__value"><span id="tz-weekly-timeleft">—</span><span class="tz-stat__unit" id="tz-weekly-reset">resets Sun 10:00 AM</span></div>
+        <div class="tz-stat__value"><span id="tz-weekly-timeleft">-</span><span class="tz-stat__unit" id="tz-weekly-reset">resets Sun 10:00 AM</span></div>
       </div>
       <div>
         <div class="tz-stat__label">Proj (avg pace)</div>
@@ -508,19 +544,19 @@
     <div class="tz-lifetime">
       <div class="tz-lifetime__item">
         <div class="tz-lifetime__label">Messages</div>
-        <div class="tz-lifetime__val" id="tz-lt-messages">—</div>
+        <div class="tz-lifetime__val" id="tz-lt-messages">-</div>
       </div>
       <div class="tz-lifetime__item">
         <div class="tz-lifetime__label">Total tokens</div>
-        <div class="tz-lifetime__val" id="tz-lt-total">—</div>
+        <div class="tz-lifetime__val" id="tz-lt-total">-</div>
       </div>
       <div class="tz-lifetime__item">
         <div class="tz-lifetime__label">First seen</div>
-        <div class="tz-lifetime__val" id="tz-lt-first">—</div>
+        <div class="tz-lifetime__val" id="tz-lt-first">-</div>
       </div>
       <div class="tz-lifetime__item">
         <div class="tz-lifetime__label">Last seen</div>
-        <div class="tz-lifetime__val" id="tz-lt-last">—</div>
+        <div class="tz-lifetime__val" id="tz-lt-last">-</div>
       </div>
     </div>
   </div>
@@ -543,9 +579,9 @@
   var BUDGET_5H = 850e6;
   var BUDGET_WEEK = 6.9e9;
 
-  // Window index mapping: 0=8s, 1=42s, 2=80s, 3=800s, 4=8000s, 5=18000s(5h), 6=604800s(7d)
+  // Window index mapping: 0=8s, 1=42s, 2=80s, 3=800s, 4=8000s, 5=18000s(5h), 6=80000s, 7=604800s(7d), 8=800000s
   var WIN_5H = 5;
-  var WIN_7D = 6;
+  var WIN_7D = 7;
 
   function fmt(n) {
     if (!n) return '0';
@@ -566,12 +602,12 @@
   }
 
   function fmtDate(ts) {
-    if (!ts) return '—';
+    if (!ts) return '-';
     return new Date(ts).toLocaleString();
   }
 
   function timeAgo(ts) {
-    if (!ts) return '—';
+    if (!ts) return '-';
     var diff = Date.now() - ts;
     if (diff < 0) diff = 0;
     var sec = Math.floor(diff / 1000);
@@ -702,7 +738,7 @@
         }
 
         // -- Time windows --
-        var displayWins = [0, 2, 3, 4]; // 8s, 80s, 800s, 8000s
+        var displayWins = [0, 2, 3, 4, 6, 8]; // 8s, 80s, 800s, 8000s, 80ks, 800ks
         var maxTotal = 0;
         displayWins.forEach(function (i) {
           if (windows[i] && windows[i].total > maxTotal) maxTotal = windows[i].total;
@@ -738,8 +774,8 @@
         });
 
         // -- Lifetime --
-        setText('tz-lt-messages', lt.messages ? fmt(lt.messages) : '—');
-        setText('tz-lt-total', lt.total ? fmt(lt.total) : '—');
+        setText('tz-lt-messages', lt.messages ? fmt(lt.messages) : '-');
+        setText('tz-lt-total', lt.total ? fmt(lt.total) : '-');
         setText('tz-lt-first', fmtDate(lt.first_ts));
         setText('tz-lt-last', fmtDate(lt.last_ts));
       })

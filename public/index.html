@@ -125,7 +125,7 @@
   }
 
   /* ----- Active phrase shimmer (terminal-polish gradient sweep) ---------- */
-  /* Base color works even when animation is off — the shimmer is
+  /* Base color works even when animation is off - the shimmer is
      purely an enhancement, never required to read the text. */
   .hp-status__phrase {
     color: var(--fb-text-loud);
@@ -150,7 +150,7 @@
     100% { background-position: -140% 50%; }
   }
 
-  /* Context/status line — live ticker. Calm. Accumulates.
+  /* Context/status line - live ticker. Calm. Accumulates.
      Three parts:
        - elapsed seconds (updates every 1s)
        - count (updates every ~4s)
@@ -177,7 +177,7 @@
     text-shadow: 0 0 8px var(--fb-signal-glow);
   }
   .hp-status__meta.hp-pulse {
-    /* brief opacity bump on count change — barely perceptible */
+    /* brief opacity bump on count change - barely perceptible */
     animation: hp-meta-pulse 520ms ease;
   }
   @keyframes hp-meta-pulse {
@@ -235,7 +235,7 @@
     transition: background 180ms ease, box-shadow 180ms ease, transform 220ms cubic-bezier(.25,.9,.3,1.4);
   }
 
-  /* Happy on hover — pink blush, small bounce, tilt, dot pops.
+  /* Happy on hover - pink blush, small bounce, tilt, dot pops.
      Desktop only (touch devices shouldn't trigger from stray taps). */
   @media (hover: hover) {
     .hp-toggle:hover {
@@ -263,7 +263,7 @@
 
   /* Nudge: a sporadic CTA hint that pops next to one of several anchors on
      the page (verbose toggle, hero CTA, nav Design link). Position is set
-     by JS via getBoundingClientRect — fixed coords so scrolling reposts it.
+     by JS via getBoundingClientRect - fixed coords so scrolling reposts it.
      --fb-nudge-fade is set per-appearance for the opacity transition speed. */
   .fb-nudge {
     position: fixed;
@@ -315,7 +315,7 @@
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateY(-3px); }
   }
-  /* Happy on hover — pink blush + stronger glow. */
+  /* Happy on hover - pink blush + stronger glow. */
   @media (hover: hover) {
     .fb-nudge:hover {
       color: var(--fb-pink);
@@ -425,7 +425,7 @@
   .hp-wx-dot--fog    { background: var(--fb-text-mute); box-shadow: none; }
 
   /* ==========================================================================
-     CONTACT MODAL — hidden by default. Opens when hero CTA is clicked.
+     CONTACT MODAL - hidden by default. Opens when hero CTA is clicked.
      ESC + backdrop click + close button all dismiss it.
      ========================================================================== */
   .hp-modal {
@@ -510,7 +510,7 @@
   }
 
   /* ==========================================================================
-     INTELLIGENCE LADDER — layered progression inside philosophy section
+     INTELLIGENCE LADDER - layered progression inside philosophy section
      ========================================================================== */
   .hp-ladder {
     display: flex;
@@ -611,7 +611,7 @@
   }
 
   /* ==========================================================================
-     TOKENZ — Usage Arena (TRON light-cycles racing across windows)
+     TOKENZ - Usage Arena (TRON light-cycles racing across windows)
      ========================================================================== */
   .hp-arena {
     padding: var(--fb-s-6);
@@ -766,7 +766,7 @@
 </head>
 <body>
 
-<!-- Single global nudge element — JS positions it next to whichever anchor
+<!-- Single global nudge element - JS positions it next to whichever anchor
      (verbose toggle, hero CTA, Design link) it's targeting this cycle. -->
 <span class="fb-nudge" id="fb-nudge" role="tooltip" tabindex="0"></span>
 
@@ -820,7 +820,7 @@
           <div class="hp-status" aria-live="polite">
 
             <!-- ==========================================================
-                 MCP Cone v3 — Authentic TRON arcade MCP
+                 MCP Cone v3 - Authentic TRON arcade MCP
                  - Rainbow-striped cylinder (spinning via gradient shift)
                  - Particle fountain erupting UPWARD from cylinder top
                  - Black background showing through
@@ -828,7 +828,7 @@
             <svg class="hp-status__cone" viewBox="0 0 80 110" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet">
 
               <defs>
-                <!-- Rainbow gradient — looped so horizontal shift reads as rotation -->
+                <!-- Rainbow gradient - looped so horizontal shift reads as rotation -->
                 <linearGradient id="mcp-stripes" x1="0" y1="0" x2="1" y2="0">
                   <stop offset="0%"    stop-color="#ff0044"/>
                   <stop offset="12%"   stop-color="#ff7700"/>
@@ -922,7 +922,7 @@
                 </circle>
               </g>
 
-              <!-- ==== Rainbow cylinder (MCP body) — rotating ==== -->
+              <!-- ==== Rainbow cylinder (MCP body) - rotating ==== -->
               <g clip-path="url(#mcp-cyl-clip)">
                 <!-- Wide rect: 3x viewport width so animated shift never reveals a seam -->
                 <rect x="-80" y="50" width="240" height="60" fill="url(#mcp-stripes)">
@@ -970,7 +970,7 @@
     </section>
 
     <!-- ====================================================================
-         CONTACT MODAL — hidden by default. Opens when the hero CTA fires.
+         CONTACT MODAL - hidden by default. Opens when the hero CTA fires.
          ==================================================================== -->
     <div class="hp-modal" id="hp-contact-modal" role="dialog" aria-modal="true" aria-labelledby="hp-modal-title" aria-hidden="true">
       <div class="hp-modal__panel">
@@ -1002,7 +1002,7 @@
             <div class="fb-field">
               <label class="fb-field__label" for="hp-cf-type">Type of help</label>
               <select class="fb-input" id="hp-cf-type" name="type">
-                <option value="">—</option>
+                <option value="">-</option>
                 <option value="product">Product</option>
                 <option value="brand">Brand</option>
                 <option value="system">System</option>
@@ -1029,7 +1029,7 @@
             <span class="fb-label fb-label--matrix">Signal received</span>
           </div>
           <div style="margin-top: var(--fb-s-3); color: var(--fb-text-loud); font-size: var(--fb-fs-15);">
-            Ref: <strong class="fb-glow--pink" style="color: var(--fb-pink);" id="hp-cf-ref">—</strong>
+            Ref: <strong class="fb-glow--pink" style="color: var(--fb-pink);" id="hp-cf-ref">-</strong>
           </div>
           <div style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14); max-width: 52ch;">
             We read every one. If it's the right shape of problem, you'll hear back within 48h.
@@ -1043,7 +1043,7 @@
     </div>
 
     <!-- ====================================================================
-         VERBOSE — hidden by default. The "flex" layer.
+         VERBOSE - hidden by default. The "flex" layer.
          Real-time data: weather (Carmel Valley + San Jose), local time,
          site latency, engagement status, then the deeper operation panels.
          ==================================================================== -->
@@ -1063,35 +1063,35 @@
         <div class="hp-tm hp-tm--loading" id="hp-tm-cmv">
           <div class="hp-tm__head">
             <span>Carmel Valley · CA</span>
-            <span id="hp-cmv-time">—</span>
+            <span id="hp-cmv-time">-</span>
           </div>
-          <div class="hp-tm__value"><span id="hp-cmv-temp">—</span><span class="hp-tm__unit">°F</span></div>
+          <div class="hp-tm__value"><span id="hp-cmv-temp">-</span><span class="hp-tm__unit">°F</span></div>
           <div class="hp-tm__sub">
-            <span><span class="hp-wx-dot" id="hp-cmv-dot"></span><span id="hp-cmv-cond">—</span></span>
-            <span id="hp-cmv-wind">—</span>
+            <span><span class="hp-wx-dot" id="hp-cmv-dot"></span><span id="hp-cmv-cond">-</span></span>
+            <span id="hp-cmv-wind">-</span>
           </div>
         </div>
 
         <div class="hp-tm hp-tm--loading" id="hp-tm-sjc">
           <div class="hp-tm__head">
             <span>San Jose · CA</span>
-            <span id="hp-sjc-time">—</span>
+            <span id="hp-sjc-time">-</span>
           </div>
-          <div class="hp-tm__value"><span id="hp-sjc-temp">—</span><span class="hp-tm__unit">°F</span></div>
+          <div class="hp-tm__value"><span id="hp-sjc-temp">-</span><span class="hp-tm__unit">°F</span></div>
           <div class="hp-tm__sub">
-            <span><span class="hp-wx-dot" id="hp-sjc-dot"></span><span id="hp-sjc-cond">—</span></span>
-            <span id="hp-sjc-wind">—</span>
+            <span><span class="hp-wx-dot" id="hp-sjc-dot"></span><span id="hp-sjc-cond">-</span></span>
+            <span id="hp-sjc-wind">-</span>
           </div>
         </div>
 
         <div class="hp-tm">
           <div class="hp-tm__head">
             <span>Local · operator</span>
-            <span id="hp-local-tz">—</span>
+            <span id="hp-local-tz">-</span>
           </div>
-          <div class="hp-tm__value" id="hp-local-time">—</div>
+          <div class="hp-tm__value" id="hp-local-time">-</div>
           <div class="hp-tm__sub">
-            <span id="hp-local-date">—</span>
+            <span id="hp-local-date">-</span>
           </div>
         </div>
 
@@ -1100,7 +1100,7 @@
             <span>Site · latency</span>
             <span class="fb-status" style="font-size: 10px;">live</span>
           </div>
-          <div class="hp-tm__value"><span id="hp-latency">—</span><span class="hp-tm__unit">ms</span></div>
+          <div class="hp-tm__value"><span id="hp-latency">-</span><span class="hp-tm__unit">ms</span></div>
           <div class="hp-tm__sub">
             <span>FixBroken OS v0.1</span>
             <span>IAD→</span><span id="hp-uptime">online</span>
@@ -1114,7 +1114,7 @@
         Recent work - what we've shipped →
       </a>
 
-      <!-- Operations — what I actually do -->
+      <!-- Operations - what I actually do -->
       <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
         <div class="fb-stack fb-stack--tight">
           <span class="fb-kicker">Output · Operations</span>
@@ -1128,7 +1128,7 @@
           <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
             <span class="fb-signal-card__label">Op · 01 · Product</span>
             <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
-            <p class="fb-signal-card__body">We redesign how people actually use your AI — where they get stuck, where they lose trust, where they bail. The goal is a product that feels like a reliable tool, not a tech demo.</p>
+            <p class="fb-signal-card__body">We redesign how people actually use your AI - where they get stuck, where they lose trust, where they bail. The goal is a product that feels like a reliable tool, not a tech demo.</p>
             <span class="fb-signal-card__cta">Start a conversation →</span>
           </article>
           <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
@@ -1146,32 +1146,32 @@
         </div>
       </div>
 
-      <!-- How we ship — plain-language quality block -->
+      <!-- How we ship - plain-language quality block -->
       <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
         <div class="fb-stack fb-stack--tight">
           <span class="fb-kicker">Discipline · How we ship</span>
           <h3 style="font-size: var(--fb-fs-32);">The work polices itself.</h3>
           <p class="fb-text-dim" style="max-width: 58ch;">
-            Every page we ship runs through automated checks — voice consistency, design system compliance, accessibility, responsive readiness. Nothing deploys without passing. The tooling catches problems before they reach production, so the work stays clean as the system grows.
+            Every page we ship runs through automated checks - voice consistency, design system compliance, accessibility, responsive readiness. Nothing deploys without passing. The tooling catches problems before they reach production, so the work stays clean as the system grows.
           </p>
         </div>
 
         <div class="fb-grid fb-grid--2">
           <div class="fb-panel">
             <span class="fb-label fb-label--signal">Voice enforcement</span>
-            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">Every page is scanned for off-brand language before it goes live — marketing cliches, generic AI hype, anything that doesn't sound like a real person talking. The rules are written down, not left to whoever reviews the work.</p>
+            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">Every page is scanned for off-brand language before it goes live - marketing cliches, generic AI hype, anything that doesn't sound like a real person talking. The rules are written down, not left to whoever reviews the work.</p>
           </div>
           <div class="fb-panel">
             <span class="fb-label fb-label--signal">Design system compliance</span>
-            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">One design file powers every page across every site we build. Automated checks confirm pages follow the system — right structure, right components, no one-off hacks. New client sites inherit the full system from day one.</p>
+            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">One design file powers every page across every site we build. Automated checks confirm pages follow the system - right structure, right components, no one-off hacks. New client sites inherit the full system from day one.</p>
           </div>
           <div class="fb-panel">
             <span class="fb-label fb-label--signal">Accessibility checks</span>
-            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">Text readability, color contrast, screen reader support, and mobile usability are all checked automatically before anything goes live. We don't rely on someone remembering to test — the system handles it.</p>
+            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">Text readability, color contrast, screen reader support, and mobile usability are all checked automatically before anything goes live. We don't rely on someone remembering to test - the system handles it.</p>
           </div>
           <div class="fb-panel">
             <span class="fb-label fb-label--signal">Machine-readable system</span>
-            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">The entire design system — colors, components, typography, voice rules — is published in a format that other tools can read directly. That means automation and AI assistants can build on the system without anyone re-explaining the rules.</p>
+            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">The entire design system - colors, components, typography, voice rules - is published in a format that other tools can read directly. That means automation and AI assistants can build on the system without anyone re-explaining the rules.</p>
           </div>
         </div>
       </div>
@@ -1224,7 +1224,7 @@
           <div class="fb-panel">
             <span class="fb-label fb-label--signal">04 · One command layer</span>
             <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              Strong products have a center of gravity — one place where the important stuff happens. Everything else supports that core, not competes with it.
+              Strong products have a center of gravity - one place where the important stuff happens. Everything else supports that core, not competes with it.
             </p>
             <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
               <span class="fb-label">What you get:</span> Less feature sprawl. A stronger product story. A clearer path from demo to paying customer.
@@ -1234,7 +1234,7 @@
           <div class="fb-panel">
             <span class="fb-label fb-label--signal">05 · Color means something</span>
             <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              Every color in the interface has a job — showing status, drawing attention to what matters, or indicating something changed. No decoration for decoration's sake.
+              Every color in the interface has a job - showing status, drawing attention to what matters, or indicating something changed. No decoration for decoration's sake.
             </p>
             <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
               <span class="fb-label">What you get:</span> A product that feels sharp and modern without being visually noisy.
@@ -1244,7 +1244,7 @@
           <div class="fb-panel">
             <span class="fb-label fb-label--signal">06 · Human-readable intelligence</span>
             <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              The best AI products build understanding in layers — starting with clear data, then showing what it means, then helping people decide what to do about it.
+              The best AI products build understanding in layers - starting with clear data, then showing what it means, then helping people decide what to do about it.
             </p>
             <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
               <span class="fb-label">What you get:</span> AI your team can explain to a customer, sell to a buyer, and trust in the field.
@@ -1327,7 +1327,7 @@
         </div>
       </div>
 
-      <!-- Tokenz Usage Arena — TRON light cycles racing across time windows -->
+      <!-- Tokenz Usage Arena - TRON light cycles racing across time windows -->
       <div class="hp-arena" id="hp-arena" style="margin-bottom: var(--fb-s-10);" data-anchor="tokenz">
         <div class="hp-arena__head">
           <span>tokenz · <strong>claude runtime</strong> · light cycles</span>
@@ -1341,7 +1341,7 @@
               <div class="hp-cycle__head"></div>
             </div>
           </div>
-          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
         </div>
 
         <div class="hp-cycle hp-cycle--42s" data-cycle="1">
@@ -1351,7 +1351,7 @@
               <div class="hp-cycle__head"></div>
             </div>
           </div>
-          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
         </div>
 
         <div class="hp-cycle hp-cycle--80s" data-cycle="2">
@@ -1361,7 +1361,7 @@
               <div class="hp-cycle__head"></div>
             </div>
           </div>
-          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
         </div>
 
         <div class="hp-cycle hp-cycle--800s" data-cycle="3">
@@ -1371,7 +1371,7 @@
               <div class="hp-cycle__head"></div>
             </div>
           </div>
-          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
         </div>
 
         <div class="hp-cycle hp-cycle--8000s" data-cycle="4">
@@ -1381,7 +1381,7 @@
               <div class="hp-cycle__head"></div>
             </div>
           </div>
-          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
         </div>
 
         <div class="hp-cycle hp-cycle--80000s" data-cycle="6">
@@ -1391,7 +1391,7 @@
               <div class="hp-cycle__head"></div>
             </div>
           </div>
-          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
         </div>
 
         <div class="hp-cycle hp-cycle--800000s" data-cycle="8">
@@ -1401,13 +1401,13 @@
               <div class="hp-cycle__head"></div>
             </div>
           </div>
-          <span class="hp-cycle__meta"><span class="hp-val">—</span> <small class="hp-msg">—</small></span>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
         </div>
 
         <div class="hp-arena__foot">
-          <span>lifetime <strong id="hp-tkn-lifetime">—</strong></span>
-          <span>proj/day <strong id="hp-tkn-projday">—</strong></span>
-          <span>rate <span class="hp-arena__rate" id="hp-tkn-rate">—</span></span>
+          <span>lifetime <strong id="hp-tkn-lifetime">-</strong></span>
+          <span>proj/day <strong id="hp-tkn-projday">-</strong></span>
+          <span>rate <span class="hp-arena__rate" id="hp-tkn-rate">-</span></span>
         </div>
       </div>
 
@@ -1445,7 +1445,7 @@
       </div>
 
       <!-- ====================================================================
-           SYSTEM · NOC — a tight ops dashboard with real details.
+           SYSTEM · NOC - a tight ops dashboard with real details.
            Monospace throughout. No links. Status dots where they belong.
            ==================================================================== -->
       <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
@@ -1713,7 +1713,7 @@
 
 <script>
   /* ==========================================================================
-     1. Status module — three-layer terminal pattern
+     1. Status module - three-layer terminal pattern
      ---------------------------------------------------------------------------
        Line 1 (system label):     static
        Line 2 (active phrase):    rotates every 5s, shimmer runs continuously
@@ -1934,7 +1934,7 @@
       if (_v) _v.retired = true;
     }
 
-    var PER_ANCHOR_COOLDOWN = 30000;   // ms — same spot can't pop twice within 30s
+    var PER_ANCHOR_COOLDOWN = 30000;   // ms - same spot can't pop twice within 30s
 
     function liveAnchors() {
       return ANCHORS.filter(function(a){ return a.el && !a.retired; });
@@ -1966,7 +1966,7 @@
     }
 
     function nextGap() {
-      // 3-7s between appearances — keep the nudge lively
+      // 3-7s between appearances - keep the nudge lively
       return 3000 + Math.floor(Math.random() * 4000);
     }
 
@@ -2046,7 +2046,7 @@
         cycleTimer = setTimeout(showNudgeOnce, 3000);
         return;
       }
-      // Skip if the anchor is scrolled off-screen — pick again next tick
+      // Skip if the anchor is scrolled off-screen - pick again next tick
       if (!isAnchorInView(anchor.el)) {
         anchor.lastShownAt = Date.now();   // engage cooldown so we don't spin
         cycleTimer = setTimeout(showNudgeOnce, 2500);
@@ -2073,7 +2073,7 @@
       if (loopActive) return;
       if (liveAnchors().length === 0) return;
       loopActive = true;
-      // First appearance: 400-1400ms after load (snappy — catches bouncers)
+      // First appearance: 400-1400ms after load (snappy - catches bouncers)
       cycleTimer = setTimeout(showNudgeOnce, 400 + Math.floor(Math.random() * 1000));
     }
 
@@ -2130,7 +2130,7 @@
     function maybeReposition() {
       if (!nudge || !nudge.classList.contains('fb-nudge--show') || !currentAnchor) return;
       if (!isAnchorInView(currentAnchor.el)) {
-        // Anchor scrolled away — hide immediately, don't leave a floating hint
+        // Anchor scrolled away - hide immediately, don't leave a floating hint
         hideNudge(200);
         if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
         currentAnchor = null;
@@ -2218,11 +2218,11 @@
       measureLatency();
       setInterval(measureLatency, 15000);
       loadArena();
-      setInterval(loadArena, 1000);  // poll every 1s — light cycles stay live
+      setInterval(loadArena, 1000);  // poll every 1s - light cycles stay live
     }
 
     /* ========================================================================
-       Tokenz arena — fetch /api/usage (proxied through fixbroken nginx),
+       Tokenz arena - fetch /api/usage (proxied through fixbroken nginx),
        compute per-window trail length, render cycles.
        ======================================================================== */
     function fmtTokens(n) {
@@ -2258,7 +2258,7 @@
           }
           trail.style.width = pct + '%';
 
-          valEl.textContent = w.total ? fmtTokens(w.total) : '—';
+          valEl.textContent = w.total ? fmtTokens(w.total) : '-';
           msgEl.textContent = w.total
             ? (w.messages || 0) + ' msg · ' + (w.rate_per_sec ? Math.round(w.rate_per_sec).toLocaleString() : 0) + ' t/s'
             : '';
@@ -2290,7 +2290,7 @@
       if (code >= 71 && code <= 77) return ['snow', 'clouds'];
       if (code >= 80 && code <= 82) return ['showers', 'rain'];
       if (code >= 95) return ['storm', 'rain'];
-      return ['—', 'clouds'];
+      return ['-', 'clouds'];
     }
 
     function loadWeather(prefix, lat, lon) {
@@ -2310,7 +2310,7 @@
         var t = new Date(w.time);
         document.getElementById('hp-' + prefix + '-time').textContent = formatTime(t, 'America/Los_Angeles');
       }).catch(function(){
-        document.getElementById('hp-' + prefix + '-temp').textContent = '—';
+        document.getElementById('hp-' + prefix + '-temp').textContent = '-';
         document.getElementById('hp-' + prefix + '-cond').textContent = 'offline';
       });
     }
@@ -2343,7 +2343,7 @@
         document.getElementById('hp-latency').textContent = ms;
         document.getElementById('hp-uptime').textContent = r.ok ? 'online' : 'degraded';
       }).catch(function(){
-        document.getElementById('hp-latency').textContent = '—';
+        document.getElementById('hp-latency').textContent = '-';
         document.getElementById('hp-uptime').textContent = 'unreachable';
       });
     }
@@ -2458,7 +2458,7 @@
 
       // Client-side validation
       if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)) {
-        setStatus('email looks off — try again', 'var(--fb-amber)');
+        setStatus('email looks off - try again', 'var(--fb-amber)');
         return;
       }
       if (data.message.length < 4) {
@@ -2498,7 +2498,7 @@
         }
       })
       .catch(function(){
-        setStatus('connection failed — try again', 'var(--fb-red)');
+        setStatus('connection failed - try again', 'var(--fb-red)');
         submitBtn.disabled = false;
         submitBtn.style.opacity = '1';
         submitBtn.textContent = 'Send the signal';

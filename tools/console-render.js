@@ -160,7 +160,7 @@ ${isPrivate ? '<meta name="robots" content="noindex,nofollow">' : ''}
   <!-- HERO -->
   <section class="fb-section">
     ${isPrivate ? '<div style="margin-bottom:var(--fb-s-4);"><span class="audit-private-badge">Private result</span></div>' : ''}
-    <span class="fb-kicker">Console · Audit</span>
+    <span class="fb-kicker">Free shit - Audit</span>
     <div class="fb-row" style="gap:var(--fb-s-8);align-items:center;flex-wrap:wrap;" class="audit-hero-row">
       <div class="audit-score-ring">
         <span class="audit-score-ring__num">${audit.score}</span>
