@@ -110,6 +110,8 @@
   @media (prefers-reduced-motion: reduce) {
     .cone-composite__img { animation: none !important; }
     .cone-composite__svg * { animation-play-state: paused !important; }
+    .v1-cone .v1-particles { display: none; }
+    .v1-cone animate { display: none; }
   }
 
   @media (max-width: 900px) {
@@ -133,51 +135,58 @@
 <div class="lab-grid">
 
   <!-- ============================================================
-       VARIANT 1 — BANDED (cone-3.png)
-       Full rainbow bands, soft-serve curl, particles rising
+       VARIANT 1 — BANDED (gradient-shift SVG)
+       Inline SVG cylinder + cone peak. Rainbow linearGradient
+       animated horizontally to create rotation illusion.
+       No transform: rotate(). No PNG.
        ============================================================ -->
   <div class="lab-cell">
-    <div class="cone-composite">
-      <img class="cone-composite__img" src="img/cone-3.png" alt="Banded MCP cone">
-      <svg class="cone-composite__svg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
-        <defs><filter id="pg1"><feGaussianBlur stdDeviation="1"/></filter></defs>
-        <g filter="url(#pg1)">
-          <circle r="2" fill="#ff0044"><animate attributeName="cy" values="115;20" dur="2.1s" repeatCount="indefinite"/><animate attributeName="cx" values="140;120" dur="2.1s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.1s" repeatCount="indefinite"/></circle>
-          <circle r="1.8" fill="#ff7700"><animate attributeName="cy" values="115;25" dur="2.4s" begin="0.12s" repeatCount="indefinite"/><animate attributeName="cx" values="140;155" dur="2.4s" begin="0.12s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.4s" begin="0.12s" repeatCount="indefinite"/></circle>
-          <circle r="1.6" fill="#ffdd00"><animate attributeName="cy" values="115;15" dur="1.9s" begin="0.24s" repeatCount="indefinite"/><animate attributeName="cx" values="140;135" dur="1.9s" begin="0.24s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="1.9s" begin="0.24s" repeatCount="indefinite"/></circle>
-          <circle r="2" fill="#22ee44"><animate attributeName="cy" values="115;30" dur="2.6s" begin="0.36s" repeatCount="indefinite"/><animate attributeName="cx" values="140;125" dur="2.6s" begin="0.36s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.6s" begin="0.36s" repeatCount="indefinite"/></circle>
-          <circle r="1.5" fill="#00ccff"><animate attributeName="cy" values="115;18" dur="2.0s" begin="0.48s" repeatCount="indefinite"/><animate attributeName="cx" values="140;148" dur="2.0s" begin="0.48s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.0s" begin="0.48s" repeatCount="indefinite"/></circle>
-          <circle r="1.7" fill="#8822ff"><animate attributeName="cy" values="115;22" dur="2.3s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="cx" values="140;130" dur="2.3s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.3s" begin="0.6s" repeatCount="indefinite"/></circle>
-          <circle r="1.4" fill="#ff3ec9"><animate attributeName="cy" values="115;12" dur="2.5s" begin="0.72s" repeatCount="indefinite"/><animate attributeName="cx" values="140;145" dur="2.5s" begin="0.72s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.5s" begin="0.72s" repeatCount="indefinite"/></circle>
-          <circle r="1.9" fill="#ff0044"><animate attributeName="cy" values="115;28" dur="1.8s" begin="0.84s" repeatCount="indefinite"/><animate attributeName="cx" values="140;118" dur="1.8s" begin="0.84s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="1.8s" begin="0.84s" repeatCount="indefinite"/></circle>
-          <circle r="1.3" fill="#ffdd00"><animate attributeName="cy" values="115;8" dur="2.2s" begin="0.96s" repeatCount="indefinite"/><animate attributeName="cx" values="140;152" dur="2.2s" begin="0.96s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.2s" begin="0.96s" repeatCount="indefinite"/></circle>
-          <circle r="1.6" fill="#22ee44"><animate attributeName="cy" values="115;35" dur="2.7s" begin="1.08s" repeatCount="indefinite"/><animate attributeName="cx" values="140;138" dur="2.7s" begin="1.08s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.7s" begin="1.08s" repeatCount="indefinite"/></circle>
-          <circle r="2.1" fill="#00ccff"><animate attributeName="cy" values="115;10" dur="2.0s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="cx" values="140;128" dur="2.0s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.0s" begin="1.2s" repeatCount="indefinite"/></circle>
-          <circle r="1.5" fill="#8822ff"><animate attributeName="cy" values="115;32" dur="2.4s" begin="1.32s" repeatCount="indefinite"/><animate attributeName="cx" values="140;160" dur="2.4s" begin="1.32s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.4s" begin="1.32s" repeatCount="indefinite"/></circle>
-          <circle r="1.8" fill="#ff7700"><animate attributeName="cy" values="115;5" dur="2.1s" begin="1.44s" repeatCount="indefinite"/><animate attributeName="cx" values="140;142" dur="2.1s" begin="1.44s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.1s" begin="1.44s" repeatCount="indefinite"/></circle>
-          <circle r="1.2" fill="#ff3ec9"><animate attributeName="cy" values="115;26" dur="2.6s" begin="1.56s" repeatCount="indefinite"/><animate attributeName="cx" values="140;115" dur="2.6s" begin="1.56s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.6s" begin="1.56s" repeatCount="indefinite"/></circle>
-          <circle r="1.7" fill="#ff0044"><animate attributeName="cy" values="115;16" dur="1.7s" begin="1.68s" repeatCount="indefinite"/><animate attributeName="cx" values="140;133" dur="1.7s" begin="1.68s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="1.7s" begin="1.68s" repeatCount="indefinite"/></circle>
-          <circle r="1.4" fill="#00ccff"><animate attributeName="cy" values="115;38" dur="2.3s" begin="1.8s" repeatCount="indefinite"/><animate attributeName="cx" values="140;150" dur="2.3s" begin="1.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.3s" begin="1.8s" repeatCount="indefinite"/></circle>
-          <circle r="2.0" fill="#ffdd00"><animate attributeName="cy" values="115;14" dur="1.9s" begin="1.92s" repeatCount="indefinite"/><animate attributeName="cx" values="140;122" dur="1.9s" begin="1.92s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="1.9s" begin="1.92s" repeatCount="indefinite"/></circle>
-          <circle r="1.3" fill="#22ee44"><animate attributeName="cy" values="115;20" dur="2.5s" begin="2.04s" repeatCount="indefinite"/><animate attributeName="cx" values="140;158" dur="2.5s" begin="2.04s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.5s" begin="2.04s" repeatCount="indefinite"/></circle>
-          <circle r="1.6" fill="#8822ff"><animate attributeName="cy" values="115;40" dur="2.8s" begin="2.16s" repeatCount="indefinite"/><animate attributeName="cx" values="140;140" dur="2.8s" begin="2.16s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.8s" begin="2.16s" repeatCount="indefinite"/></circle>
-          <circle r="1.9" fill="#ff7700"><animate attributeName="cy" values="115;24" dur="2.2s" begin="2.28s" repeatCount="indefinite"/><animate attributeName="cx" values="140;126" dur="2.2s" begin="2.28s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.2s" begin="2.28s" repeatCount="indefinite"/></circle>
-          <circle r="1.1" fill="#ff0044"><animate attributeName="cy" values="115;6" dur="2.0s" begin="2.4s" repeatCount="indefinite"/><animate attributeName="cx" values="140;145" dur="2.0s" begin="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.0s" begin="2.4s" repeatCount="indefinite"/></circle>
-          <circle r="1.8" fill="#ff3ec9"><animate attributeName="cy" values="115;33" dur="2.4s" begin="2.52s" repeatCount="indefinite"/><animate attributeName="cx" values="140;132" dur="2.4s" begin="2.52s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.4s" begin="2.52s" repeatCount="indefinite"/></circle>
-          <circle r="1.5" fill="#ffdd00"><animate attributeName="cy" values="115;11" dur="1.8s" begin="2.64s" repeatCount="indefinite"/><animate attributeName="cx" values="140;118" dur="1.8s" begin="2.64s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="1.8s" begin="2.64s" repeatCount="indefinite"/></circle>
-          <circle r="2.0" fill="#22ee44"><animate attributeName="cy" values="115;28" dur="2.1s" begin="2.76s" repeatCount="indefinite"/><animate attributeName="cx" values="140;155" dur="2.1s" begin="2.76s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.1s" begin="2.76s" repeatCount="indefinite"/></circle>
-          <circle r="1.4" fill="#00ccff"><animate attributeName="cy" values="115;18" dur="2.3s" begin="2.88s" repeatCount="indefinite"/><animate attributeName="cx" values="140;136" dur="2.3s" begin="2.88s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.3s" begin="2.88s" repeatCount="indefinite"/></circle>
-          <circle r="1.7" fill="#8822ff"><animate attributeName="cy" values="115;9" dur="2.6s" begin="3.0s" repeatCount="indefinite"/><animate attributeName="cx" values="140;148" dur="2.6s" begin="3.0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.6s" begin="3.0s" repeatCount="indefinite"/></circle>
-          <circle r="1.3" fill="#ff7700"><animate attributeName="cy" values="115;36" dur="2.0s" begin="3.12s" repeatCount="indefinite"/><animate attributeName="cx" values="140;124" dur="2.0s" begin="3.12s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.0s" begin="3.12s" repeatCount="indefinite"/></circle>
-          <circle r="1.6" fill="#ff0044"><animate attributeName="cy" values="115;22" dur="2.5s" begin="3.24s" repeatCount="indefinite"/><animate attributeName="cx" values="140;142" dur="2.5s" begin="3.24s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.5s" begin="3.24s" repeatCount="indefinite"/></circle>
-          <circle r="2.1" fill="#ffdd00"><animate attributeName="cy" values="115;15" dur="1.7s" begin="3.36s" repeatCount="indefinite"/><animate attributeName="cx" values="140;130" dur="1.7s" begin="3.36s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="1.7s" begin="3.36s" repeatCount="indefinite"/></circle>
-          <circle r="1.5" fill="#ff3ec9"><animate attributeName="cy" values="115;42" dur="2.9s" begin="3.48s" repeatCount="indefinite"/><animate attributeName="cx" values="140;138" dur="2.9s" begin="3.48s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.9s" begin="3.48s" repeatCount="indefinite"/></circle>
-          <circle r="1.8" fill="#22ee44"><animate attributeName="cy" values="115;7" dur="2.2s" begin="3.6s" repeatCount="indefinite"/><animate attributeName="cx" values="140;152" dur="2.2s" begin="3.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.6;0" dur="2.2s" begin="3.6s" repeatCount="indefinite"/></circle>
-        </g>
-      </svg>
-    </div>
+    <svg class="v1-cone" width="180" height="240" viewBox="0 0 200 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="v1-stripes" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#ff0044"/>
+          <stop offset="12%" stop-color="#ff7700"/>
+          <stop offset="24%" stop-color="#ffdd00"/>
+          <stop offset="36%" stop-color="#22ee44"/>
+          <stop offset="48%" stop-color="#00ffee"/>
+          <stop offset="60%" stop-color="#2288ff"/>
+          <stop offset="72%" stop-color="#8822ff"/>
+          <stop offset="84%" stop-color="#ff22cc"/>
+          <stop offset="100%" stop-color="#ff0044"/>
+        </linearGradient>
+        <clipPath id="v1-cone-clip">
+          <path d="M 40 258 Q 100 272 160 258 L 160 168 C 160 125 128 65 106 42 Q 100 28 94 42 C 72 65 40 125 40 168 Z"/>
+        </clipPath>
+        <filter id="v1-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="1.2"/>
+        </filter>
+      </defs>
+      <ellipse cx="100" cy="270" rx="55" ry="10" fill="#ff3ec9" opacity="0.12"/>
+      <g class="v1-particles" filter="url(#v1-glow)">
+        <circle r="1.5" fill="#ff2244"><animate attributeName="cy" values="35;2" dur="2.2s" repeatCount="indefinite"/><animate attributeName="cx" values="100;82" dur="2.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.5;0" keyTimes="0;0.15;0.7;1" dur="2.2s" repeatCount="indefinite"/></circle>
+        <circle r="1.3" fill="#ff7700"><animate attributeName="cy" values="35;5" dur="2.5s" begin="0.2s" repeatCount="indefinite"/><animate attributeName="cx" values="100;92" dur="2.5s" begin="0.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.5;0" keyTimes="0;0.15;0.7;1" dur="2.5s" begin="0.2s" repeatCount="indefinite"/></circle>
+        <circle r="1.4" fill="#ffdd00"><animate attributeName="cy" values="35;3" dur="2.0s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="cx" values="100;108" dur="2.0s" begin="0.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.5;0" keyTimes="0;0.15;0.7;1" dur="2.0s" begin="0.4s" repeatCount="indefinite"/></circle>
+        <circle r="1.5" fill="#22ee44"><animate attributeName="cy" values="35;6" dur="2.3s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="cx" values="100;118" dur="2.3s" begin="0.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.5;0" keyTimes="0;0.15;0.7;1" dur="2.3s" begin="0.6s" repeatCount="indefinite"/></circle>
+        <circle r="1.3" fill="#00ffee"><animate attributeName="cy" values="35;4" dur="2.6s" begin="0.8s" repeatCount="indefinite"/><animate attributeName="cx" values="100;88" dur="2.6s" begin="0.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.5;0" keyTimes="0;0.15;0.7;1" dur="2.6s" begin="0.8s" repeatCount="indefinite"/></circle>
+        <circle r="1.4" fill="#2288ff"><animate attributeName="cy" values="35;7" dur="2.1s" begin="1.0s" repeatCount="indefinite"/><animate attributeName="cx" values="100;75" dur="2.1s" begin="1.0s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.5;0" keyTimes="0;0.15;0.7;1" dur="2.1s" begin="1.0s" repeatCount="indefinite"/></circle>
+        <circle r="1.5" fill="#8822ff"><animate attributeName="cy" values="35;3" dur="2.7s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="cx" values="100;112" dur="2.7s" begin="1.2s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.5;0" keyTimes="0;0.15;0.7;1" dur="2.7s" begin="1.2s" repeatCount="indefinite"/></circle>
+        <circle r="1.3" fill="#ff22cc"><animate attributeName="cy" values="35;8" dur="2.4s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="cx" values="100;95" dur="2.4s" begin="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0.5;0" keyTimes="0;0.15;0.7;1" dur="2.4s" begin="1.4s" repeatCount="indefinite"/></circle>
+        <circle r="1.1" fill="#ff7700"><animate attributeName="cy" values="35;5" dur="1.9s" begin="0.15s" repeatCount="indefinite"/><animate attributeName="cx" values="98;78" dur="1.9s" begin="0.15s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.8;0;0" keyTimes="0;0.25;0.85;1" dur="1.9s" begin="0.15s" repeatCount="indefinite"/></circle>
+        <circle r="1.1" fill="#22ee44"><animate attributeName="cy" values="35;7" dur="2.1s" begin="0.55s" repeatCount="indefinite"/><animate attributeName="cx" values="102;115" dur="2.1s" begin="0.55s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.8;0;0" keyTimes="0;0.25;0.85;1" dur="2.1s" begin="0.55s" repeatCount="indefinite"/></circle>
+        <circle r="1.1" fill="#00ffee"><animate attributeName="cy" values="35;4" dur="2.0s" begin="0.95s" repeatCount="indefinite"/><animate attributeName="cx" values="98;102" dur="2.0s" begin="0.95s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.8;0;0" keyTimes="0;0.25;0.85;1" dur="2.0s" begin="0.95s" repeatCount="indefinite"/></circle>
+        <circle r="1.1" fill="#ff2244"><animate attributeName="cy" values="35;6" dur="2.5s" begin="1.35s" repeatCount="indefinite"/><animate attributeName="cx" values="102;85" dur="2.5s" begin="1.35s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0.8;0;0" keyTimes="0;0.25;0.85;1" dur="2.5s" begin="1.35s" repeatCount="indefinite"/></circle>
+      </g>
+      <g clip-path="url(#v1-cone-clip)">
+        <rect x="-200" y="20" width="600" height="265" fill="url(#v1-stripes)">
+          <animate attributeName="x" from="-200" to="-400" dur="7s" repeatCount="indefinite"/>
+        </rect>
+      </g>
+      <path d="M 40 168 Q 100 155 160 168" stroke="#ffffff" stroke-width="0.8" fill="none" opacity="0.4"/>
+      <path d="M 40 258 Q 100 272 160 258" stroke="#000000" stroke-width="1.2" fill="none" opacity="0.5"/>
+      <ellipse cx="100" cy="275" rx="50" ry="3" fill="#000000" opacity="0.4"/>
+    </svg>
     <div class="lab-cell__label">01 · Banded</div>
-    <div class="lab-cell__spec">cone-3.png · 30 rainbow particles · soft spiral rise</div>
+    <div class="lab-cell__spec">inline SVG · gradient-shift rotation · 12 rainbow particles</div>
   </div>
 
   <!-- ============================================================
