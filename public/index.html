@@ -1840,6 +1840,14 @@
       if (localStorage.getItem(KEY) === '1') apply(true);
     } catch(_) {}
 
+    /* Arena is "always visible" - poll regardless of verbose toggle state.
+       Decoupled from loadVerboseData so light cycles stay live for every
+       visitor, not just the ones who flipped verbose on. */
+    if (document.getElementById('hp-arena')) {
+      loadArena();
+      setInterval(loadArena, 1000);
+    }
+
     // Deep-link: #tokenz scrolls to the arena (now always visible)
     if (location.hash === '#tokenz') {
       setTimeout(function() {
@@ -2248,8 +2256,6 @@
       loadWeather('sjc', 37.3382, -121.8863);   // San Jose, CA
       measureLatency();
       setInterval(measureLatency, 15000);
-      loadArena();
-      setInterval(loadArena, 1000);  // poll every 1s - light cycles stay live
     }
 
     /* ========================================================================
