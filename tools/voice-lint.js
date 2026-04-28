@@ -138,7 +138,7 @@ const RULES = {
 const HOMEPAGE_REQUIRED = [
   'We make AI worth using.',
   'users gravitate to it',
-  'And oh...',
+  'And oh…',
   'ask our partners',
 ];
 
