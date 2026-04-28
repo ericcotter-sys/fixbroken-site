@@ -2164,9 +2164,9 @@
       if (loopActive) return;
       if (liveAnchors().length === 0) return;
       loopActive = true;
-      // First appearance: 1600-2600ms after typewriter-done (extra breathing
+      // First appearance: 800-1800ms after typewriter-done (extra breathing
       // room before the first nudge interrupts the hero).
-      cycleTimer = setTimeout(showNudgeOnce, 1600 + Math.floor(Math.random() * 1000));
+      cycleTimer = setTimeout(showNudgeOnce, 800 + Math.floor(Math.random() * 1000));
     }
 
     function stopNudgeLoop() {
