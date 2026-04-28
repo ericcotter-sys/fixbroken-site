@@ -2761,7 +2761,7 @@
         return wait(PAUSE_B);
       })
       .then(function () {
-        var n = 2 + Math.floor(Math.random() * 2);
+        var n = 4 + Math.floor(Math.random() * 2);
         return backspaceH1(n, BKSP_MS)
           .then(function (keep) { return wait(PAUSE_C).then(function () { return keep; }); })
           .then(function (keep) { return retypeH1(keep, TYPE_MS); });
