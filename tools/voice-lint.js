@@ -138,9 +138,8 @@ const RULES = {
 const HOMEPAGE_REQUIRED = [
   'We make AI worth using.',
   'users gravitate to it',
-  'teams sharpen it with conviction',
-  'And partners stick.',
-  'send the next ones our way',
+  'And partners stick around.',
+  'Sending the next ones our way',
 ];
 
 // Context lines to show around violations

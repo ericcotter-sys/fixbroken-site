@@ -84,7 +84,11 @@
     border-radius: var(--fb-r-3);
     box-shadow: var(--fb-lift), 0 0 48px rgba(255, 62, 201, 0.04);
   }
-  .hp-status__cone { width: 72px; height: 100px; flex-shrink: 0; }
+  .hp-status__cone { width: 72px; height: 100px; flex-shrink: 0; transition: filter 700ms ease, opacity 700ms ease; }
+  /* Hold the cone in grayscale/dim until 1s after typewriter cursor stops.
+     JS adds .hp-pre-typewriter on load and swaps to .hp-typewriter-done on signal. */
+  .hp-pre-typewriter .hp-status__cone { filter: grayscale(1) brightness(0.85); opacity: 0.55; }
+  .hp-pre-typewriter .hp-status__phrase { animation-play-state: paused; }
   .hp-status__body { min-width: 0; transition: opacity 240ms ease; }
   /* Tag line: static label. No pulsing dot, no animation. */
   .hp-status__tag {
@@ -808,8 +812,8 @@
 
         <h1 class="hp-h1 fb-rise" id="hp-h1">Fix broken <em>AI.</em></h1>
 
-        <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">We make AI worth using. Product, brand, and system built from the inside, so users gravitate to it, teams sharpen it with conviction.</p>
-        <p class="fb-mono fb-rise fb-rise--d1" id="hp-anchor" style="font-size: var(--fb-fs-14); color: var(--fb-text-mute); max-width: 58ch;">And partners stick. And send the next ones our way.</p>
+        <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">We make AI worth using. Product, brand, and system built from the inside, so users gravitate to it.</p>
+        <p class="fb-mono fb-rise fb-rise--d1" id="hp-anchor" style="font-size: var(--fb-fs-14); color: var(--fb-text-mute); max-width: 58ch;">And partners stick around. Sending the next ones our way.</p>
 
         <div class="fb-rise fb-rise--d2">
           <!-- href is a JS-off fallback; JS intercepts and opens the modal -->
@@ -945,6 +949,33 @@
               <!-- Ground shadow -->
               <ellipse cx="40" cy="106" rx="26" ry="1.6" fill="#000000" opacity="0.5"/>
             </svg>
+            <script>
+              // Hold the cone (SVG SMIL) and the phrase sweep (CSS) until 1s
+              // after the typewriter cursor stops. The typewriter IIFE near
+              // </body> dispatches `hp-typewriter-done` on completion. If the
+              // signal never arrives (reduced-motion early-return, missing
+              // elements), a 3s fallback unleashes everything anyway.
+              (function () {
+                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+                var cone = document.querySelector('.hp-status__cone');
+                if (cone && typeof cone.pauseAnimations === 'function') {
+                  try { cone.pauseAnimations(); } catch (_) {}
+                }
+                document.body.classList.add('hp-pre-typewriter');
+                var unleashed = false;
+                function unleash() {
+                  if (unleashed) return;
+                  unleashed = true;
+                  document.body.classList.remove('hp-pre-typewriter');
+                  document.body.classList.add('hp-typewriter-done');
+                  if (cone && typeof cone.unpauseAnimations === 'function') {
+                    try { cone.unpauseAnimations(); } catch (_) {}
+                  }
+                }
+                window.addEventListener('hp-typewriter-done', unleash, { once: true });
+                setTimeout(unleash, 3000);
+              })();
+            </script>
 
             <div class="hp-status__body" id="hp-status-body">
               <div class="hp-status__tag">system · FixBroken OS</div>
