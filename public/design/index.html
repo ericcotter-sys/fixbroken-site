@@ -343,11 +343,11 @@
       <div class="fb-container" style="position:relative;">
         <div class="fb-stack">
           <span class="fb-kicker fb-kicker--pink">design · brand at the interface</span>
-          <h1 class="fb-display fb-display--pink">Make AI worth <em>using.</em></h1>
-          <p class="fb-lede">
+          <h1 class="fb-display fb-display--pink" id="ds-hero-h1">Make AI worth <em>using.</em></h1>
+          <p class="fb-lede" id="ds-hero-lede1">
             Software is for humans, even when it's AI. Brand is the difference between using it and choosing it. The interface decides which one yours is, every time someone opens it. You deserve a team that gives a shit.
           </p>
-          <p class="fb-lede" style="font-weight: 600;">
+          <p class="fb-lede" style="font-weight: 600;" id="ds-hero-lede2">
             We're the product, brand, and system partner for AI teams turning working AI into a product worth choosing and scaling.
           </p>
         </div>
@@ -933,6 +933,117 @@
   }
   loadArena();
   setInterval(loadArena, 1000);
+})();
+</script>
+
+<script>
+// Hero typewriter: types both ledes in, then backspaces and retypes
+// the H1's <em> ("using.") — mirrors the home-page hero in index.html.
+(function () {
+  var TYPE_MS = 18;
+  var BKSP_MS = 28;
+  var PAUSE_A = 320;
+  var PAUSE_B = 700;
+  var PAUSE_C = 280;
+
+  var h1    = document.getElementById('ds-hero-h1');
+  var lede1 = document.getElementById('ds-hero-lede1');
+  var lede2 = document.getElementById('ds-hero-lede2');
+  if (!h1 || !lede1 || !lede2) return;
+
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var lede1Text = lede1.textContent.replace(/\s+/g, ' ').trim();
+  var lede2Text = lede2.textContent.replace(/\s+/g, ' ').trim();
+
+  var h1Prefix = 'Make AI worth ';
+  var h1Em     = 'using.';
+
+  var cursor = document.createElement('span');
+  cursor.className = 'fb-cursor fb-cursor--pink';
+  cursor.setAttribute('aria-hidden', 'true');
+
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  function hideCursor() { cursor.remove(); }
+  function showCursorIn(el) { el.appendChild(cursor); }
+
+  function typeInto(el, text, ms) {
+    return new Promise(function (resolve) {
+      el.textContent = '';
+      showCursorIn(el);
+      var i = 0;
+      (function tick() {
+        if (i < text.length) {
+          el.insertBefore(document.createTextNode(text[i]), cursor);
+          i++;
+          setTimeout(tick, ms);
+        } else {
+          resolve();
+        }
+      })();
+    });
+  }
+
+  function rebuildH1(prefix, em) {
+    h1.textContent = '';
+    if (prefix) h1.appendChild(document.createTextNode(prefix));
+    if (em) {
+      var emEl = document.createElement('em');
+      emEl.textContent = em;
+      h1.appendChild(emEl);
+    }
+  }
+
+  function backspaceH1Em(ms) {
+    return new Promise(function (resolve) {
+      var remaining = h1Em.length;
+      (function tick() {
+        if (remaining > 0) {
+          remaining--;
+          rebuildH1(h1Prefix, h1Em.slice(0, remaining));
+          showCursorIn(h1);
+          setTimeout(tick, ms);
+        } else {
+          resolve();
+        }
+      })();
+    });
+  }
+
+  function retypeH1Em(ms) {
+    return new Promise(function (resolve) {
+      var i = 0;
+      (function tick() {
+        if (i < h1Em.length) {
+          i++;
+          rebuildH1(h1Prefix, h1Em.slice(0, i));
+          showCursorIn(h1);
+          setTimeout(tick, ms);
+        } else {
+          resolve();
+        }
+      })();
+    });
+  }
+
+  lede1.textContent = '';
+  lede2.textContent = '';
+  rebuildH1(h1Prefix, h1Em);
+  hideCursor();
+
+  wait(200)
+    .then(function () { return typeInto(lede1, lede1Text, TYPE_MS); })
+    .then(function () { return wait(PAUSE_A); })
+    .then(function () { hideCursor(); return typeInto(lede2, lede2Text, TYPE_MS); })
+    .then(function () { return wait(PAUSE_A); })
+    .then(function () {
+      hideCursor();
+      showCursorIn(h1);
+      return wait(PAUSE_B);
+    })
+    .then(function () { return backspaceH1Em(BKSP_MS); })
+    .then(function () { return wait(PAUSE_C); })
+    .then(function () { return retypeH1Em(TYPE_MS); });
 })();
 </script>
 
