@@ -19,6 +19,58 @@
     padding-bottom: clamp(48px, 10vh, 96px);
   }
 
+  .ds-story {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: var(--fb-s-4);
+  }
+  .ds-story__card {
+    background: var(--fb-ink);
+    border: 1px solid var(--fb-hairline);
+    padding: var(--fb-s-6) var(--fb-s-5) var(--fb-s-5);
+    position: relative;
+    overflow: hidden;
+    transition: border-color var(--fb-t-fast), transform var(--fb-t-fast);
+  }
+  .ds-story__card:hover {
+    border-color: var(--fb-hairline-hot);
+    transform: translateY(-2px);
+  }
+  .ds-story__card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--fb-signal);
+    opacity: 0.4;
+    transition: opacity var(--fb-t-fast);
+  }
+  .ds-story__card:hover::before { opacity: 1; }
+  .ds-story__card--pink::before { background: var(--fb-pink); }
+  .ds-story__card--matrix::before { background: var(--fb-matrix); }
+  .ds-story__num {
+    font-family: var(--fb-font-mono);
+    font-size: var(--fb-fs-10);
+    color: var(--fb-text-mute);
+    letter-spacing: var(--fb-tracking-wide);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: var(--fb-s-3);
+  }
+  .ds-story__title {
+    font-size: var(--fb-fs-18);
+    color: var(--fb-text-loud);
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 var(--fb-s-3) 0;
+  }
+  .ds-story__body {
+    font-size: var(--fb-fs-13);
+    color: var(--fb-text-dim);
+    line-height: var(--fb-lh-relaxed);
+    margin: 0;
+  }
+
   .ds-proof {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
@@ -181,71 +233,83 @@
           <span class="fb-kicker fb-kicker--pink">design · brand at the interface</span>
           <h1 class="fb-display fb-display--pink">Make AI worth <em>using.</em></h1>
           <p class="fb-lede">
-            Software is for humans, even when it's AI. Brand is the difference between using it and choosing it. Between a tool people tolerate and one they reach for. The interface decides which one yours is, every time someone opens it. You deserve a team that gives a shit.
+            Software is for humans, even when it's AI. Brand is the difference between using it and choosing it. The interface decides which one yours is, every time someone opens it. You deserve a team that gives a shit.
+          </p>
+          <p class="fb-lede" style="font-weight: 600;">
+            We're the product, brand, and system partner for AI teams turning working AI into a product worth choosing and scaling.
           </p>
         </div>
       </div>
     </section>
 
     <!-- ====================================================================
-         THESIS
+         THE STORY — card grid
          ==================================================================== -->
     <section class="fb-section" style="border-top: 1px solid var(--fb-hairline);">
       <div class="fb-container">
-        <div class="fb-stack fb-stack--loose">
-          <div>
-            <h2 style="margin-top: var(--fb-s-2);">Brand isn't a logo. It's the product opening.</h2>
-            <p class="fb-lede" style="margin-top: var(--fb-s-3);">
-              Every screen, flow, word, state, and component is a decision about who you are. From edgy to classy, the job is the same: make those decisions intentional, coherent, and unmistakably yours.
-            </p>
+        <div class="ds-story">
+
+          <div class="ds-story__card">
+            <span class="ds-story__num">01 / stance</span>
+            <h2 class="ds-story__title">Brand isn't a logo. It's the product opening.</h2>
+            <p class="ds-story__body">Every screen, flow, word, and component is a decision about who you are. We make those decisions intentional, coherent, and unmistakably yours.</p>
           </div>
+
+          <div class="ds-story__card ds-story__card--pink">
+            <span class="ds-story__num">02 / approach</span>
+            <h2 class="ds-story__title">From brand strategy to shipped pixels.</h2>
+            <p class="ds-story__body">Design systems, component libraries, interaction rules, motion, UX engineering. The taste calibrates to the brand. The system survives your engineers.</p>
+          </div>
+
+          <div class="ds-story__card">
+            <span class="ds-story__num">03 / range</span>
+            <h2 class="ds-story__title">Calibrated to your brand. Not copied from someone else's.</h2>
+            <p class="ds-story__body">Founder-mode gets edge. Enterprise gets gravity. Consumer gets velocity. The aesthetic flexes. The discipline stays.</p>
+          </div>
+
+          <div class="ds-story__card ds-story__card--matrix">
+            <span class="ds-story__num">04 / system</span>
+            <h2 class="ds-story__title">One CSS file. Entire product covered.</h2>
+            <p class="ds-story__body">Tokens, components, responsive breakpoints, accessibility. One import. No Figma handoff that rots. Living code your team ships with on day one.</p>
+          </div>
+
+          <div class="ds-story__card ds-story__card--pink">
+            <span class="ds-story__num">05 / intelligence</span>
+            <h2 class="ds-story__title">Your LLM ships on-brand without being told twice.</h2>
+            <p class="ds-story__body">Agent instructions, voice rules, banned behaviors, component inventory. The AI doesn't guess your brand — it knows it.</p>
+          </div>
+
+          <div class="ds-story__card">
+            <span class="ds-story__num">06 / scale</span>
+            <h2 class="ds-story__title">One OS, many faces. No forks.</h2>
+            <p class="ds-story__body">Sub-brands, product lines, client surfaces — they all load the base system and swap tokens. Multi-tenant by architecture, not by accident.</p>
+          </div>
+
+          <div class="ds-story__card ds-story__card--matrix">
+            <span class="ds-story__num">07 / toolchain</span>
+            <h2 class="ds-story__title">The system enforces itself.</h2>
+            <p class="ds-story__body">Voice linter, design audit, manifest validator, pre-commit hooks. Brand compliance isn't a meeting — it's a build step.</p>
+          </div>
+
+          <div class="ds-story__card ds-story__card--pink">
+            <span class="ds-story__num">08 / proof</span>
+            <h2 class="ds-story__title">This site runs on it.</h2>
+            <p class="ds-story__body">Everything you're looking at — every page, component, interaction — is FixBroken OS in production. Not a demo. The real thing.</p>
+          </div>
+
         </div>
       </div>
     </section>
 
     <!-- ====================================================================
-         THE WORK
+         THE PROOF - DOGFOODING (live system samples)
          ==================================================================== -->
     <section class="fb-section" style="border-top: 1px solid var(--fb-hairline);">
       <div class="fb-container">
         <div class="fb-stack fb-stack--loose">
           <div>
-            <h2 style="margin-top: var(--fb-s-2);">Brand-led interfaces. Customer-driven flows.</h2>
-            <p class="fb-lede" style="margin-top: var(--fb-s-3);">
-              Design systems, component libraries, interaction rules, motion and state work, UX engineering. Everything between brand strategy and shipped pixels. The taste calibrates to the brand. The system is built to survive your engineers.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         RANGE
-         ==================================================================== -->
-    <section class="fb-section" style="border-top: 1px solid var(--fb-hairline);">
-      <div class="fb-container">
-        <div class="fb-stack fb-stack--loose">
-          <div>
-            <h2 style="margin-top: var(--fb-s-2);">Edgy or classy. Calibrated, not copied.</h2>
-            <p class="fb-lede" style="margin-top: var(--fb-s-3);">
-              A founder-mode AI tool gets edge. A regulated enterprise gets gravity. A consumer brand gets velocity. The aesthetic flexes to the brand. The discipline underneath stays the same.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         THE PROOF - DOGFOODING
-         ==================================================================== -->
-    <section class="fb-section" style="border-top: 1px solid var(--fb-hairline);">
-      <div class="fb-container">
-        <div class="fb-stack fb-stack--loose">
-          <div>
-            <h2 style="margin-top: var(--fb-s-2);">The brand, made literal.</h2>
-            <p class="fb-lede" style="margin-top: var(--fb-s-3);">
-              Tokens carry intent. Type carries voice. Components hold the line. Here's what fixbroken.ai's brand looks like as a working system.
-            </p>
+            <span class="fb-kicker">The system · live</span>
+            <h2 style="margin-top: var(--fb-s-2);">Tokens, type, components — running right now.</h2>
           </div>
 
           <div class="ds-proof">
