@@ -797,6 +797,22 @@
     .hp-hero { padding-bottom: 0; }
     .hp-ops-section { padding-top: var(--fb-s-8) !important; }
   }
+
+  /* Page-local status dot (used in the closer kicker). Not promoted to fb-* —
+     scoped to homepage. */
+  .hp-status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--fb-text-mute);
+    vertical-align: middle;
+    margin-right: 6px;
+  }
+  .hp-status-dot--pink {
+    background: var(--fb-pink);
+    box-shadow: 0 0 8px var(--fb-pink-glow);
+  }
 </style>
 </head>
 <body>
@@ -1102,87 +1118,308 @@
         Recent work - what we've shipped →
       </a>
 
-      <!-- Six rules for useful AI -->
-      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
-        <div class="fb-stack fb-stack--tight">
-          <span class="fb-kicker">Philosophy · Product discipline</span>
-          <h3 style="font-size: var(--fb-fs-32);">Six rules for useful AI.</h3>
-          <p class="fb-text-dim" style="max-width: 62ch;">
-            AI products break when people cannot tell what the system knows, why it matters, or what to do next.
-          </p>
-          <p class="fb-text-dim" style="max-width: 62ch;">
-            We turn complex AI into products people can understand, trust, buy, and use.
+    </section>
+
+    <!-- ====================================================================
+         CONTACT MODAL - hidden by default. Opens when the hero CTA fires.
+         ==================================================================== -->
+    <div class="hp-modal" id="hp-contact-modal" role="dialog" aria-modal="true" aria-labelledby="hp-modal-title" aria-hidden="true">
+      <div class="hp-modal__panel">
+
+        <button type="button" class="hp-modal__close" id="hp-modal-close" aria-label="Close">✕</button>
+
+        <div class="fb-stack fb-stack--tight" style="margin-bottom: var(--fb-s-6);">
+          <span class="fb-kicker fb-kicker--pink">Signal · Contact</span>
+          <h2 id="hp-modal-title" style="font-size: var(--fb-fs-32);">Tell me what's broken.</h2>
+          <p class="fb-text-dim" style="max-width: 58ch;">
+            One email back within 48h if it's the right shape of problem.
           </p>
         </div>
 
-        <div class="fb-grid fb-grid--2">
-
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">01 · Signal over spectacle</span>
-            <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              If it does not clarify state, risk, priority, or next action, it goes.
-            </p>
-            <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
-              <span class="fb-label">What you get:</span> Less noise. Faster decisions. Clearer value.
-            </p>
+        <form id="hp-contact-form" class="fb-stack" novalidate>
+          <div class="fb-grid fb-grid--2" style="gap: var(--fb-s-3);">
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-name">Name</label>
+              <input class="fb-input" id="hp-cf-name" name="name" type="text" placeholder="first · last" autocomplete="name">
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-email">Email <span style="color: var(--fb-pink);">*</span></label>
+              <input class="fb-input" id="hp-cf-email" name="email" type="email" placeholder="you@domain" autocomplete="email" required>
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-company">Company</label>
+              <input class="fb-input" id="hp-cf-company" name="company" type="text" placeholder="optional" autocomplete="organization">
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-type">Type of help</label>
+              <select class="fb-input" id="hp-cf-type" name="type">
+                <option value="">-</option>
+                <option value="product">Product</option>
+                <option value="brand">Brand</option>
+                <option value="system">System</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
           </div>
-
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">02 · Terminal clarity</span>
-            <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              People should always know where they are, what the system is doing, and what they can do next. Make it readable without dumbing it down.
-            </p>
-            <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
-              <span class="fb-label">What you get:</span> Users who feel oriented, not lost. Fewer support tickets. Faster adoption.
-            </p>
+          <div class="fb-field">
+            <label class="fb-field__label" for="hp-cf-message">What's broken? <span style="color: var(--fb-pink);">*</span></label>
+            <textarea class="fb-textarea" id="hp-cf-message" name="message" rows="4" placeholder="describe what broke. short is fine." required></textarea>
           </div>
-
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">03 · Calm by default</span>
-            <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              Trust comes from restraint. The interface should feel considered and professional, not like a sci-fi movie prop.
-            </p>
-            <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
-              <span class="fb-label">What you get:</span> A product that feels credible in the boardroom and usable in the field.
-            </p>
+          <div class="fb-row fb-row--between fb-row--wrap" style="gap: var(--fb-s-3); align-items: center;">
+            <button class="fb-cta fb-cta--pink-solid" type="submit" id="hp-cf-submit">
+              Send the signal
+            </button>
+            <span id="hp-cf-status" class="fb-mono" style="font-size: var(--fb-fs-12); color: var(--fb-text-mute);"></span>
           </div>
+        </form>
 
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">04 · One command layer</span>
-            <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              Strong products have a center of gravity - one place where the important stuff happens. Everything else supports that core, not competes with it.
-            </p>
-            <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
-              <span class="fb-label">What you get:</span> Less feature sprawl. A stronger product story. A clearer path from demo to paying customer.
-            </p>
+        <!-- Success state (hidden by default; swapped in on submit success) -->
+        <div id="hp-cf-success" class="fb-mono" hidden style="padding: var(--fb-s-4) 0;">
+          <div class="fb-row" style="gap: var(--fb-s-2); font-family: var(--fb-font-mono); color: var(--fb-matrix);">
+            <span style="font-size: var(--fb-fs-16);">✓</span>
+            <span class="fb-label fb-label--matrix">Signal received</span>
           </div>
-
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">05 · Color means something</span>
-            <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              Every color in the interface has a job - showing status, drawing attention to what matters, or indicating something changed. No decoration for decoration's sake.
-            </p>
-            <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
-              <span class="fb-label">What you get:</span> A product that feels sharp and modern without being visually noisy.
-            </p>
+          <div style="margin-top: var(--fb-s-3); color: var(--fb-text-loud); font-size: var(--fb-fs-15);">
+            Ref: <strong class="fb-glow--pink" style="color: var(--fb-pink);" id="hp-cf-ref">-</strong>
           </div>
-
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">06 · Human-readable intelligence</span>
-            <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-              The best AI products build understanding in layers - starting with clear data, then showing what it means, then helping people decide what to do about it.
-            </p>
-            <p style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-13);">
-              <span class="fb-label">What you get:</span> AI your team can explain to a customer, sell to a buyer, and trust in the field.
-            </p>
+          <div style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14); max-width: 52ch;">
+            We read every one. If it's the right shape of problem, you'll hear back within 48h.
           </div>
-
+          <div style="margin-top: var(--fb-s-5);">
+            <button type="button" class="fb-cta fb-cta--ghost" id="hp-cf-close2">Close</button>
+          </div>
         </div>
 
       </div>
+    </div>
 
-      <!-- Active engagements + context rail -->
-      <div class="fb-grid fb-grid--2" style="margin-bottom: var(--fb-s-10);">
+    <!-- ====================================================================
+         INTELLIGENCE LADDER (gated behind verbose toggle)
+         ==================================================================== -->
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
+      <div class="fb-grid fb-grid--2">
+
+        <div class="fb-stack fb-stack--tight">
+          <span class="fb-kicker">Philosophy · Intelligence ladder</span>
+          <h3 style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-32);">Good AI products build trust one layer at a time.</h3>
+          <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
+            The strongest AI products do not start with recommendations. They earn their way there. Too many products jump straight to predictions before the user trusts the data or sees the implication. That creates magic-show software. It may look impressive, but it does not create confidence.
+          </p>
+          <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
+            Our work helps teams build the full ladder. Clean data becomes visible insight. Insight becomes business meaning. Meaning becomes scenario thinking. Scenario thinking becomes better recommendations. Better recommendations create products people can trust, sell, and use.
+          </p>
+        </div>
+
+        <div>
+          <div class="hp-ladder">
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">01</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Data</div>
+                <div class="hp-ladder__desc">Clean ingredients. Trusted inputs. Clear definitions. No mystery math hiding bad foundations.</div>
+              </div>
+            </div>
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">02</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Insight</div>
+                <div class="hp-ladder__desc">What happened? What changed? What pattern is visible now that was hard to see before?</div>
+              </div>
+            </div>
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">03</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Implication</div>
+                <div class="hp-ladder__desc">So what? Why does this matter to the business, the workflow, the customer, or the decision-maker?</div>
+              </div>
+            </div>
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">04</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Scenario</div>
+                <div class="hp-ladder__desc">What could happen next? What changes if the team chooses path A, B, or C?</div>
+              </div>
+            </div>
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">05</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Recommendation</div>
+                <div class="hp-ladder__desc">What should the user do now? What action is supported by the evidence?</div>
+              </div>
+            </div>
+            <div class="hp-ladder__rung">
+              <span class="hp-ladder__num">06</span>
+              <div class="hp-ladder__body">
+                <div class="hp-ladder__label">Prediction</div>
+                <div class="hp-ladder__desc">Where is this likely going? What should the team anticipate before the signal becomes obvious?</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         TOKENZ - Usage Arena (gated behind verbose toggle)
+         ==================================================================== -->
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
+      <div class="hp-arena" id="hp-arena" data-anchor="tokenz">
+        <div class="hp-arena__head">
+          <span>tokenz · <strong>claude runtime</strong> · light cycles</span>
+          <span id="hp-arena-stamp">awaiting signal…</span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--8s" data-cycle="0">
+          <span class="hp-cycle__label">8s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--42s" data-cycle="1">
+          <span class="hp-cycle__label">42s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--80s" data-cycle="2">
+          <span class="hp-cycle__label">80s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--800s" data-cycle="3">
+          <span class="hp-cycle__label">800s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--8000s" data-cycle="4">
+          <span class="hp-cycle__label">8000s</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--80000s" data-cycle="6">
+          <span class="hp-cycle__label">80ks</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
+        </div>
+
+        <div class="hp-cycle hp-cycle--800000s" data-cycle="8">
+          <span class="hp-cycle__label">800ks</span>
+          <div class="hp-cycle__track">
+            <div class="hp-cycle__trail" style="width: 0%;">
+              <div class="hp-cycle__head"></div>
+            </div>
+          </div>
+          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
+        </div>
+
+        <div class="hp-arena__foot">
+          <span>lifetime <strong id="hp-tkn-lifetime">-</strong></span>
+          <span>proj/day <strong id="hp-tkn-projday">-</strong></span>
+          <span>rate <span class="hp-arena__rate" id="hp-tkn-rate">-</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         GOAL CLOSING (gated behind verbose toggle)
+         ==================================================================== -->
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
+      <div style="padding-top: var(--fb-s-8); border-top: 1px solid var(--fb-hairline);">
+        <p style="font-size: clamp(24px, 3.5vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-dim); max-width: 18ch;">
+          The goal is not to make AI look impressive.
+        </p>
+        <p style="font-size: clamp(24px, 3.5vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-loud); margin-top: var(--fb-s-2); max-width: 18ch;">
+          The goal is to make it <em style="font-style: normal; color: var(--fb-signal); text-shadow: 0 0 24px var(--fb-signal-glow);">useful.</em>
+        </p>
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         OPERATIONS - always visible. The offer.
+         ==================================================================== -->
+    <section class="hp-ops-section fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
+
+      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
+        <div class="fb-stack fb-stack--tight">
+          <span class="fb-kicker">Output · Operations</span>
+          <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
+          <p class="fb-text-dim" style="max-width: 58ch;">
+            We don't deliver decks. We work in the actual product, brand, and system until it behaves.
+          </p>
+        </div>
+
+        <div class="fb-grid">
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 01 · Product</span>
+            <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
+            <p class="fb-signal-card__body">We redesign how people actually use your AI - where they get stuck, where they lose trust, where they bail. The goal is a product that feels like a reliable tool, not a tech demo.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 02 · Brand</span>
+            <h4 class="fb-signal-card__title">Earn the room.</h4>
+            <p class="fb-signal-card__body">Positioning, language, visual identity. We replace the vague AI messaging with a voice that sounds credible to the people who actually buy, use, and sell your product.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 03 · System</span>
+            <h4 class="fb-signal-card__title">Make it shippable.</h4>
+            <p class="fb-signal-card__body">Pilot programs, pricing, go-to-market structure. We help translate what the technology can do into something a sales team can sell and a customer can adopt.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+        </div>
+      </div>
+
+      <!-- Credential line -->
+      <p class="fb-mono" style="font-size: var(--fb-fs-14); color: var(--fb-text-dim); max-width: 58ch;">
+        20 years shipping product. Fractional CPO. Hands-on, not advisory.
+      </p>
+
+      <!-- Closing CTA + roster -->
+      <div style="margin-top: var(--fb-s-8);">
+        <a class="fb-cta fb-cta--pink-solid" href="/#signal" data-open-modal="contact">
+          Tell me what's broken
+        </a>
+        <p class="fb-mono" style="margin-top: var(--fb-s-4); font-size: var(--fb-fs-12); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide);">
+          Taking 1 new engagement per quarter
+        </p>
+      </div>
+
+    </section>
+
+    <!-- ====================================================================
+         ENGAGEMENTS + CONTEXT RAIL (gated behind verbose toggle)
+         ==================================================================== -->
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
+      <div class="fb-grid fb-grid--2">
         <div class="fb-panel fb-panel--signal">
           <span class="fb-kicker">Signal · Current engagements</span>
           <h4 style="margin-top: var(--fb-s-3); font-size: var(--fb-fs-24);">What's running.</h4>
@@ -1213,12 +1450,14 @@
           <div class="fb-row fb-row--between"><span class="fb-label">UPTIME</span><span class="fb-glow--matrix" style="color: var(--fb-matrix);">100%</span></div>
         </div>
       </div>
+    </section>
 
-      <!-- ====================================================================
-           SYSTEM · NOC - a tight ops dashboard with real details.
-           Monospace throughout. No links. Status dots where they belong.
-           ==================================================================== -->
-      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
+    <!-- ====================================================================
+         SYSTEM · NOC (gated behind verbose toggle)
+         Monospace throughout. No links. Status dots where they belong.
+         ==================================================================== -->
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
+      <div class="fb-stack">
         <div class="fb-row fb-row--between fb-row--wrap" style="align-items:flex-end;">
           <div class="fb-stack fb-stack--tight">
             <span class="fb-kicker">System · NOC</span>
@@ -1280,15 +1519,13 @@
 
         </div>
       </div>
+    </section>
 
-      <!-- ====================================================================
-           FLEET · Operator's personal rigs. Sits LAST in verbose - after the
-           NOC cheat codes. Rig 01: overland LX (full platform + build rail).
-           Rig 02: anonymous daily (engine / drivetrain / chassis / options
-           rails with enough insider nerdery that any Porsche person will
-           decode it from the spec sheet alone). Model row says decline to state.
-           ==================================================================== -->
-      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
+    <!-- ====================================================================
+         FLEET · Operator's personal rigs (gated behind verbose toggle)
+         ==================================================================== -->
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
+      <div class="fb-stack">
         <div class="fb-row fb-row--between fb-row--wrap" style="align-items:flex-end;">
           <div class="fb-stack fb-stack--tight">
             <span class="fb-kicker">Fleet · personal rigs</span>
@@ -1467,302 +1704,27 @@
 
         </div>
       </div>
-
     </section>
 
     <!-- ====================================================================
-         CONTACT MODAL - hidden by default. Opens when the hero CTA fires.
-         ==================================================================== -->
-    <div class="hp-modal" id="hp-contact-modal" role="dialog" aria-modal="true" aria-labelledby="hp-modal-title" aria-hidden="true">
-      <div class="hp-modal__panel">
-
-        <button type="button" class="hp-modal__close" id="hp-modal-close" aria-label="Close">✕</button>
-
-        <div class="fb-stack fb-stack--tight" style="margin-bottom: var(--fb-s-6);">
-          <span class="fb-kicker fb-kicker--pink">Signal · Contact</span>
-          <h2 id="hp-modal-title" style="font-size: var(--fb-fs-32);">Tell me what's broken.</h2>
-          <p class="fb-text-dim" style="max-width: 58ch;">
-            One email back within 48h if it's the right shape of problem.
-          </p>
-        </div>
-
-        <form id="hp-contact-form" class="fb-stack" novalidate>
-          <div class="fb-grid fb-grid--2" style="gap: var(--fb-s-3);">
-            <div class="fb-field">
-              <label class="fb-field__label" for="hp-cf-name">Name</label>
-              <input class="fb-input" id="hp-cf-name" name="name" type="text" placeholder="first · last" autocomplete="name">
-            </div>
-            <div class="fb-field">
-              <label class="fb-field__label" for="hp-cf-email">Email <span style="color: var(--fb-pink);">*</span></label>
-              <input class="fb-input" id="hp-cf-email" name="email" type="email" placeholder="you@domain" autocomplete="email" required>
-            </div>
-            <div class="fb-field">
-              <label class="fb-field__label" for="hp-cf-company">Company</label>
-              <input class="fb-input" id="hp-cf-company" name="company" type="text" placeholder="optional" autocomplete="organization">
-            </div>
-            <div class="fb-field">
-              <label class="fb-field__label" for="hp-cf-type">Type of help</label>
-              <select class="fb-input" id="hp-cf-type" name="type">
-                <option value="">-</option>
-                <option value="product">Product</option>
-                <option value="brand">Brand</option>
-                <option value="system">System</option>
-                <option value="other">Something else</option>
-              </select>
-            </div>
-          </div>
-          <div class="fb-field">
-            <label class="fb-field__label" for="hp-cf-message">What's broken? <span style="color: var(--fb-pink);">*</span></label>
-            <textarea class="fb-textarea" id="hp-cf-message" name="message" rows="4" placeholder="describe what broke. short is fine." required></textarea>
-          </div>
-          <div class="fb-row fb-row--between fb-row--wrap" style="gap: var(--fb-s-3); align-items: center;">
-            <button class="fb-cta fb-cta--pink-solid" type="submit" id="hp-cf-submit">
-              Send the signal
-            </button>
-            <span id="hp-cf-status" class="fb-mono" style="font-size: var(--fb-fs-12); color: var(--fb-text-mute);"></span>
-          </div>
-        </form>
-
-        <!-- Success state (hidden by default; swapped in on submit success) -->
-        <div id="hp-cf-success" class="fb-mono" hidden style="padding: var(--fb-s-4) 0;">
-          <div class="fb-row" style="gap: var(--fb-s-2); font-family: var(--fb-font-mono); color: var(--fb-matrix);">
-            <span style="font-size: var(--fb-fs-16);">✓</span>
-            <span class="fb-label fb-label--matrix">Signal received</span>
-          </div>
-          <div style="margin-top: var(--fb-s-3); color: var(--fb-text-loud); font-size: var(--fb-fs-15);">
-            Ref: <strong class="fb-glow--pink" style="color: var(--fb-pink);" id="hp-cf-ref">-</strong>
-          </div>
-          <div style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14); max-width: 52ch;">
-            We read every one. If it's the right shape of problem, you'll hear back within 48h.
-          </div>
-          <div style="margin-top: var(--fb-s-5);">
-            <button type="button" class="fb-cta fb-cta--ghost" id="hp-cf-close2">Close</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ====================================================================
-         TOKENZ - Usage Arena (gated behind verbose toggle)
+         CLOSING CTA (gated behind verbose toggle)
          ==================================================================== -->
     <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
-      <div class="hp-arena" id="hp-arena" data-anchor="tokenz">
-        <div class="hp-arena__head">
-          <span>tokenz · <strong>claude runtime</strong> · light cycles</span>
-          <span id="hp-arena-stamp">awaiting signal…</span>
-        </div>
-
-        <div class="hp-cycle hp-cycle--8s" data-cycle="0">
-          <span class="hp-cycle__label">8s</span>
-          <div class="hp-cycle__track">
-            <div class="hp-cycle__trail" style="width: 0%;">
-              <div class="hp-cycle__head"></div>
-            </div>
-          </div>
-          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
-        </div>
-
-        <div class="hp-cycle hp-cycle--42s" data-cycle="1">
-          <span class="hp-cycle__label">42s</span>
-          <div class="hp-cycle__track">
-            <div class="hp-cycle__trail" style="width: 0%;">
-              <div class="hp-cycle__head"></div>
-            </div>
-          </div>
-          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
-        </div>
-
-        <div class="hp-cycle hp-cycle--80s" data-cycle="2">
-          <span class="hp-cycle__label">80s</span>
-          <div class="hp-cycle__track">
-            <div class="hp-cycle__trail" style="width: 0%;">
-              <div class="hp-cycle__head"></div>
-            </div>
-          </div>
-          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
-        </div>
-
-        <div class="hp-cycle hp-cycle--800s" data-cycle="3">
-          <span class="hp-cycle__label">800s</span>
-          <div class="hp-cycle__track">
-            <div class="hp-cycle__trail" style="width: 0%;">
-              <div class="hp-cycle__head"></div>
-            </div>
-          </div>
-          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
-        </div>
-
-        <div class="hp-cycle hp-cycle--8000s" data-cycle="4">
-          <span class="hp-cycle__label">8000s</span>
-          <div class="hp-cycle__track">
-            <div class="hp-cycle__trail" style="width: 0%;">
-              <div class="hp-cycle__head"></div>
-            </div>
-          </div>
-          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
-        </div>
-
-        <div class="hp-cycle hp-cycle--80000s" data-cycle="6">
-          <span class="hp-cycle__label">80ks</span>
-          <div class="hp-cycle__track">
-            <div class="hp-cycle__trail" style="width: 0%;">
-              <div class="hp-cycle__head"></div>
-            </div>
-          </div>
-          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
-        </div>
-
-        <div class="hp-cycle hp-cycle--800000s" data-cycle="8">
-          <span class="hp-cycle__label">800ks</span>
-          <div class="hp-cycle__track">
-            <div class="hp-cycle__trail" style="width: 0%;">
-              <div class="hp-cycle__head"></div>
-            </div>
-          </div>
-          <span class="hp-cycle__meta"><span class="hp-val">-</span> <small class="hp-msg">-</small></span>
-        </div>
-
-        <div class="hp-arena__foot">
-          <span>lifetime <strong id="hp-tkn-lifetime">-</strong></span>
-          <span>proj/day <strong id="hp-tkn-projday">-</strong></span>
-          <span>rate <span class="hp-arena__rate" id="hp-tkn-rate">-</span></span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         INTELLIGENCE LADDER (gated behind verbose toggle)
-         ==================================================================== -->
-    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
-      <div class="fb-grid fb-grid--2">
-
-        <div class="fb-stack fb-stack--tight">
-          <span class="fb-label fb-label--signal">The intelligence ladder</span>
-          <h4 style="margin-top: var(--fb-s-2); font-size: var(--fb-fs-24);">Good AI products build trust one layer at a time.</h4>
-          <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-            The strongest AI products do not start with recommendations. They earn their way there. Too many products jump straight to predictions before the user trusts the data or sees the implication. That creates magic-show software. It may look impressive, but it does not create confidence.
-          </p>
-          <p style="margin-top: var(--fb-s-3); color: var(--fb-text-dim);">
-            Our work helps teams build the full ladder. Clean data becomes visible insight. Insight becomes business meaning. Meaning becomes scenario thinking. Scenario thinking becomes better recommendations. Better recommendations create products people can trust, sell, and use.
-          </p>
-        </div>
-
-        <div>
-          <div class="hp-ladder">
-            <div class="hp-ladder__rung">
-              <span class="hp-ladder__num">01</span>
-              <div class="hp-ladder__body">
-                <div class="hp-ladder__label">Data</div>
-                <div class="hp-ladder__desc">Clean ingredients. Trusted inputs. Clear definitions. No mystery math hiding bad foundations.</div>
-              </div>
-            </div>
-            <div class="hp-ladder__rung">
-              <span class="hp-ladder__num">02</span>
-              <div class="hp-ladder__body">
-                <div class="hp-ladder__label">Insight</div>
-                <div class="hp-ladder__desc">What happened? What changed? What pattern is visible now that was hard to see before?</div>
-              </div>
-            </div>
-            <div class="hp-ladder__rung">
-              <span class="hp-ladder__num">03</span>
-              <div class="hp-ladder__body">
-                <div class="hp-ladder__label">Implication</div>
-                <div class="hp-ladder__desc">So what? Why does this matter to the business, the workflow, the customer, or the decision-maker?</div>
-              </div>
-            </div>
-            <div class="hp-ladder__rung">
-              <span class="hp-ladder__num">04</span>
-              <div class="hp-ladder__body">
-                <div class="hp-ladder__label">Scenario</div>
-                <div class="hp-ladder__desc">What could happen next? What changes if the team chooses path A, B, or C?</div>
-              </div>
-            </div>
-            <div class="hp-ladder__rung">
-              <span class="hp-ladder__num">05</span>
-              <div class="hp-ladder__body">
-                <div class="hp-ladder__label">Recommendation</div>
-                <div class="hp-ladder__desc">What should the user do now? What action is supported by the evidence?</div>
-              </div>
-            </div>
-            <div class="hp-ladder__rung">
-              <span class="hp-ladder__num">06</span>
-              <div class="hp-ladder__body">
-                <div class="hp-ladder__label">Prediction</div>
-                <div class="hp-ladder__desc">Where is this likely going? What should the team anticipate before the signal becomes obvious?</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         GOAL CLOSING (gated behind verbose toggle)
-         ==================================================================== -->
-    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
-      <div style="padding-top: var(--fb-s-8); border-top: 1px solid var(--fb-hairline);">
-        <p style="font-size: clamp(24px, 3.5vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-dim); max-width: 18ch;">
-          The goal is not to make AI look impressive.
+      <div class="hp-closer fb-stack" style="margin-bottom: var(--fb-s-10);">
+        <span class="fb-kicker fb-kicker--pink">
+          <span class="hp-status-dot hp-status-dot--pink"></span> Signal · Start here
+        </span>
+        <h2 class="hp-closer__h" style="font-size: clamp(48px, 8vw, 88px); font-weight: 600; line-height: 1.02; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-loud); max-width: 16ch;">
+          Bring something <em style="font-style: normal; color: var(--fb-pink); text-shadow: 0 0 32px var(--fb-pink-glow);">broken.</em>
+        </h2>
+        <p class="hp-closer__body" style="font-size: var(--fb-fs-20); line-height: var(--fb-lh-relaxed); color: var(--fb-text-dim); max-width: 58ch;">
+          A brand that doesn't scale. A product that looks like five teams built it. A design system that exists in theory but not in code. We've seen it. We fix it.
         </p>
-        <p style="font-size: clamp(24px, 3.5vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-loud); margin-top: var(--fb-s-2); max-width: 18ch;">
-          The goal is to make it <em style="font-style: normal; color: var(--fb-signal); text-shadow: 0 0 24px var(--fb-signal-glow);">useful.</em>
-        </p>
-      </div>
-    </section>
-
-    <!-- ====================================================================
-         OPERATIONS - always visible. The offer.
-         ==================================================================== -->
-    <section class="hp-ops-section fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
-
-      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
-        <div class="fb-stack fb-stack--tight">
-          <span class="fb-kicker">Output · Operations</span>
-          <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
-          <p class="fb-text-dim" style="max-width: 58ch;">
-            We don't deliver decks. We work in the actual product, brand, and system until it behaves.
-          </p>
-        </div>
-
-        <div class="fb-grid">
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 01 · Product</span>
-            <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
-            <p class="fb-signal-card__body">We redesign how people actually use your AI - where they get stuck, where they lose trust, where they bail. The goal is a product that feels like a reliable tool, not a tech demo.</p>
-            <span class="fb-signal-card__cta">Tell me what's broken →</span>
-          </article>
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 02 · Brand</span>
-            <h4 class="fb-signal-card__title">Earn the room.</h4>
-            <p class="fb-signal-card__body">Positioning, language, visual identity. We replace the vague AI messaging with a voice that sounds credible to the people who actually buy, use, and sell your product.</p>
-            <span class="fb-signal-card__cta">Tell me what's broken →</span>
-          </article>
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 03 · System</span>
-            <h4 class="fb-signal-card__title">Make it shippable.</h4>
-            <p class="fb-signal-card__body">Pilot programs, pricing, go-to-market structure. We help translate what the technology can do into something a sales team can sell and a customer can adopt.</p>
-            <span class="fb-signal-card__cta">Tell me what's broken →</span>
-          </article>
+        <div class="fb-row fb-row--wrap" style="gap: var(--fb-s-3); margin-top: var(--fb-s-4);">
+          <button type="button" class="fb-cta fb-cta--pink-solid" id="hp-closer-cta" data-open-modal="contact">Send the signal</button>
+          <a class="fb-cta fb-cta--ghost" href="/design/">See the design system →</a>
         </div>
       </div>
-
-      <!-- Credential line -->
-      <p class="fb-mono" style="font-size: var(--fb-fs-14); color: var(--fb-text-dim); max-width: 58ch;">
-        20 years shipping product. Fractional CPO. Hands-on, not advisory.
-      </p>
-
-      <!-- Closing CTA + roster -->
-      <div style="margin-top: var(--fb-s-8);">
-        <a class="fb-cta fb-cta--pink-solid" href="/#signal" data-open-modal="contact">
-          Tell me what's broken
-        </a>
-        <p class="fb-mono" style="margin-top: var(--fb-s-4); font-size: var(--fb-fs-12); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide);">
-          Taking 1 new engagement per quarter
-        </p>
-      </div>
-
     </section>
 
   </main>
