@@ -2004,7 +2004,13 @@
     ANCHORS.forEach(function(a){
       a.lastMessage = null;
       a.lastShownAt = 0;
-      try { a.retired = localStorage.getItem(a.storageKey) === '1'; } catch(_) { a.retired = false; }
+      // Verbose nudge resets every page load — never honors persisted retirement.
+      // Other anchors honor stored retirement so they don't pester returning users.
+      if (a.id === 'verbose') {
+        a.retired = false;
+      } else {
+        try { a.retired = localStorage.getItem(a.storageKey) === '1'; } catch(_) { a.retired = false; }
+      }
       if (!a.el) a.retired = true;   // missing from DOM → treat as retired
     });
     // Verbose is auto-retired when verbose is already on at page load
@@ -2167,7 +2173,9 @@
     ANCHORS.forEach(function(a){
       if (!a.el) return;
       a.el.addEventListener('click', function(){
-        retireAnchor(a, true);
+        // Verbose retires for this session only — no localStorage write — so
+        // the nudge re-appears as the first hint on every fresh page load.
+        retireAnchor(a, a.id !== 'verbose');
       });
     });
 
