@@ -34,7 +34,7 @@
     position: relative;
     overflow: hidden;
     padding-top: clamp(64px, 12vh, 120px);
-    padding-bottom: clamp(48px, 10vh, 96px);
+    padding-bottom: 0;
   }
   .hp-hero__inner {
     position: relative;
@@ -362,6 +362,8 @@
     margin-top: var(--fb-s-10);
   }
   body.hp-verbose-on .hp-verbose { display: block; }
+  .hp-ops-section { display: none; }
+  body.hp-verbose-on .hp-ops-section { display: block; }
 
   .hp-verbose__head {
     display: flex; align-items: center; justify-content: space-between;
@@ -764,8 +766,8 @@
   }
 
   @media (max-width: 640px) {
-    .hp-hero { padding-bottom: clamp(32px, 6vh, 48px); }
-    .hp-ops-section { padding-top: var(--fb-s-10) !important; }
+    .hp-hero { padding-bottom: 0; }
+    .hp-ops-section { padding-top: var(--fb-s-8) !important; }
   }
 </style>
 </head>
@@ -971,132 +973,6 @@
         </div>
 
       </div>
-    </section>
-
-    <!-- ====================================================================
-         CONTACT MODAL - hidden by default. Opens when the hero CTA fires.
-         ==================================================================== -->
-    <div class="hp-modal" id="hp-contact-modal" role="dialog" aria-modal="true" aria-labelledby="hp-modal-title" aria-hidden="true">
-      <div class="hp-modal__panel">
-
-        <button type="button" class="hp-modal__close" id="hp-modal-close" aria-label="Close">✕</button>
-
-        <div class="fb-stack fb-stack--tight" style="margin-bottom: var(--fb-s-6);">
-          <span class="fb-kicker fb-kicker--pink">Signal · Contact</span>
-          <h2 id="hp-modal-title" style="font-size: var(--fb-fs-32);">Start a conversation.</h2>
-          <p class="fb-text-dim" style="max-width: 58ch;">
-            One email back within 48h if it's the right shape of problem.
-          </p>
-        </div>
-
-        <form id="hp-contact-form" class="fb-stack" novalidate>
-          <div class="fb-grid fb-grid--2" style="gap: var(--fb-s-3);">
-            <div class="fb-field">
-              <label class="fb-field__label" for="hp-cf-name">Name</label>
-              <input class="fb-input" id="hp-cf-name" name="name" type="text" placeholder="first · last" autocomplete="name">
-            </div>
-            <div class="fb-field">
-              <label class="fb-field__label" for="hp-cf-email">Email <span style="color: var(--fb-pink);">*</span></label>
-              <input class="fb-input" id="hp-cf-email" name="email" type="email" placeholder="you@domain" autocomplete="email" required>
-            </div>
-            <div class="fb-field">
-              <label class="fb-field__label" for="hp-cf-company">Company</label>
-              <input class="fb-input" id="hp-cf-company" name="company" type="text" placeholder="optional" autocomplete="organization">
-            </div>
-            <div class="fb-field">
-              <label class="fb-field__label" for="hp-cf-type">Type of help</label>
-              <select class="fb-input" id="hp-cf-type" name="type">
-                <option value="">-</option>
-                <option value="product">Product</option>
-                <option value="brand">Brand</option>
-                <option value="system">System</option>
-                <option value="other">Something else</option>
-              </select>
-            </div>
-          </div>
-          <div class="fb-field">
-            <label class="fb-field__label" for="hp-cf-message">What's broken? <span style="color: var(--fb-pink);">*</span></label>
-            <textarea class="fb-textarea" id="hp-cf-message" name="message" rows="4" placeholder="describe what broke. short is fine." required></textarea>
-          </div>
-          <div class="fb-row fb-row--between fb-row--wrap" style="gap: var(--fb-s-3); align-items: center;">
-            <button class="fb-cta fb-cta--pink-solid" type="submit" id="hp-cf-submit">
-              Send the signal
-            </button>
-            <span id="hp-cf-status" class="fb-mono" style="font-size: var(--fb-fs-12); color: var(--fb-text-mute);"></span>
-          </div>
-        </form>
-
-        <!-- Success state (hidden by default; swapped in on submit success) -->
-        <div id="hp-cf-success" class="fb-mono" hidden style="padding: var(--fb-s-4) 0;">
-          <div class="fb-row" style="gap: var(--fb-s-2); font-family: var(--fb-font-mono); color: var(--fb-matrix);">
-            <span style="font-size: var(--fb-fs-16);">✓</span>
-            <span class="fb-label fb-label--matrix">Signal received</span>
-          </div>
-          <div style="margin-top: var(--fb-s-3); color: var(--fb-text-loud); font-size: var(--fb-fs-15);">
-            Ref: <strong class="fb-glow--pink" style="color: var(--fb-pink);" id="hp-cf-ref">-</strong>
-          </div>
-          <div style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14); max-width: 52ch;">
-            We read every one. If it's the right shape of problem, you'll hear back within 48h.
-          </div>
-          <div style="margin-top: var(--fb-s-5);">
-            <button type="button" class="fb-cta fb-cta--ghost" id="hp-cf-close2">Close</button>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <!-- ====================================================================
-         OPERATIONS - always visible. The offer.
-         ==================================================================== -->
-    <section class="hp-ops-section fb-container" style="padding-top: var(--fb-s-16);">
-
-      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
-        <div class="fb-stack fb-stack--tight">
-          <span class="fb-kicker">Output · Operations</span>
-          <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
-          <p class="fb-text-dim" style="max-width: 58ch;">
-            We don't deliver decks. We work in the actual product, brand, and system until it behaves.
-          </p>
-        </div>
-
-        <div class="fb-grid">
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 01 · Product</span>
-            <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
-            <p class="fb-signal-card__body">We redesign how people actually use your AI - where they get stuck, where they lose trust, where they bail. The goal is a product that feels like a reliable tool, not a tech demo.</p>
-            <span class="fb-signal-card__cta">Tell me what's broken →</span>
-          </article>
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 02 · Brand</span>
-            <h4 class="fb-signal-card__title">Earn the room.</h4>
-            <p class="fb-signal-card__body">Positioning, language, visual identity. We replace the vague AI messaging with a voice that sounds credible to the people who actually buy, use, and sell your product.</p>
-            <span class="fb-signal-card__cta">Tell me what's broken →</span>
-          </article>
-          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
-            <span class="fb-signal-card__label">Op · 03 · System</span>
-            <h4 class="fb-signal-card__title">Make it shippable.</h4>
-            <p class="fb-signal-card__body">Pilot programs, pricing, go-to-market structure. We help translate what the technology can do into something a sales team can sell and a customer can adopt.</p>
-            <span class="fb-signal-card__cta">Tell me what's broken →</span>
-          </article>
-        </div>
-      </div>
-
-      <!-- Credential line -->
-      <p class="fb-mono" style="font-size: var(--fb-fs-14); color: var(--fb-text-dim); max-width: 58ch;">
-        20 years shipping product. Fractional CPO. Hands-on, not advisory.
-      </p>
-
-      <!-- Closing CTA + roster -->
-      <div style="margin-top: var(--fb-s-8);">
-        <a class="fb-cta fb-cta--pink-solid" href="/#signal" data-open-modal="contact">
-          Tell me what's broken
-        </a>
-        <p class="fb-mono" style="margin-top: var(--fb-s-4); font-size: var(--fb-fs-12); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide);">
-          Taking 1 new engagement per quarter
-        </p>
-      </div>
-
     </section>
 
     <!-- ====================================================================
@@ -1721,6 +1597,132 @@
           </div>
 
         </div>
+      </div>
+
+    </section>
+
+    <!-- ====================================================================
+         CONTACT MODAL - hidden by default. Opens when the hero CTA fires.
+         ==================================================================== -->
+    <div class="hp-modal" id="hp-contact-modal" role="dialog" aria-modal="true" aria-labelledby="hp-modal-title" aria-hidden="true">
+      <div class="hp-modal__panel">
+
+        <button type="button" class="hp-modal__close" id="hp-modal-close" aria-label="Close">✕</button>
+
+        <div class="fb-stack fb-stack--tight" style="margin-bottom: var(--fb-s-6);">
+          <span class="fb-kicker fb-kicker--pink">Signal · Contact</span>
+          <h2 id="hp-modal-title" style="font-size: var(--fb-fs-32);">Start a conversation.</h2>
+          <p class="fb-text-dim" style="max-width: 58ch;">
+            One email back within 48h if it's the right shape of problem.
+          </p>
+        </div>
+
+        <form id="hp-contact-form" class="fb-stack" novalidate>
+          <div class="fb-grid fb-grid--2" style="gap: var(--fb-s-3);">
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-name">Name</label>
+              <input class="fb-input" id="hp-cf-name" name="name" type="text" placeholder="first · last" autocomplete="name">
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-email">Email <span style="color: var(--fb-pink);">*</span></label>
+              <input class="fb-input" id="hp-cf-email" name="email" type="email" placeholder="you@domain" autocomplete="email" required>
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-company">Company</label>
+              <input class="fb-input" id="hp-cf-company" name="company" type="text" placeholder="optional" autocomplete="organization">
+            </div>
+            <div class="fb-field">
+              <label class="fb-field__label" for="hp-cf-type">Type of help</label>
+              <select class="fb-input" id="hp-cf-type" name="type">
+                <option value="">-</option>
+                <option value="product">Product</option>
+                <option value="brand">Brand</option>
+                <option value="system">System</option>
+                <option value="other">Something else</option>
+              </select>
+            </div>
+          </div>
+          <div class="fb-field">
+            <label class="fb-field__label" for="hp-cf-message">What's broken? <span style="color: var(--fb-pink);">*</span></label>
+            <textarea class="fb-textarea" id="hp-cf-message" name="message" rows="4" placeholder="describe what broke. short is fine." required></textarea>
+          </div>
+          <div class="fb-row fb-row--between fb-row--wrap" style="gap: var(--fb-s-3); align-items: center;">
+            <button class="fb-cta fb-cta--pink-solid" type="submit" id="hp-cf-submit">
+              Send the signal
+            </button>
+            <span id="hp-cf-status" class="fb-mono" style="font-size: var(--fb-fs-12); color: var(--fb-text-mute);"></span>
+          </div>
+        </form>
+
+        <!-- Success state (hidden by default; swapped in on submit success) -->
+        <div id="hp-cf-success" class="fb-mono" hidden style="padding: var(--fb-s-4) 0;">
+          <div class="fb-row" style="gap: var(--fb-s-2); font-family: var(--fb-font-mono); color: var(--fb-matrix);">
+            <span style="font-size: var(--fb-fs-16);">✓</span>
+            <span class="fb-label fb-label--matrix">Signal received</span>
+          </div>
+          <div style="margin-top: var(--fb-s-3); color: var(--fb-text-loud); font-size: var(--fb-fs-15);">
+            Ref: <strong class="fb-glow--pink" style="color: var(--fb-pink);" id="hp-cf-ref">-</strong>
+          </div>
+          <div style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14); max-width: 52ch;">
+            We read every one. If it's the right shape of problem, you'll hear back within 48h.
+          </div>
+          <div style="margin-top: var(--fb-s-5);">
+            <button type="button" class="fb-cta fb-cta--ghost" id="hp-cf-close2">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         OPERATIONS - always visible. The offer.
+         ==================================================================== -->
+    <section class="hp-ops-section fb-container" style="padding-top: var(--fb-s-8);">
+
+      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
+        <div class="fb-stack fb-stack--tight">
+          <span class="fb-kicker">Output · Operations</span>
+          <h3 style="font-size: var(--fb-fs-32);">Three operations, one system.</h3>
+          <p class="fb-text-dim" style="max-width: 58ch;">
+            We don't deliver decks. We work in the actual product, brand, and system until it behaves.
+          </p>
+        </div>
+
+        <div class="fb-grid">
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 01 · Product</span>
+            <h4 class="fb-signal-card__title">Unfuck the flow.</h4>
+            <p class="fb-signal-card__body">We redesign how people actually use your AI - where they get stuck, where they lose trust, where they bail. The goal is a product that feels like a reliable tool, not a tech demo.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 02 · Brand</span>
+            <h4 class="fb-signal-card__title">Earn the room.</h4>
+            <p class="fb-signal-card__body">Positioning, language, visual identity. We replace the vague AI messaging with a voice that sounds credible to the people who actually buy, use, and sell your product.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+          <article class="fb-signal-card" onclick="document.getElementById('hp-hero-cta').click()" style="cursor: pointer;">
+            <span class="fb-signal-card__label">Op · 03 · System</span>
+            <h4 class="fb-signal-card__title">Make it shippable.</h4>
+            <p class="fb-signal-card__body">Pilot programs, pricing, go-to-market structure. We help translate what the technology can do into something a sales team can sell and a customer can adopt.</p>
+            <span class="fb-signal-card__cta">Tell me what's broken →</span>
+          </article>
+        </div>
+      </div>
+
+      <!-- Credential line -->
+      <p class="fb-mono" style="font-size: var(--fb-fs-14); color: var(--fb-text-dim); max-width: 58ch;">
+        20 years shipping product. Fractional CPO. Hands-on, not advisory.
+      </p>
+
+      <!-- Closing CTA + roster -->
+      <div style="margin-top: var(--fb-s-8);">
+        <a class="fb-cta fb-cta--pink-solid" href="/#signal" data-open-modal="contact">
+          Tell me what's broken
+        </a>
+        <p class="fb-mono" style="margin-top: var(--fb-s-4); font-size: var(--fb-fs-12); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide);">
+          Taking 1 new engagement per quarter
+        </p>
       </div>
 
     </section>
