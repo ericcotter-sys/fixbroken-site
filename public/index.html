@@ -90,6 +90,28 @@
   .hp-pre-typewriter .hp-status__cone { filter: grayscale(1) brightness(0.85); opacity: 0.55; }
   .hp-pre-typewriter .hp-status__phrase { animation-play-state: paused; }
   .hp-pre-typewriter .hp-status__glyph { animation-play-state: paused; }
+
+  /* Hero CTA: hidden during typewriter, grows in once the cursor stops.
+     JS removes .hp-hero-cta-wrap--veiled on `hp-typewriter-done`. */
+  .hp-hero-cta-wrap { display: inline-block; transform-origin: left center; }
+  #hp-hero-cta {
+    transition:
+      opacity 520ms ease-out,
+      transform 640ms cubic-bezier(0.16, 0.84, 0.44, 1.06);
+  }
+  .hp-hero-cta-wrap--veiled #hp-hero-cta {
+    opacity: 0;
+    transform: scale(0.4);
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hp-hero-cta-wrap--veiled #hp-hero-cta {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+      transition: none;
+    }
+  }
   .hp-status__body { min-width: 0; transition: opacity 240ms ease; }
   /* Tag line: static label. No pulsing dot, no animation. */
   .hp-status__tag {
@@ -816,7 +838,7 @@
         <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">We make AI worth using. Product...  brand...  and system built from the inside, so users gravitate to it.</p>
         <p class="fb-mono fb-rise fb-rise--d1" id="hp-anchor" style="font-size: var(--fb-fs-14); color: var(--fb-text-mute); max-width: 58ch;">And partners stick around. Sending the next ones our way.</p>
 
-        <div class="fb-rise fb-rise--d2">
+        <div class="hp-hero-cta-wrap hp-hero-cta-wrap--veiled" id="hp-hero-cta-wrap">
           <!-- href is a JS-off fallback; JS intercepts and opens the modal -->
           <a class="fb-cta fb-cta--pink-solid" href="/#signal" id="hp-hero-cta" data-open-modal="contact">
             Tell me what's broken
@@ -2272,6 +2294,16 @@
     }
     window.addEventListener('hp-typewriter-done', kickNudgeLoop, { once: true });
     setTimeout(kickNudgeLoop, 12000);
+
+    // Hero CTA grow-in: stay hidden until the typewriter cursor stops.
+    // Reduced-motion users see it immediately (CSS @media). Fallback at 8s
+    // covers the case where the typewriter fails to dispatch the event.
+    var ctaWrap = document.getElementById('hp-hero-cta-wrap');
+    function revealHeroCta() {
+      if (ctaWrap) ctaWrap.classList.remove('hp-hero-cta-wrap--veiled');
+    }
+    window.addEventListener('hp-typewriter-done', revealHeroCta, { once: true });
+    setTimeout(revealHeroCta, 8000);
 
     /* ========================================================================
        3. Verbose data fetchers
