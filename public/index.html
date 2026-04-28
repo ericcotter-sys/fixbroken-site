@@ -812,7 +812,7 @@
 
         <h1 class="hp-h1 fb-rise" id="hp-h1">Fix broken <em>AI.</em></h1>
 
-        <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">We make AI worth using. Product, brand, and system built from the inside, so users gravitate to it.</p>
+        <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">We make AI worth using. Product...  brand...  and system built from the inside, so users gravitate to it.</p>
         <p class="fb-mono fb-rise fb-rise--d1" id="hp-anchor" style="font-size: var(--fb-fs-14); color: var(--fb-text-mute); max-width: 58ch;">And partners stick around. Sending the next ones our way.</p>
 
         <div class="fb-rise fb-rise--d2">
@@ -1076,36 +1076,6 @@
       <a href="/work/" class="fb-cta fb-cta--pink-solid" style="display: inline-flex; align-items: center; gap: var(--fb-s-3); margin-bottom: var(--fb-s-10); font-size: var(--fb-fs-14);">
         Recent work - what we've shipped →
       </a>
-
-      <!-- How we ship - plain-language quality block -->
-      <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
-        <div class="fb-stack fb-stack--tight">
-          <span class="fb-kicker">Discipline · How we ship</span>
-          <h3 style="font-size: var(--fb-fs-32);">The work polices itself.</h3>
-          <p class="fb-text-dim" style="max-width: 58ch;">
-            Every page we ship runs through automated checks - voice consistency, design system compliance, accessibility, responsive readiness. Nothing deploys without passing. The tooling catches problems before they reach production, so the work stays clean as the system grows.
-          </p>
-        </div>
-
-        <div class="fb-grid fb-grid--2">
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">Voice enforcement</span>
-            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">Every page is scanned for off-brand language before it goes live - marketing cliches, generic AI hype, anything that doesn't sound like a real person talking. The rules are written down, not left to whoever reviews the work.</p>
-          </div>
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">Design system compliance</span>
-            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">One design file powers every page across every site we build. Automated checks confirm pages follow the system - right structure, right components, no one-off hacks. New client sites inherit the full system from day one.</p>
-          </div>
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">Accessibility checks</span>
-            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">Text readability, color contrast, screen reader support, and mobile usability are all checked automatically before anything goes live. We don't rely on someone remembering to test - the system handles it.</p>
-          </div>
-          <div class="fb-panel">
-            <span class="fb-label fb-label--signal">Machine-readable system</span>
-            <p style="margin-top: var(--fb-s-2); color: var(--fb-text-dim); font-size: var(--fb-fs-14);">The entire design system - colors, components, typography, voice rules - is published in a format that other tools can read directly. That means automation and AI assistants can build on the system without anyone re-explaining the rules.</p>
-          </div>
-        </div>
-      </div>
 
       <!-- Six rules for useful AI -->
       <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
@@ -2628,8 +2598,11 @@
       (function tick() {
         if (i < text.length) {
           el.insertBefore(document.createTextNode(text[i]), cursor);
+          // Slow dramatic dots: when "." is adjacent to another ".".
+          // Single periods (e.g. "using.", "it.") stay at default speed.
+          var dramaticDot = text[i] === '.' && (text[i + 1] === '.' || text[i - 1] === '.');
           i++;
-          setTimeout(tick, ms);
+          setTimeout(tick, dramaticDot ? 350 : ms);
         } else {
           resolve();
         }
