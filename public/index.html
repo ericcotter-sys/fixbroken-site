@@ -33,7 +33,7 @@
   .hp-hero {
     position: relative;
     overflow: hidden;
-    padding-top: clamp(64px, 12vh, 120px);
+    padding-top: clamp(24px, 4.56vh, 46px);
     padding-bottom: 0;
   }
   .hp-hero__inner {
@@ -838,12 +838,12 @@
         <h1 class="hp-h1 fb-rise" id="hp-h1">Fix broken <em>AI.</em></h1>
 
         <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">We make AI worth using. Product...  brand...  and system built from the inside, so users gravitate to it.</p>
-        <p class="fb-rise fb-rise--d1" id="hp-anchor" style="font-size: var(--fb-fs-14); color: var(--fb-text-mute); max-width: 72ch;">And oh... that AI project promised the best to you. All it left you with was an empty budget and a half-cooked demo. We fix that too - ask our partners… </p>
+        <p class="fb-rise fb-rise--d1" id="hp-anchor" style="font-size: var(--fb-fs-14); color: var(--fb-text-mute); max-width: 72ch;">And oh... that AI project promised the best to you. All it left you with was an empty budget and a half-cooked demo. We fix that too - ask our partners...</p>
 
         <div class="hp-hero-cta-wrap" id="hp-hero-cta-wrap">
           <!-- href is a JS-off fallback; JS intercepts and opens the modal -->
           <a class="fb-cta fb-cta--pink-solid" href="/#signal" id="hp-hero-cta" data-open-modal="contact">
-            Tell me what's broken
+            Let's Chat
           </a>
         </div>
 
@@ -998,7 +998,7 @@
                   }
                 }
                 window.addEventListener('hp-typewriter-done', unleash, { once: true });
-                setTimeout(unleash, 12000);
+                setTimeout(unleash, 16600);
               })();
             </script>
 
@@ -1179,14 +1179,6 @@
 
         </div>
 
-        <div style="margin-top: var(--fb-s-10); padding-top: var(--fb-s-8); border-top: 1px solid var(--fb-hairline);">
-          <p style="font-size: clamp(24px, 3.5vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-dim); max-width: 18ch;">
-            The goal is not to make AI look impressive.
-          </p>
-          <p style="font-size: clamp(24px, 3.5vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-loud); margin-top: var(--fb-s-2); max-width: 18ch;">
-            The goal is to make it <em style="font-style: normal; color: var(--fb-signal); text-shadow: 0 0 24px var(--fb-signal-glow);">useful.</em>
-          </p>
-        </div>
       </div>
 
       <!-- Active engagements + context rail -->
@@ -1707,6 +1699,20 @@
     </section>
 
     <!-- ====================================================================
+         GOAL CLOSING (gated behind verbose toggle)
+         ==================================================================== -->
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
+      <div style="padding-top: var(--fb-s-8); border-top: 1px solid var(--fb-hairline);">
+        <p style="font-size: clamp(24px, 3.5vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-dim); max-width: 18ch;">
+          The goal is not to make AI look impressive.
+        </p>
+        <p style="font-size: clamp(24px, 3.5vw, 40px); font-weight: 600; line-height: 1.2; letter-spacing: var(--fb-tracking-tight); color: var(--fb-text-loud); margin-top: var(--fb-s-2); max-width: 18ch;">
+          The goal is to make it <em style="font-style: normal; color: var(--fb-signal); text-shadow: 0 0 24px var(--fb-signal-glow);">useful.</em>
+        </p>
+      </div>
+    </section>
+
+    <!-- ====================================================================
          OPERATIONS - always visible. The offer.
          ==================================================================== -->
     <section class="hp-ops-section fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
@@ -1847,7 +1853,7 @@
         setInterval(tick, 1000);
       }
       window.addEventListener('hp-typewriter-done', startStatusTicker, { once: true });
-      setTimeout(startStatusTicker, 12000);
+      setTimeout(startStatusTicker, 16600);
     }
   })();
 
@@ -2302,7 +2308,7 @@
       startNudgeLoop();
     }
     window.addEventListener('hp-typewriter-done', kickNudgeLoop, { once: true });
-    setTimeout(kickNudgeLoop, 12000);
+    setTimeout(kickNudgeLoop, 20000);
 
     /* ========================================================================
        3. Verbose data fetchers
@@ -2780,7 +2786,7 @@
         // it fades in.
         setTimeout(function () {
           window.dispatchEvent(new CustomEvent('hp-typewriter-done'));
-        }, 6700);
+        }, 11300);
       });
   }
 
