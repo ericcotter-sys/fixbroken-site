@@ -71,6 +71,138 @@
     margin: 0;
   }
 
+  /* Ladder pulse animations */
+  .hp-ladder__rung:nth-child(1)::before { animation: ds-ladder-pulse-1 6s ease infinite; }
+  .hp-ladder__rung:nth-child(2)::before { animation: ds-ladder-pulse-2 6s ease infinite; }
+  .hp-ladder__rung:nth-child(3)::before { animation: ds-ladder-pulse-3 6s ease infinite; }
+  .hp-ladder__rung:nth-child(4)::before { animation: ds-ladder-pulse-4 6s ease infinite; }
+  @keyframes ds-ladder-pulse-1 {
+    0%, 8%   { transform: translateY(-50%) scale(1); box-shadow: none; }
+    12%      { transform: translateY(-50%) scale(1.8); background: var(--fb-signal); box-shadow: 0 0 12px var(--fb-signal-glow); }
+    20%, 100%{ transform: translateY(-50%) scale(1); box-shadow: none; }
+  }
+  @keyframes ds-ladder-pulse-2 {
+    0%, 14%  { transform: translateY(-50%) scale(1); box-shadow: none; }
+    18%      { transform: translateY(-50%) scale(1.8); background: var(--fb-signal); box-shadow: 0 0 12px var(--fb-signal-glow); }
+    26%, 100%{ transform: translateY(-50%) scale(1); box-shadow: none; }
+  }
+  @keyframes ds-ladder-pulse-3 {
+    0%, 20%  { transform: translateY(-50%) scale(1); box-shadow: none; }
+    24%      { transform: translateY(-50%) scale(1.8); background: var(--fb-signal); box-shadow: 0 0 14px var(--fb-signal-glow); }
+    32%, 100%{ transform: translateY(-50%) scale(1); box-shadow: none; }
+  }
+  @keyframes ds-ladder-pulse-4 {
+    0%, 26%  { transform: translateY(-50%) scale(1); }
+    30%      { transform: translateY(-50%) scale(1.8); background: var(--fb-signal-bright); box-shadow: 0 0 16px var(--fb-signal-glow); }
+    38%, 100%{ transform: translateY(-50%) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hp-ladder__rung::before { animation: none !important; }
+  }
+
+  .hp-ladder { display: flex; flex-direction: column; gap: 0; margin-top: var(--fb-s-4); }
+  .hp-ladder__rung {
+    display: grid; grid-template-columns: 32px 1fr; gap: var(--fb-s-3);
+    padding: var(--fb-s-3) 0; border-left: 2px solid var(--fb-hairline);
+    margin-left: 6px; padding-left: var(--fb-s-4); position: relative;
+  }
+  .hp-ladder__rung::before {
+    content: ""; position: absolute; left: -5px; top: 50%; transform: translateY(-50%);
+    width: 8px; height: 8px; border-radius: 50%; background: var(--fb-hairline);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+  .hp-ladder__rung:last-child { border-left-color: transparent; }
+  .hp-ladder__rung:nth-child(1)::before { background: var(--fb-text-mute); }
+  .hp-ladder__rung:nth-child(2)::before { background: var(--fb-text-dim); }
+  .hp-ladder__rung:nth-child(3)::before { background: var(--fb-signal-dim); }
+  .hp-ladder__rung:nth-child(4)::before { background: var(--fb-signal); box-shadow: 0 0 6px var(--fb-signal-glow); }
+  .hp-ladder__num { font-family: var(--fb-font-mono); font-size: var(--fb-fs-11); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide); }
+  .hp-ladder__body { display: flex; flex-direction: column; gap: var(--fb-s-1); }
+  .hp-ladder__label { font-family: var(--fb-font-mono); font-size: var(--fb-fs-13); font-weight: 600; color: var(--fb-text-loud); text-transform: uppercase; letter-spacing: var(--fb-tracking-wide); }
+  .hp-ladder__desc { margin-top: var(--fb-s-1); font-size: var(--fb-fs-14); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed); }
+  @media (max-width: 640px) {
+    .hp-ladder__rung { grid-template-columns: 1fr; padding-left: var(--fb-s-3); }
+    .hp-ladder__num { display: none; }
+  }
+
+  /* Arena / light cycles */
+  .ds-arena {
+    padding: var(--fb-s-6);
+    background: #020408;
+    border: 1px solid rgba(0, 212, 255, 0.12);
+    font-family: var(--fb-font-mono);
+    position: relative;
+    overflow: visible;
+    background-image:
+      linear-gradient(rgba(0, 212, 255, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0, 212, 255, 0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+    box-shadow: inset 0 0 80px rgba(0, 212, 255, 0.03);
+  }
+  .ds-arena__head {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: var(--fb-s-5);
+    font-size: var(--fb-fs-11);
+    letter-spacing: var(--fb-tracking-extra);
+    text-transform: uppercase;
+    color: var(--fb-text-mute);
+  }
+  .ds-arena__head strong { color: var(--fb-signal); font-weight: 500; text-shadow: 0 0 8px var(--fb-signal-glow); }
+  .ds-cycle {
+    display: grid; grid-template-columns: 54px 1fr 140px;
+    align-items: center; gap: var(--fb-s-3); padding-block: 6px; font-size: var(--fb-fs-12);
+  }
+  .ds-cycle__label {
+    color: var(--cycle-color, var(--fb-text-dim));
+    letter-spacing: var(--fb-tracking-wide); text-transform: uppercase;
+    font-size: var(--fb-fs-11); text-shadow: 0 0 6px var(--cycle-glow, transparent);
+  }
+  .ds-cycle__track { position: relative; height: 5px; background: rgba(0, 212, 255, 0.06); overflow: visible; }
+  .ds-cycle__trail {
+    position: absolute; inset: 0 auto 0 0; width: 0%; height: 5px;
+    background: var(--cycle-color, var(--fb-signal));
+    box-shadow: 0 0 6px var(--cycle-glow, var(--fb-signal-glow)), 0 0 20px var(--cycle-glow, var(--fb-signal-glow));
+    transition: width 900ms cubic-bezier(.2,.7,.2,1);
+  }
+  .ds-cycle__head {
+    position: absolute; top: 50%; right: -4px; transform: translateY(-50%);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--cycle-head, var(--fb-signal-bright));
+    box-shadow: 0 0 8px var(--cycle-head, var(--fb-signal-bright)), 0 0 20px var(--cycle-glow, var(--fb-signal-glow)), 0 0 40px var(--cycle-glow, var(--fb-signal-glow));
+    animation: ds-cycle-pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes ds-cycle-pulse {
+    0%, 100% { transform: translateY(-50%) scale(1); opacity: 0.8; }
+    50% { transform: translateY(-50%) scale(1.5); opacity: 1; }
+  }
+  .ds-cycle__meta { text-align: right; color: var(--fb-text); font-size: var(--fb-fs-12); white-space: nowrap; }
+  .ds-cycle__meta .ds-val { color: var(--cycle-head, var(--fb-text-loud)); }
+  .ds-cycle__meta small { color: var(--fb-text-mute); font-size: var(--fb-fs-10); margin-left: 4px; }
+  .ds-cycle--8s    { --cycle-color: var(--fb-signal); --cycle-head: var(--fb-signal-bright); --cycle-glow: var(--fb-signal-glow); }
+  .ds-cycle--42s   { --cycle-color: var(--fb-coral);  --cycle-head: #ffa088;              --cycle-glow: var(--fb-coral-glow); }
+  .ds-cycle--80s   { --cycle-color: var(--fb-matrix); --cycle-head: #7dffb7;              --cycle-glow: var(--fb-matrix-glow); }
+  .ds-cycle--800s  { --cycle-color: var(--fb-pink);   --cycle-head: var(--fb-pink-bright); --cycle-glow: var(--fb-pink-glow); }
+  .ds-cycle--8000s { --cycle-color: var(--fb-amber);  --cycle-head: #ffd17a;              --cycle-glow: rgba(255,182,74,0.45); }
+  .ds-cycle--80000s{ --cycle-color: var(--fb-red);    --cycle-head: #ff7a88;              --cycle-glow: rgba(255,74,90,0.45); }
+  .ds-cycle--800ks { --cycle-color: #ffffff;           --cycle-head: #ffffff;              --cycle-glow: rgba(255,255,255,0.30); }
+  .ds-arena__foot {
+    margin-top: var(--fb-s-5); padding-top: var(--fb-s-3);
+    border-top: 1px solid rgba(0, 212, 255, 0.08);
+    display: flex; justify-content: space-between; flex-wrap: wrap;
+    gap: var(--fb-s-3); font-size: var(--fb-fs-11); color: var(--fb-text-mute);
+    letter-spacing: var(--fb-tracking-wide); text-transform: uppercase;
+  }
+  .ds-arena__foot strong { color: var(--fb-text-loud); font-weight: 500; text-transform: none; letter-spacing: 0; }
+  .ds-arena__foot .ds-rate { color: var(--fb-signal); text-shadow: 0 0 8px var(--fb-signal-glow); }
+  @media (prefers-reduced-motion: reduce) {
+    .ds-cycle__head { animation: none; }
+    .ds-cycle__trail { transition: width 0ms; }
+  }
+  @media (max-width: 540px) {
+    .ds-arena { padding: var(--fb-s-4); background-size: 20px 20px; }
+    .ds-cycle { grid-template-columns: 44px 1fr 100px; gap: var(--fb-s-2); }
+  }
+
   .ds-proof {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
@@ -172,26 +304,6 @@
     transition: color var(--fb-t-fast);
   }
   .ds-ref-link:hover { color: var(--fb-signal); }
-
-  .hp-ladder { display: flex; flex-direction: column; gap: 0; margin-top: var(--fb-s-4); }
-  .hp-ladder__rung {
-    display: grid; grid-template-columns: 32px 1fr; gap: var(--fb-s-3);
-    padding: var(--fb-s-3) 0; border-left: 2px solid var(--fb-hairline);
-    margin-left: 6px; padding-left: var(--fb-s-4); position: relative;
-  }
-  .hp-ladder__rung::before {
-    content: ""; position: absolute; left: -5px; top: 50%; transform: translateY(-50%);
-    width: 8px; height: 8px; border-radius: 50%; background: var(--fb-hairline);
-  }
-  .hp-ladder__rung:last-child { border-left-color: transparent; }
-  .hp-ladder__rung:nth-child(1)::before { background: var(--fb-text-mute); }
-  .hp-ladder__rung:nth-child(2)::before { background: var(--fb-text-dim); }
-  .hp-ladder__rung:nth-child(3)::before { background: var(--fb-signal-dim); }
-  .hp-ladder__rung:nth-child(4)::before { background: var(--fb-signal); box-shadow: 0 0 6px var(--fb-signal-glow); }
-  .hp-ladder__num { font-family: var(--fb-font-mono); font-size: var(--fb-fs-11); color: var(--fb-text-mute); letter-spacing: var(--fb-tracking-wide); }
-  .hp-ladder__body { display: flex; flex-direction: column; gap: var(--fb-s-1); }
-  .hp-ladder__label { font-family: var(--fb-font-mono); font-size: var(--fb-fs-13); color: var(--fb-text-loud); font-weight: 500; }
-  .hp-ladder__desc { font-size: var(--fb-fs-13); color: var(--fb-text-dim); line-height: var(--fb-lh-relaxed); }
 
   @media (max-width: 640px) {
     .ds-type-row { flex-direction: column; gap: var(--fb-s-1); }
@@ -486,6 +598,58 @@
               </div>
             </div>
 
+            <!-- Light Cycles — live token telemetry -->
+            <div class="ds-proof__card" style="grid-column: 1 / -1; padding: 0; border: none;">
+              <div class="ds-arena" id="ds-arena">
+                <div class="ds-arena__head">
+                  <span>tokenz · <strong>claude runtime</strong> · light cycles</span>
+                  <span id="ds-arena-stamp">awaiting signal…</span>
+                </div>
+
+                <div class="ds-cycle ds-cycle--8s" data-ds-cycle="0">
+                  <span class="ds-cycle__label">8s</span>
+                  <div class="ds-cycle__track"><div class="ds-cycle__trail" style="width: 0%;"><div class="ds-cycle__head"></div></div></div>
+                  <span class="ds-cycle__meta"><span class="ds-val">-</span> <small class="ds-msg">-</small></span>
+                </div>
+                <div class="ds-cycle ds-cycle--42s" data-ds-cycle="1">
+                  <span class="ds-cycle__label">42s</span>
+                  <div class="ds-cycle__track"><div class="ds-cycle__trail" style="width: 0%;"><div class="ds-cycle__head"></div></div></div>
+                  <span class="ds-cycle__meta"><span class="ds-val">-</span> <small class="ds-msg">-</small></span>
+                </div>
+                <div class="ds-cycle ds-cycle--80s" data-ds-cycle="2">
+                  <span class="ds-cycle__label">80s</span>
+                  <div class="ds-cycle__track"><div class="ds-cycle__trail" style="width: 0%;"><div class="ds-cycle__head"></div></div></div>
+                  <span class="ds-cycle__meta"><span class="ds-val">-</span> <small class="ds-msg">-</small></span>
+                </div>
+                <div class="ds-cycle ds-cycle--800s" data-ds-cycle="3">
+                  <span class="ds-cycle__label">800s</span>
+                  <div class="ds-cycle__track"><div class="ds-cycle__trail" style="width: 0%;"><div class="ds-cycle__head"></div></div></div>
+                  <span class="ds-cycle__meta"><span class="ds-val">-</span> <small class="ds-msg">-</small></span>
+                </div>
+                <div class="ds-cycle ds-cycle--8000s" data-ds-cycle="4">
+                  <span class="ds-cycle__label">8000s</span>
+                  <div class="ds-cycle__track"><div class="ds-cycle__trail" style="width: 0%;"><div class="ds-cycle__head"></div></div></div>
+                  <span class="ds-cycle__meta"><span class="ds-val">-</span> <small class="ds-msg">-</small></span>
+                </div>
+                <div class="ds-cycle ds-cycle--80000s" data-ds-cycle="6">
+                  <span class="ds-cycle__label">80ks</span>
+                  <div class="ds-cycle__track"><div class="ds-cycle__trail" style="width: 0%;"><div class="ds-cycle__head"></div></div></div>
+                  <span class="ds-cycle__meta"><span class="ds-val">-</span> <small class="ds-msg">-</small></span>
+                </div>
+                <div class="ds-cycle ds-cycle--800ks" data-ds-cycle="8">
+                  <span class="ds-cycle__label">800ks</span>
+                  <div class="ds-cycle__track"><div class="ds-cycle__trail" style="width: 0%;"><div class="ds-cycle__head"></div></div></div>
+                  <span class="ds-cycle__meta"><span class="ds-val">-</span> <small class="ds-msg">-</small></span>
+                </div>
+
+                <div class="ds-arena__foot">
+                  <span>lifetime <strong id="ds-tkn-lifetime">-</strong></span>
+                  <span>proj/day <strong id="ds-tkn-projday">-</strong></span>
+                  <span>rate <span class="ds-rate" id="ds-tkn-rate">-</span></span>
+                </div>
+              </div>
+            </div>
+
             <!-- Voice -->
             <div class="ds-proof__card" style="grid-column: 1 / -1;">
               <span class="fb-label fb-label--pink" style="margin-bottom: var(--fb-s-4); display: block;">Voice · how the system talks</span>
@@ -729,6 +893,48 @@
   </footer>
 
 </div>
+
+<script>
+(function(){
+  function fmtTokens(n) {
+    if (!n) return '0';
+    if (n >= 1e9) return (n/1e9).toFixed(2) + 'B';
+    if (n >= 1e6) return (n/1e6).toFixed(2) + 'M';
+    if (n >= 1e3) return (n/1e3).toFixed(1) + 'k';
+    return String(Math.round(n));
+  }
+  function loadArena() {
+    fetch('/api/usage', { cache: 'no-store' }).then(function(r){ return r.json(); }).then(function(data){
+      if (!data || !data.windows) throw new Error('no data');
+      var windows = data.windows;
+      var maxTotal = Math.max.apply(null, windows.map(function(w){ return w.total || 0; }));
+      windows.forEach(function(w, i){
+        var row = document.querySelector('[data-ds-cycle="' + i + '"]');
+        if (!row) return;
+        var trail = row.querySelector('.ds-cycle__trail');
+        var valEl = row.querySelector('.ds-val');
+        var msgEl = row.querySelector('.ds-msg');
+        var pct;
+        if (!w.total || maxTotal === 0) { pct = 2; }
+        else { var r = Math.log10(w.total + 1) / Math.log10(maxTotal + 1); pct = Math.max(4, Math.min(98, r * 98)); }
+        trail.style.width = pct + '%';
+        valEl.textContent = w.total ? fmtTokens(w.total) : '-';
+        msgEl.textContent = w.total ? (w.messages || 0) + ' msg · ' + (w.rate_per_sec ? Math.round(w.rate_per_sec).toLocaleString() : 0) + ' t/s' : '';
+      });
+      var big = windows[windows.length - 1] || {};
+      document.getElementById('ds-tkn-rate').textContent = (big.rate_per_sec ? Math.round(big.rate_per_sec).toLocaleString() : 0) + ' tok/s';
+      document.getElementById('ds-tkn-projday').textContent = fmtTokens(big.proj_day || 0);
+      document.getElementById('ds-tkn-lifetime').textContent = fmtTokens((data.lifetime && data.lifetime.total) || windows.reduce(function(s, w){ return s + (w.total||0); }, 0));
+      var secAgo = data.now ? Math.round((Date.now() - data.now) / 1000) : 0;
+      document.getElementById('ds-arena-stamp').textContent = 'polled ' + (secAgo < 60 ? secAgo + 's' : Math.round(secAgo/60) + 'm') + ' ago';
+    }).catch(function(){
+      document.getElementById('ds-arena-stamp').textContent = 'signal unreachable';
+    });
+  }
+  loadArena();
+  setInterval(loadArena, 1000);
+})();
+</script>
 
 </body>
 </html>
