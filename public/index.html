@@ -2773,18 +2773,6 @@
   }
 
   runSequence();
-
-  var hasLeft = false;
-  var obs = new IntersectionObserver(function (entries) {
-    var e = entries[0];
-    if (!e.isIntersecting) {
-      hasLeft = true;
-    } else if (hasLeft) {
-      hasLeft = false;
-      runSequence();
-    }
-  }, { threshold: 0 });
-  obs.observe(hero);
 })();
 </script>
 
