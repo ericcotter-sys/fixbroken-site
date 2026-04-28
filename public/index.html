@@ -89,6 +89,7 @@
      JS adds .hp-pre-typewriter on load and swaps to .hp-typewriter-done on signal. */
   .hp-pre-typewriter .hp-status__cone { filter: grayscale(1) brightness(0.85); opacity: 0.55; }
   .hp-pre-typewriter .hp-status__phrase { animation-play-state: paused; }
+  .hp-pre-typewriter .hp-status__glyph { animation-play-state: paused; }
   .hp-status__body { min-width: 0; transition: opacity 240ms ease; }
   /* Tag line: static label. No pulsing dot, no animation. */
   .hp-status__tag {
@@ -973,7 +974,7 @@
                   }
                 }
                 window.addEventListener('hp-typewriter-done', unleash, { once: true });
-                setTimeout(unleash, 3000);
+                setTimeout(unleash, 12000);
               })();
             </script>
 
@@ -1806,9 +1807,24 @@
       }
     }
 
-    /* Prime the display at t=0 so the user sees state 0 on load, not a blank. */
-    tick();
-    setInterval(tick, 1000);
+    /* Hold the status ticker (elapsed, count, glyph cycle) until 1s after
+       the typewriter cursor stops. Reduced-motion users start immediately,
+       since the typewriter early-returns and never dispatches the event. */
+    if (reduced) {
+      tick();
+      setInterval(tick, 1000);
+    } else {
+      var tickerStarted = false;
+      function startStatusTicker() {
+        if (tickerStarted) return;
+        tickerStarted = true;
+        startedAt = Date.now();   // reset so elapsed counts from now, not page load
+        tick();
+        setInterval(tick, 1000);
+      }
+      window.addEventListener('hp-typewriter-done', startStatusTicker, { once: true });
+      setTimeout(startStatusTicker, 12000);
+    }
   })();
 
   /* ==========================================================================
@@ -2255,7 +2271,7 @@
       startNudgeLoop();
     }
     window.addEventListener('hp-typewriter-done', kickNudgeLoop, { once: true });
-    setTimeout(kickNudgeLoop, 3000);
+    setTimeout(kickNudgeLoop, 12000);
 
     /* ========================================================================
        3. Verbose data fetchers
