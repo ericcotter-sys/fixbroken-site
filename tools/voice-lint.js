@@ -87,6 +87,17 @@ const RULES = {
     'deep dive into',
     'at the end of the day',
     'it goes without saying',
+    // 2026-04-28 hero copy lock — aspirational lock guardrails
+    'boutique product, brand, and system shop',
+    'shipped but stalled',
+    'stalled',
+    'we turn impressive ai',
+    'start a conversation',
+    'unlock',
+    'supercharge',
+    // NOTE: bare "transform" intentionally NOT banned — would fire on every CSS
+    // `transform:` and `text-transform:` property. The existing sludgePattern at
+    // line ~97 catches "transform your/the business/workflow/organization".
     // Merge any additional phrases from the manifest
     ...(manifestPhrases || []),
   ].filter((v, i, a) => a.indexOf(v) === i), // deduplicate
@@ -122,6 +133,15 @@ const RULES = {
     { re: /[✨\u{1F4AB}\u{1F31F}\u{1FA84}\u{1F389}\u{1F680}\u{1F525}\u{1F4A1}\u{1F4A5}\u{1F91D}]/gu, msg: 'decorative emoji — sparkles, rockets, etc. are banned' },
   ],
 };
+
+// 2026-04-28 hero copy lock — required on public/index.html
+const HOMEPAGE_REQUIRED = [
+  'We make AI worth using.',
+  'users gravitate to it',
+  'teams sharpen it with conviction',
+  'And partners stick.',
+  'send the next ones our way',
+];
 
 // Context lines to show around violations
 const CONTEXT_LINES = 0;
@@ -383,6 +403,24 @@ Examples:
   }
   for (const f of cssFiles) {
     allViolations = allViolations.concat(lintCssFile(f, repoRoot));
+  }
+
+  // Hero copy lock — required strings on homepage
+  const homepagePath = path.join(repoRoot, 'public', 'index.html');
+  if (fs.existsSync(homepagePath)) {
+    const homepageContent = fs.readFileSync(homepagePath, 'utf8');
+    for (const required of HOMEPAGE_REQUIRED) {
+      if (!homepageContent.includes(required)) {
+        allViolations.push({
+          file: 'public/index.html',
+          line: 0,
+          severity: 'error',
+          rule: 'voice/required-string',
+          msg: `homepage missing required hero string: "${required}"`,
+          source: '',
+        });
+      }
+    }
   }
 
   // Output

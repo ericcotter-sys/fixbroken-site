@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>fixbroken.ai · product · brand · system</title>
-<meta name="description" content="Your AI shipped but users don't trust it. I open the product and fix what's broken. UX, positioning, go-to-market, the whole stack.">
+<meta name="description" content="We make AI worth using. Product, brand, and system built from the inside for the teams shipping AI worth keeping.">
 <meta name="theme-color" content="#05070a">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 
@@ -12,7 +12,7 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="fixbroken.ai">
 <meta property="og:title" content="fixbroken.ai · product · brand · system">
-<meta property="og:description" content="Your AI shipped but users don't trust it. I open the product and fix what's broken. UX, positioning, go-to-market.">
+<meta property="og:description" content="We make AI worth using. Product, brand, and system built from the inside for the teams shipping AI worth keeping.">
 <meta property="og:url" content="https://fixbroken.ai/">
 <meta property="og:image" content="https://fixbroken.ai/og-image.png">
 <meta property="og:image:type" content="image/png">
@@ -23,7 +23,7 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="fixbroken.ai · product · brand · system">
-<meta name="twitter:description" content="Your AI shipped but users don't trust it. I open the product and fix what's broken. UX, positioning, go-to-market.">
+<meta name="twitter:description" content="We make AI worth using. Product, brand, and system built from the inside for the teams shipping AI worth keeping.">
 <meta name="twitter:image" content="https://fixbroken.ai/og-image.png">
 <link rel="stylesheet" href="/design/fixbroken-os.css">
 <style>
@@ -804,11 +804,12 @@
     <section class="hp-hero fb-container">
       <div class="hp-hero__inner">
 
-        <div class="hp-kicker">product · brand · system</div>
+        <div class="hp-kicker">consulting · product · brand</div>
 
         <h1 class="hp-h1 fb-rise" id="hp-h1">Fix broken <em>AI.</em></h1>
 
-        <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">Your AI shipped. Users don't trust it, the team can't explain it, the roadmap is stuck. I open the product and fix what's broken. UX, positioning, go-to-market, the whole stack.</p>
+        <p class="hp-body fb-rise fb-rise--d1" id="hp-subline">We make AI worth using. Product, brand, and system built from the inside, so users gravitate to it, teams sharpen it with conviction.</p>
+        <p class="fb-mono fb-rise fb-rise--d1" id="hp-anchor" style="font-size: var(--fb-fs-14); color: var(--fb-text-mute); max-width: 58ch;">And partners stick. And send the next ones our way.</p>
 
         <div class="fb-rise fb-rise--d2">
           <!-- href is a JS-off fallback; JS intercepts and opens the modal -->
@@ -1461,7 +1462,7 @@
 
         <div class="fb-stack fb-stack--tight" style="margin-bottom: var(--fb-s-6);">
           <span class="fb-kicker fb-kicker--pink">Signal · Contact</span>
-          <h2 id="hp-modal-title" style="font-size: var(--fb-fs-32);">Start a conversation.</h2>
+          <h2 id="hp-modal-title" style="font-size: var(--fb-fs-32);">Tell me what's broken.</h2>
           <p class="fb-text-dim" style="max-width: 58ch;">
             One email back within 48h if it's the right shape of problem.
           </p>
@@ -2242,7 +2243,18 @@
       return 'reset + restarted';
     };
 
-    startNudgeLoop();
+    // Hold nudges until 1s after the hero typewriter cursor stops.
+    // Typewriter IIFE dispatches `hp-typewriter-done` on completion.
+    // Fallback: if the signal never fires (reduced motion, missing elements,
+    // typewriter early-return), kick the loop after 3s so nudges aren't lost.
+    var nudgeKicked = false;
+    function kickNudgeLoop() {
+      if (nudgeKicked) return;
+      nudgeKicked = true;
+      startNudgeLoop();
+    }
+    window.addEventListener('hp-typewriter-done', kickNudgeLoop, { once: true });
+    setTimeout(kickNudgeLoop, 3000);
 
     /* ========================================================================
        3. Verbose data fetchers
@@ -2556,13 +2568,13 @@
   var subline  = document.getElementById('hp-subline');
   var anchor   = document.getElementById('hp-anchor');
   var hero     = h1 && h1.closest('.hp-hero');
-  if (!h1 || !subline || !anchor || !hero) return;
+  if (!h1 || !subline || !hero) return;
 
   var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduced) return;
 
   var subText    = subline.textContent;
-  var anchorText = anchor.textContent;
+  var anchorText = anchor ? anchor.textContent : '';
 
   var h1Prefix = 'Fix broken ';
   var h1Em     = 'AI.';
@@ -2647,14 +2659,18 @@
 
   function runSequence() {
     subline.textContent = '';
-    anchor.textContent = '';
+    if (anchor) anchor.textContent = '';
     rebuildH1(h1Prefix, h1Em);
     hideCursor();
 
     wait(200)
       .then(function () { return typeInto(subline, subText, TYPE_MS); })
       .then(function () { return wait(PAUSE_A); })
-      .then(function () { hideCursor(); return typeInto(anchor, anchorText, TYPE_MS); })
+      .then(function () {
+        hideCursor();
+        if (!anchor) return Promise.resolve();
+        return typeInto(anchor, anchorText, TYPE_MS);
+      })
       .then(function () { return wait(PAUSE_A); })
       .then(function () {
         hideCursor();
@@ -2666,6 +2682,12 @@
         return backspaceH1(n, BKSP_MS)
           .then(function (keep) { return wait(PAUSE_C).then(function () { return keep; }); })
           .then(function (keep) { return retypeH1(keep, TYPE_MS); });
+      })
+      .then(function () {
+        // Cursor has stopped. Tell the nudge loop after 1s.
+        setTimeout(function () {
+          window.dispatchEvent(new CustomEvent('hp-typewriter-done'));
+        }, 1000);
       });
   }
 
