@@ -2683,19 +2683,38 @@
         if (i >= text.length) { resolve(); return; }
         var processed = 0;
         var flutter = false;
+        var dashFlutter = false;
+        var pauseMs = 0;
         while (processed < CHUNK && i < text.length) {
           el.insertBefore(document.createTextNode(text[i]), cursor);
           i++;
           processed++;
+          // Triple-dot flutter: "..." not followed by another dot.
           if (i >= 3 &&
               text[i - 1] === '.' && text[i - 2] === '.' && text[i - 3] === '.' &&
               (i >= text.length || text[i] !== '.')) {
             flutter = true;
             break;
           }
+          // Single-period pause: standalone "." (not part of ".." or "...").
+          if (text[i - 1] === '.' &&
+              (i < 2 || text[i - 2] !== '.') &&
+              (i >= text.length || text[i] !== '.')) {
+            pauseMs = 360;
+            break;
+          }
+          // Em-dash flutter: " - " (space-dash heuristic skips hyphens like "half-cooked").
+          if (text[i - 1] === '-' && i >= 2 && text[i - 2] === ' ') {
+            dashFlutter = true;
+            break;
+          }
         }
         if (flutter) {
           backFlutter(el, 5).then(function () { setTimeout(tick, ms); });
+        } else if (dashFlutter) {
+          backFlutter(el, 3).then(function () { setTimeout(tick, ms); });
+        } else if (pauseMs) {
+          setTimeout(tick, ms + pauseMs);
         } else {
           setTimeout(tick, ms);
         }
