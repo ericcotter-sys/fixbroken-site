@@ -389,6 +389,9 @@
     margin-top: var(--fb-s-10);
   }
   body.hp-verbose-on .hp-verbose { display: block; }
+  /* Extra always-visible sections (tokenz, ladder, ops) now also gate on verbose. */
+  .hp-verbose-extra { display: none; }
+  body.hp-verbose-on .hp-verbose-extra { display: block; }
   .hp-ops-section { display: block; }
 
   .hp-verbose__head {
@@ -1550,9 +1553,9 @@
     </div>
 
     <!-- ====================================================================
-         TOKENZ - Usage Arena (always visible, moved out of verbose)
+         TOKENZ - Usage Arena (gated behind verbose toggle)
          ==================================================================== -->
-    <section class="fb-container" style="padding-top: var(--fb-s-8);">
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
       <div class="hp-arena" id="hp-arena" data-anchor="tokenz">
         <div class="hp-arena__head">
           <span>tokenz · <strong>claude runtime</strong> · light cycles</span>
@@ -1638,9 +1641,9 @@
     </section>
 
     <!-- ====================================================================
-         INTELLIGENCE LADDER - always visible, moved out of verbose
+         INTELLIGENCE LADDER (gated behind verbose toggle)
          ==================================================================== -->
-    <section class="fb-container" style="padding-top: var(--fb-s-8);">
+    <section class="fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
       <div class="fb-grid fb-grid--2">
 
         <div class="fb-stack fb-stack--tight">
@@ -1707,7 +1710,7 @@
     <!-- ====================================================================
          OPERATIONS - always visible. The offer.
          ==================================================================== -->
-    <section class="hp-ops-section fb-container" style="padding-top: var(--fb-s-8);">
+    <section class="hp-ops-section fb-container hp-verbose-extra" style="padding-top: var(--fb-s-8);">
 
       <div class="fb-stack" style="margin-bottom: var(--fb-s-10);">
         <div class="fb-stack fb-stack--tight">
