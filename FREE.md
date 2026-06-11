@@ -56,7 +56,7 @@ Every result page uses `.fb-*` classes only. Renders the FixBroken OS aesthetic.
 - **Exec-readable headline.** "Your team will ship inconsistent output every session" beats "no agent ruleset detected."
 - **Operator-toned CTA.** "Talk to FixBroken" beats "Get started today."
 - **No fake AI mystique.** The tools are mechanical (regex, parsing, presence checks). That's the brand. Clarity over magic.
-- **No condescension.** A score of 4/29 should not read as "you suck." It should read as "you're missing infrastructure, here's the fix list."
+- **No condescension.** A score of 4/29 should not read as "you're hopeless." It should read as "you're missing infrastructure, here's the fix list."
 
 ## 6. Tool roster
 

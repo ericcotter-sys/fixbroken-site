@@ -20,7 +20,7 @@ The agency works across product strategy, fractional CPO leadership, UX directio
 
 Ideal clients include AI startups, SaaS companies, founders, enterprise teams, mobility companies, automotive technology companies, data companies, investors, and operators who have real capability but need sharper product direction and faster execution.
 
-A representative example is VUMO: helping unfuck their vehicle walkaround experience by making the product more approachable, human, usable, credible, and sellable. The goal is not just a cleaner interface. The goal is to turn technical capability into a product customers can understand, trust, and buy.
+A representative example is VUMO: helping unjam their vehicle walkaround experience by making the product more approachable, human, usable, credible, and sellable. The goal is not just a cleaner interface. The goal is to turn technical capability into a product customers can understand, trust, and buy.
 
 ### Core promise
 
@@ -48,7 +48,7 @@ The VUMO walkaround work should become the first serious case study. Help VUMO t
 
 Fixbroken needs 2-3 clean engagement models:
 
-- **Product Unfuck Sprint**: diagnose and reshape a broken product, workflow, demo, or AI experience.
+- **Product Unjam Sprint**: diagnose and reshape a broken product, workflow, demo, or AI experience.
 - **AI Product Execution Sprint**: move from idea to prototype, demo, or product surface using Claude, Codex, and Eric's product judgment.
 - **Fractional CPO / Product Counterpart**: ongoing senior product leadership for founders, execs, and teams that need sharper product direction.
 
@@ -78,7 +78,7 @@ The brand needs to be credible enough to convert. Do not spend the quarter perfe
 
 ### 1. Positioning failure
 
-If serious buyers cannot explain what Fixbroken sells, the positioning is too abstract. Pivot toward one obvious wedge: Product Unfuck Sprint for AI and technical products.
+If serious buyers cannot explain what Fixbroken sells, the positioning is too abstract. Pivot toward one obvious wedge: Product Unjam Sprint for AI and technical products.
 
 ### 2. VUMO proof point fails
 
