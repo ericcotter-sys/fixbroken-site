@@ -150,7 +150,7 @@ only place alternate structures may be discussed.
 
 ---
 
-## Candidate edits queued for this branch (Sprint 3)
+## Candidate edits applied in `16ce46a` (Sprint 3)
 
 1. **Pricing anchor line** (#1): after "Not sure which? …" note, add one
    sentence connecting price to the cost of a wasted sprint. No numbers
