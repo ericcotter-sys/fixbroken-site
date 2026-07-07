@@ -102,6 +102,18 @@ const RULES = {
     ...(manifestPhrases || []),
   ].filter((v, i, a) => a.indexOf(v) === i), // deduplicate
 
+  // Slop patterns — shapes of empty copy, not just words (2026-07-07, from the
+  // prod copy scrub: lint passed while the page was full of abstraction chains).
+  // error = confident shape, warn = heuristic that needs a human eye.
+  slopPatterns: [
+    { re: /\bbecomes\b[^<>]{1,80}\bbecomes\b/i, msg: 'abstract transformation chain ("X becomes Y becomes Z") — say the concrete thing', severity: 'error' },
+    { re: /\b(?:our work|our approach|our process|our method)\s+helps\b/i, msg: 'vague benefit claim ("our work helps…") — name the action and the actor', severity: 'error' },
+    { re: /\bfinds the break\b/i, msg: '"finds the break" — scrubbed 2026-07-07, do not reintroduce', severity: 'error' },
+    { re: /\bhelps (?:teams|companies|founders|you) (?:build|achieve|unlock|navigate|realize)\b/i, msg: 'vague benefit verb — say what actually happens', severity: 'warn' },
+    { re: /\b(?:holistic|frictionless|delightful|robust solution|end-to-end excellence)\b/i, msg: 'consultant adjective — replace with a concrete detail or cut', severity: 'warn' },
+    { re: /\boperating layer\b/i, msg: '"operating layer" — layer of what? name it', severity: 'warn' },
+  ],
+
   // Regex patterns for generic AI/marketing sludge
   sludgePatterns: [
     { re: /\bAI\s+for\s+\w+one\b/i, msg: 'generic "AI for X" phrasing' },
@@ -228,6 +240,21 @@ function lintFile(filePath, rootDir) {
       }
     }
 
+    // 1b. Slop shapes (check visible text; per-pattern severity)
+    for (const { re, msg, severity } of RULES.slopPatterns) {
+      re.lastIndex = 0;
+      if (re.test(visibleText)) {
+        violations.push({
+          file: relPath,
+          line: lineNum,
+          severity: severity || 'warn',
+          rule: 'voice/slop',
+          msg,
+          source: rawLines[i]?.trim(),
+        });
+      }
+    }
+
     // 2. Sludge patterns (check visible text)
     for (const { re, msg } of RULES.sludgePatterns) {
       re.lastIndex = 0;
@@ -278,6 +305,27 @@ function lintFile(filePath, rootDir) {
         rule: 'css/violation',
         msg,
         source: rawLines[lineNum - 1]?.trim(),
+      });
+    }
+  }
+
+  // Prose budget — the mom test (2026-07-07). A page nobody finishes converts
+  // nobody. Counts readable words with scripts/comments/tags stripped.
+  // Exemptions: design docs (reference material), internal (not a sales
+  // surface), and the homepage (layered — the pre-CTA read path is ~100 words;
+  // the verbose/fleet content is opt-in).
+  const PROSE_BUDGET_WORDS = 2500;
+  const PROSE_EXEMPT = [/^public\/design\//, /^public\/internal\//, /^public\/index\.html$/];
+  if (!PROSE_EXEMPT.some(re => re.test(relPath))) {
+    const words = cleaned.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+    if (words > PROSE_BUDGET_WORDS) {
+      violations.push({
+        file: relPath,
+        line: 0,
+        severity: 'warn',
+        rule: 'voice/prose-budget',
+        msg: `~${words} readable words (budget ${PROSE_BUDGET_WORDS}) — would a human finish this page? cut or split`,
+        source: '',
       });
     }
   }
