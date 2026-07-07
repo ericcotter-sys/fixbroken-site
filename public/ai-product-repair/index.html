@@ -53,7 +53,7 @@
           what not to fix yet.
         </p>
         <div class="fb-row" style="gap:var(--fb-s-3);flex-wrap:wrap;">
-          <a class="fb-cta fb-cta--pink-solid" href="#intake">Request a repair plan</a>
+          <a class="fb-cta fb-cta--pink-solid" href="#intake">Start with a private scan</a>
           <a class="fb-cta fb-cta--ghost" href="#rubric">See the plan structure</a>
         </div>
       </div>
@@ -90,7 +90,8 @@
       And it tells you what to leave alone. Teams in this spot aren't short on ideas —
       they're four plausible fixes deep, and each one costs a sprint. Half the value
       of the teardown is the list of things you were about to build that won't move
-      the number.
+      the number. That's where the plan pays for itself — one wrong sprint it
+      stops costs more than the plan that stopped it.
     </p>
 
     <div class="fb-row" style="gap:var(--fb-s-2);flex-wrap:wrap;margin-bottom:var(--fb-s-6);">
@@ -383,8 +384,8 @@
       </div>
     </div>
     <div class="fb-row" style="gap:var(--fb-s-3);align-items:center;flex-wrap:wrap;margin-top:var(--fb-s-5);">
-      <a class="fb-cta fb-cta--pink-solid" href="#intake">Request a repair plan</a>
-      <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-13);font-family:var(--fb-font-mono);">Five-minute intake. Read by a human.</span>
+      <a class="fb-cta fb-cta--pink-solid" href="#intake">Start with a private scan</a>
+      <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-13);font-family:var(--fb-font-mono);">Five-minute intake. Private, read by one human.</span>
     </div>
   </section>
 
@@ -413,7 +414,7 @@
             For when you already know where it breaks — you need to know why,
             and what to do first.
           </p>
-          <a class="fb-cta" href="#intake" data-tier="Rapid Repair Scan — $20,000">Request a Rapid Scan</a>
+          <a class="fb-cta" href="#intake" data-tier="Rapid Repair Scan — $20,000">Start the Rapid Scan intake</a>
         </div>
       </div>
       <div class="fb-panel" style="border-color:var(--fb-pink);">
@@ -427,7 +428,7 @@
           <p style="color:var(--fb-text-mute);font-size:var(--fb-fs-13);line-height:var(--fb-lh-relaxed);margin:0;">
             For when users hesitate and you can't see where it's losing them.
           </p>
-          <a class="fb-cta fb-cta--pink" href="#intake" data-tier="Deep Repair Plan — $40,000">Request a Deep Plan</a>
+          <a class="fb-cta fb-cta--pink" href="#intake" data-tier="Deep Repair Plan — $40,000">Start the Deep Plan intake</a>
         </div>
       </div>
     </div>
@@ -526,7 +527,8 @@
     <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-16);line-height:var(--fb-lh-relaxed);max-width:60ch;margin:0 0 var(--fb-s-5);">
       The intake is deliberately specific — every question below maps to a section
       of your repair plan. The sharper your answers, the sharper the plan.
-      About five minutes.
+      About five minutes. Sending it commits you to nothing — and if this is the
+      wrong tool for your break, "not a fit" is a free answer.
     </p>
 
     <form id="rp-form" class="fb-panel" style="max-width:720px;" novalidate>
@@ -624,7 +626,7 @@
         </div>
 
         <div class="fb-row" style="gap:var(--fb-s-3);align-items:center;flex-wrap:wrap;">
-          <button type="submit" class="fb-cta fb-cta--pink-solid" id="rp-submit">Request a repair plan</button>
+          <button type="submit" class="fb-cta fb-cta--pink-solid" id="rp-submit">Send the intake</button>
           <span id="rp-status" role="status" aria-live="polite" style="font-family:var(--fb-font-mono);font-size:var(--fb-fs-13);color:var(--fb-text-mute);"></span>
         </div>
         <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);">Read by a human. Reply within 48 hours. No list, no drip sequence.</span>
@@ -797,7 +799,7 @@
         setStatus(msg, 'var(--fb-amber)');
         submitBtn.disabled = false;
         submitBtn.style.opacity = '1';
-        submitBtn.textContent = 'Request a repair plan';
+        submitBtn.textContent = 'Send the intake';
       }
     })
     .catch(function () {
