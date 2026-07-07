@@ -2,13 +2,13 @@
   "$schema": "https://fixbroken.ai/design/fixbroken-os.manifest.schema.json",
   "name": "FixBroken OS",
   "version": "0.1.0",
-  "generated": "2026-04-27T20:28:36.061Z",
+  "generated": "2026-07-07T05:27:55.156Z",
   "source": {
     "css": "/design/fixbroken-os.css",
     "brand": "/design/brand.md",
     "styleguide": "/design/",
-    "cssLines": 1212,
-    "cssBytes": 38923,
+    "cssLines": 1239,
+    "cssBytes": 39801,
     "sections": [
       {
         "number": 1,
@@ -56,35 +56,35 @@
         "number": 7,
         "name": "components",
         "startLine": 399,
-        "endLine": 905,
-        "lines": 507
+        "endLine": 932,
+        "lines": 534
       },
       {
         "number": 8,
         "name": "effects",
-        "startLine": 906,
-        "endLine": 1036,
+        "startLine": 933,
+        "endLine": 1063,
         "lines": 131
       },
       {
         "number": 9,
         "name": "motion",
-        "startLine": 1037,
-        "endLine": 1069,
+        "startLine": 1064,
+        "endLine": 1096,
         "lines": 33
       },
       {
         "number": 10,
         "name": "responsive",
-        "startLine": 1070,
-        "endLine": 1179,
+        "startLine": 1097,
+        "endLine": 1206,
         "lines": 110
       },
       {
         "number": 11,
         "name": "accessibility",
-        "startLine": 1180,
-        "endLine": 1211,
+        "startLine": 1207,
+        "endLine": 1238,
         "lines": 32
       }
     ]
