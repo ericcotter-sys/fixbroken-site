@@ -404,7 +404,7 @@
       <div class="fb-panel">
         <div class="fb-stack" style="padding:28px;gap:var(--fb-s-3);">
           <span class="fb-label fb-label--signal">Rapid Repair Scan</span>
-          <div style="font-family:var(--fb-font-mono);font-size:var(--fb-fs-32);color:var(--fb-text-loud);" data-price>$750</div>
+          <div style="font-family:var(--fb-font-mono);font-size:var(--fb-fs-32);color:var(--fb-text-loud);" data-price>$20,000</div>
           <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-15);line-height:var(--fb-lh-relaxed);margin:0;">
             One product surface, one workflow, or one broken conversion moment.
             Every field of the plan structure, applied to the thing that hurts most.
@@ -413,13 +413,13 @@
             For when you already know where it breaks — you need to know why,
             and what to do first.
           </p>
-          <a class="fb-cta" href="#intake" data-tier="Rapid Repair Scan — $750">Request a Rapid Scan</a>
+          <a class="fb-cta" href="#intake" data-tier="Rapid Repair Scan — $20,000">Request a Rapid Scan</a>
         </div>
       </div>
       <div class="fb-panel" style="border-color:var(--fb-pink);">
         <div class="fb-stack" style="padding:28px;gap:var(--fb-s-3);">
           <span class="fb-label fb-label--pink">Deep Repair Plan</span>
-          <div style="font-family:var(--fb-font-mono);font-size:var(--fb-fs-32);color:var(--fb-text-loud);" data-price>$1,500</div>
+          <div style="font-family:var(--fb-font-mono);font-size:var(--fb-fs-32);color:var(--fb-text-loud);" data-price>$40,000</div>
           <p style="color:var(--fb-text-dim);font-size:var(--fb-fs-15);line-height:var(--fb-lh-relaxed);margin:0;">
             The full diagnostic: onboarding, positioning, trust, and activation.
             Every break ranked, one highest-impact call, and a 7-day action plan.
@@ -427,7 +427,7 @@
           <p style="color:var(--fb-text-mute);font-size:var(--fb-fs-13);line-height:var(--fb-lh-relaxed);margin:0;">
             For when users hesitate and you can't see where it's losing them.
           </p>
-          <a class="fb-cta fb-cta--pink" href="#intake" data-tier="Deep Repair Plan — $1,500">Request a Deep Plan</a>
+          <a class="fb-cta fb-cta--pink" href="#intake" data-tier="Deep Repair Plan — $40,000">Request a Deep Plan</a>
         </div>
       </div>
     </div>
@@ -594,8 +594,8 @@
               <label class="fb-label" for="rp-tier">Teardown type</label>
               <select class="fb-select" id="rp-tier">
                 <option value="">Select…</option>
-                <option>Rapid Repair Scan — $750</option>
-                <option>Deep Repair Plan — $1,500</option>
+                <option>Rapid Repair Scan — $20,000</option>
+                <option>Deep Repair Plan — $40,000</option>
                 <option>Not sure yet — recommend one</option>
               </select>
             </div>
@@ -680,8 +680,8 @@
 
   // Deep-link tier preselect: /ai-product-repair/?tier=rapid|deep#intake
   var TIER_MAP = {
-    rapid: 'Rapid Repair Scan — $750',
-    deep: 'Deep Repair Plan — $1,500'
+    rapid: 'Rapid Repair Scan — $20,000',
+    deep: 'Deep Repair Plan — $40,000'
   };
   var tierParam = new URLSearchParams(location.search).get('tier');
   if (tierParam && TIER_MAP[tierParam.toLowerCase()]) {
