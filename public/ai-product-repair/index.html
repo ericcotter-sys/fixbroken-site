@@ -224,7 +224,7 @@
             For when you already know where it breaks — you need to know why,
             and what to do first.
           </p>
-          <a class="fb-cta" href="#intake">Request a scan</a>
+          <a class="fb-cta" href="#intake" data-tier="Rapid Repair Scan — $750">Request a Rapid Scan</a>
         </div>
       </div>
       <div class="fb-panel" style="border-color:var(--fb-pink);">
@@ -238,7 +238,7 @@
           <p style="color:var(--fb-text-mute);font-size:var(--fb-fs-13);line-height:var(--fb-lh-relaxed);margin:0;">
             For when users hesitate and you can't see where it's losing them.
           </p>
-          <a class="fb-cta fb-cta--pink" href="#intake">Request the plan</a>
+          <a class="fb-cta fb-cta--pink" href="#intake" data-tier="Deep Repair Plan — $1,500">Request a Deep Plan</a>
         </div>
       </div>
     </div>
@@ -275,78 +275,89 @@
     </p>
 
     <form id="rp-form" class="fb-panel" style="max-width:720px;" novalidate>
-      <div class="fb-stack" style="padding:28px;gap:var(--fb-s-4);">
+      <div class="fb-stack" style="padding:28px;gap:var(--fb-s-5);">
 
-        <div class="fb-grid fb-grid--2" style="gap:var(--fb-s-4);">
-          <div class="fb-stack" style="gap:var(--fb-s-1);">
-            <label class="fb-label" for="rp-name">Name</label>
-            <input class="fb-input" id="rp-name" name="name" type="text" autocomplete="name" required>
+        <div class="fb-stack" style="gap:var(--fb-s-3);">
+          <span class="fb-label fb-label--signal">01 · The product</span>
+          <div class="fb-grid fb-grid--2" style="gap:var(--fb-s-4);">
+            <div class="fb-stack" style="gap:var(--fb-s-1);">
+              <label class="fb-label" for="rp-url">Product URL *</label>
+              <input class="fb-input" id="rp-url" name="url" type="url" placeholder="https://" required>
+              <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);">We review it as a first-time user would.</span>
+            </div>
+            <div class="fb-stack" style="gap:var(--fb-s-1);">
+              <label class="fb-label" for="rp-company">Company</label>
+              <input class="fb-input" id="rp-company" name="company" type="text" autocomplete="organization">
+            </div>
           </div>
           <div class="fb-stack" style="gap:var(--fb-s-1);">
-            <label class="fb-label" for="rp-email">Email *</label>
-            <input class="fb-input" id="rp-email" name="email" type="email" autocomplete="email" required>
-          </div>
-        </div>
-
-        <div class="fb-grid fb-grid--2" style="gap:var(--fb-s-4);">
-          <div class="fb-stack" style="gap:var(--fb-s-1);">
-            <label class="fb-label" for="rp-company">Company</label>
-            <input class="fb-input" id="rp-company" name="company" type="text" autocomplete="organization">
-          </div>
-          <div class="fb-stack" style="gap:var(--fb-s-1);">
-            <label class="fb-label" for="rp-url">Product URL *</label>
-            <input class="fb-input" id="rp-url" name="url" type="url" placeholder="https://" required>
+            <label class="fb-label" for="rp-user">Who is the user?</label>
+            <input class="fb-input" id="rp-user" type="text"
+              placeholder="Ops managers at 50-200 person companies. Solo founders. Support leads.">
           </div>
         </div>
 
-        <div class="fb-stack" style="gap:var(--fb-s-1);">
-          <label class="fb-label" for="rp-broken">What is broken? *</label>
-          <textarea class="fb-textarea" id="rp-broken" rows="3" required
-            placeholder="Users love the demo, then never come back. Trials don't convert. Nobody finishes onboarding."></textarea>
-        </div>
-
-        <div class="fb-stack" style="gap:var(--fb-s-1);">
-          <label class="fb-label" for="rp-metric">What metric or behavior is not working?</label>
-          <textarea class="fb-textarea" id="rp-metric" rows="2"
-            placeholder="Trial-to-paid is 2%. Day-7 retention is near zero. Users export once and leave."></textarea>
-        </div>
-
-        <div class="fb-stack" style="gap:var(--fb-s-1);">
-          <label class="fb-label" for="rp-user">Who is the user?</label>
-          <input class="fb-input" id="rp-user" type="text"
-            placeholder="Ops managers at 50-200 person companies. Solo founders. Support leads.">
-        </div>
-
-        <div class="fb-stack" style="gap:var(--fb-s-1);">
-          <label class="fb-label" for="rp-tried">What have you already tried?</label>
-          <textarea class="fb-textarea" id="rp-tried" rows="2"
-            placeholder="Rewrote the landing page twice. Added a product tour. Cut the price."></textarea>
-        </div>
-
-        <div class="fb-stack" style="gap:var(--fb-s-1);">
-          <label class="fb-label" for="rp-artifacts">Screenshots or artifacts (link)</label>
-          <input class="fb-input" id="rp-artifacts" type="url" placeholder="Loom, Figma, Drive, Notion — anything viewable">
-          <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);">No file uploads here — drop a link instead.</span>
-        </div>
-
-        <div class="fb-grid fb-grid--2" style="gap:var(--fb-s-4);">
+        <div class="fb-stack" style="gap:var(--fb-s-3);">
+          <span class="fb-label fb-label--signal">02 · The break</span>
           <div class="fb-stack" style="gap:var(--fb-s-1);">
-            <label class="fb-label" for="rp-urgency">Urgency</label>
-            <select class="fb-select" id="rp-urgency">
-              <option value="">Select…</option>
-              <option>This week — something is on fire</option>
-              <option>This month — before the next sprint</option>
-              <option>Exploring — no hard deadline</option>
-            </select>
+            <label class="fb-label" for="rp-broken">What is broken? *</label>
+            <textarea class="fb-textarea" id="rp-broken" rows="3" required
+              placeholder="Users love the demo, then never come back. Trials don't convert. Nobody finishes onboarding."></textarea>
           </div>
           <div class="fb-stack" style="gap:var(--fb-s-1);">
-            <label class="fb-label" for="rp-tier">Teardown type</label>
-            <select class="fb-select" id="rp-tier">
-              <option value="">Select…</option>
-              <option>Rapid Repair Scan — $750</option>
-              <option>Deep Repair Plan — $1,500</option>
-              <option>Not sure yet — recommend one</option>
-            </select>
+            <label class="fb-label" for="rp-metric">What metric or behavior is not working? *</label>
+            <textarea class="fb-textarea" id="rp-metric" rows="2" required
+              placeholder="Trial-to-paid is 2%. Day-7 retention is near zero. Users export once and leave."></textarea>
+            <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);">One number or behavior beats a paragraph. This anchors the whole plan.</span>
+          </div>
+          <div class="fb-stack" style="gap:var(--fb-s-1);">
+            <label class="fb-label" for="rp-tried">What have you already tried?</label>
+            <textarea class="fb-textarea" id="rp-tried" rows="2"
+              placeholder="Rewrote the landing page twice. Added a product tour. Cut the price."></textarea>
+            <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);">So the plan doesn't recommend what you've already ruled out.</span>
+          </div>
+          <div class="fb-stack" style="gap:var(--fb-s-1);">
+            <label class="fb-label" for="rp-artifacts">Screenshots or artifacts (link)</label>
+            <input class="fb-input" id="rp-artifacts" type="url" placeholder="Loom, Figma, Drive, Notion — anything viewable">
+            <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);">No file uploads here — drop a link instead.</span>
+          </div>
+        </div>
+
+        <div class="fb-stack" style="gap:var(--fb-s-3);">
+          <span class="fb-label fb-label--signal">03 · The engagement</span>
+          <div class="fb-grid fb-grid--2" style="gap:var(--fb-s-4);">
+            <div class="fb-stack" style="gap:var(--fb-s-1);">
+              <label class="fb-label" for="rp-urgency">Urgency</label>
+              <select class="fb-select" id="rp-urgency">
+                <option value="">Select…</option>
+                <option>This week — something is on fire</option>
+                <option>This month — before the next sprint</option>
+                <option>Exploring — no hard deadline</option>
+              </select>
+            </div>
+            <div class="fb-stack" style="gap:var(--fb-s-1);">
+              <label class="fb-label" for="rp-tier">Teardown type</label>
+              <select class="fb-select" id="rp-tier">
+                <option value="">Select…</option>
+                <option>Rapid Repair Scan — $750</option>
+                <option>Deep Repair Plan — $1,500</option>
+                <option>Not sure yet — recommend one</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="fb-stack" style="gap:var(--fb-s-3);">
+          <span class="fb-label fb-label--signal">04 · You</span>
+          <div class="fb-grid fb-grid--2" style="gap:var(--fb-s-4);">
+            <div class="fb-stack" style="gap:var(--fb-s-1);">
+              <label class="fb-label" for="rp-name">Name *</label>
+              <input class="fb-input" id="rp-name" name="name" type="text" autocomplete="name" required>
+            </div>
+            <div class="fb-stack" style="gap:var(--fb-s-1);">
+              <label class="fb-label" for="rp-email">Email *</label>
+              <input class="fb-input" id="rp-email" name="email" type="email" autocomplete="email" required>
+            </div>
           </div>
         </div>
 
@@ -354,6 +365,7 @@
           <button type="submit" class="fb-cta fb-cta--pink-solid" id="rp-submit">Request a repair plan</button>
           <span id="rp-status" style="font-family:var(--fb-font-mono);font-size:var(--fb-fs-13);color:var(--fb-text-mute);"></span>
         </div>
+        <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);">Read by a human. Reply within 48 hours. No list, no drip sequence.</span>
       </div>
     </form>
 
@@ -396,6 +408,14 @@
     statusEl.style.color = color || 'var(--fb-text-mute)';
   }
 
+  // Pricing-card CTAs preselect the matching teardown type in the intake form.
+  document.querySelectorAll('a[data-tier]').forEach(function (link) {
+    link.addEventListener('click', function () {
+      var tier = document.getElementById('rp-tier');
+      if (tier) tier.value = link.getAttribute('data-tier');
+    });
+  });
+
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
     setStatus('');
@@ -403,18 +423,28 @@
     var email = val('rp-email');
     var broken = val('rp-broken');
     var url = val('rp-url');
+    var metric = val('rp-metric');
 
-    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
-      setStatus('email looks off - try again', 'var(--fb-amber)');
-      return;
+    function fail(id, msg) {
+      setStatus(msg, 'var(--fb-amber)');
+      var el = document.getElementById(id);
+      if (el) { el.focus(); el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
     }
+
     if (!url) {
-      setStatus('we need the product URL to review it', 'var(--fb-amber)');
-      return;
+      return fail('rp-url', 'we need the product URL to review it');
     }
     if (broken.length < 4) {
-      setStatus('tell us what is broken - one sentence is enough', 'var(--fb-amber)');
-      return;
+      return fail('rp-broken', 'tell us what is broken - one sentence is enough');
+    }
+    if (metric.length < 4) {
+      return fail('rp-metric', 'name the metric or behavior - it anchors the plan');
+    }
+    if (!val('rp-name')) {
+      return fail('rp-name', 'we need a name to address the plan to');
+    }
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      return fail('rp-email', 'email looks off - try again');
     }
 
     // Compose structured intake into the /contact message body.
@@ -424,7 +454,7 @@
       '',
       'Product URL:   ' + url,
       'What broke:    ' + broken,
-      'Metric:        ' + (val('rp-metric') || '—'),
+      'Metric:        ' + (metric || '—'),
       'User:          ' + (val('rp-user') || '—'),
       'Already tried: ' + (val('rp-tried') || '—'),
       'Artifacts:     ' + (val('rp-artifacts') || '—'),
