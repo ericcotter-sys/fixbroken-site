@@ -96,7 +96,13 @@
      signal as the cone (.hp-pre-typewriter set on load, swapped to
      .hp-typewriter-done on signal, with a 12s fallback). Reduced-motion users
      never get .hp-pre-typewriter, so they see the cluster immediately. */
-  .hp-hero-cta-wrap { display: inline-block; transform-origin: left center; }
+  .hp-hero-cta-wrap {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--fb-s-3);
+    flex-wrap: wrap;
+    transform-origin: left center;
+  }
   .hp-hero-cta-wrap, .hp-live {
     transition:
       opacity 1200ms ease-out,
@@ -861,6 +867,11 @@
           <a class="fb-cta fb-cta--pink-solid" href="/#signal" id="hp-hero-cta" data-open-modal="contact">
             Let's Chat
           </a>
+          <!-- Secondary CTA: same state as the verbose pill below, just visible.
+               The pill in .hp-live stays as the state indicator + nudge anchor. -->
+          <button class="fb-cta fb-cta--ghost" id="hp-hero-verbose" aria-pressed="false">
+            Go verbose
+          </button>
         </div>
 
         <!-- Live status + verbose toggle -->
@@ -1823,6 +1834,7 @@
      ========================================================================== */
   (function(){
     var btn = document.getElementById('hp-toggle-btn');
+    var heroVerbose = document.getElementById('hp-hero-verbose');
     var KEY = 'fb-verbose';
     var HINT_KEY = 'fb-hint-dismissed';
     var body = document.body;
@@ -1830,6 +1842,10 @@
     function apply(on) {
       body.classList.toggle('hp-verbose-on', on);
       btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (heroVerbose) {
+        heroVerbose.setAttribute('aria-pressed', on ? 'true' : 'false');
+        heroVerbose.textContent = on ? 'Back to quiet' : 'Go verbose';
+      }
       if (on) loadVerboseData();
     }
     /* Verbose state is intentionally session-only and resets on every load:
@@ -2151,6 +2167,21 @@
     btn.addEventListener('click', function(){
       apply(!body.classList.contains('hp-verbose-on'));
     });
+
+    // Hero secondary CTA drives the same state. Turning on scrolls to the
+    // verbose layer so the click has a visible payoff; turning off doesn't.
+    if (heroVerbose) {
+      heroVerbose.addEventListener('click', function(){
+        var turningOn = !body.classList.contains('hp-verbose-on');
+        apply(turningOn);
+        if (turningOn) {
+          var v = document.querySelector('.hp-verbose');
+          if (v) setTimeout(function(){
+            v.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 60);
+        }
+      });
+    }
 
     // --- Nudge interactions ---
     if (nudge) {
