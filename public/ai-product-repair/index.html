@@ -352,6 +352,10 @@
         <div><span style="color:var(--fb-matrix);">+</span> an explicit list of what not to fix yet</div>
       </div>
     </div>
+    <div class="fb-row" style="gap:var(--fb-s-3);align-items:center;flex-wrap:wrap;margin-top:var(--fb-s-5);">
+      <a class="fb-cta fb-cta--pink-solid" href="#intake">Request a repair plan</a>
+      <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-13);font-family:var(--fb-font-mono);">Five-minute intake. Read by a human.</span>
+    </div>
   </section>
 
   <div class="fb-divider"></div>
@@ -520,9 +524,16 @@
           </div>
         </div>
 
+        <!-- Honeypot: invisible to humans, bots fill it. Submit handler fakes
+             success without posting when it has a value. -->
+        <div style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;" aria-hidden="true">
+          <label for="rp-website">Website</label>
+          <input id="rp-website" name="website" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
         <div class="fb-row" style="gap:var(--fb-s-3);align-items:center;flex-wrap:wrap;">
           <button type="submit" class="fb-cta fb-cta--pink-solid" id="rp-submit">Request a repair plan</button>
-          <span id="rp-status" style="font-family:var(--fb-font-mono);font-size:var(--fb-fs-13);color:var(--fb-text-mute);"></span>
+          <span id="rp-status" role="status" aria-live="polite" style="font-family:var(--fb-font-mono);font-size:var(--fb-fs-13);color:var(--fb-text-mute);"></span>
         </div>
         <span style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);font-family:var(--fb-font-mono);">Read by a human. Reply within 48 hours. No list, no drip sequence.</span>
       </div>
@@ -575,9 +586,51 @@
     });
   });
 
+  // Deep-link tier preselect: /ai-product-repair/?tier=rapid|deep#intake
+  var TIER_MAP = {
+    rapid: 'Rapid Repair Scan — $750',
+    deep: 'Deep Repair Plan — $1,500'
+  };
+  var tierParam = new URLSearchParams(location.search).get('tier');
+  if (tierParam && TIER_MAP[tierParam.toLowerCase()]) {
+    var tierSel = document.getElementById('rp-tier');
+    if (tierSel) tierSel.value = TIER_MAP[tierParam.toLowerCase()];
+  }
+
+  // Draft autosave: a half-filled intake survives a closed tab.
+  var DRAFT_KEY = 'rp-intake-draft';
+  var FIELD_IDS = ['rp-url', 'rp-company', 'rp-user', 'rp-broken', 'rp-metric',
+                   'rp-tried', 'rp-artifacts', 'rp-urgency', 'rp-tier',
+                   'rp-name', 'rp-email'];
+  try {
+    var draft = JSON.parse(localStorage.getItem(DRAFT_KEY) || '{}');
+    FIELD_IDS.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && !el.value && draft[id]) el.value = draft[id];
+    });
+  } catch (e) {}
+  form.addEventListener('input', function () {
+    try {
+      var snap = {};
+      FIELD_IDS.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el && el.value) snap[id] = el.value;
+      });
+      localStorage.setItem(DRAFT_KEY, JSON.stringify(snap));
+    } catch (e) {}
+  });
+
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
     setStatus('');
+
+    // Honeypot filled → almost certainly a bot. Pretend it worked; post nothing.
+    if (val('rp-website')) {
+      form.hidden = true;
+      successEl.hidden = false;
+      refEl.textContent = 'FB-RECEIVED';
+      return;
+    }
 
     var email = val('rp-email');
     var broken = val('rp-broken');
@@ -642,6 +695,7 @@
         form.hidden = true;
         successEl.hidden = false;
         refEl.textContent = r.body.ref;
+        try { localStorage.removeItem(DRAFT_KEY); } catch (e) {}
         successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } else {
         var err = r.body && r.body.err;
