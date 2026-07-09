@@ -127,13 +127,16 @@
   'use strict';
   var $ = function (id) { return document.getElementById(id); };
   var qs = new URLSearchParams(location.search);
-  var next = /^\/(?!\/)/.test(qs.get('next') || '') ? qs.get('next') : null;
+  // Same-site relative paths only — reject //host and /\host (browsers
+  // normalize backslash to slash, making it protocol-relative).
+  var next = /^\/(?![\/\\])/.test(qs.get('next') || '') ? qs.get('next') : null;
   var mode = 'signin';
 
   var ERRORS = {
     invalid_email: 'That email doesn\'t parse.',
     weak_password: 'Password too short — 10 characters minimum.',
     email_taken: 'That email already has an account. Sign in instead.',
+    sso_required: 'This email signs in with Google only. Use the Google button.',
     invalid_credentials: 'Wrong email or password.',
     rate_limited: 'Too many attempts. Wait a few minutes.',
     google_sso_not_configured: 'Google sign-in isn\'t wired up yet. Use email.',

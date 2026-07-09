@@ -68,7 +68,8 @@ function startApp() {
         GOOGLE_CLIENT_ID: CLIENT_ID,
         GOOGLE_CLIENT_SECRET: 'test-secret',
         GOOGLE_TOKEN_URL: `http://127.0.0.1:${MOCK_PORT}/token`,
-        GOOGLE_AUTH_URL: `http://127.0.0.1:${MOCK_PORT}/auth`
+        GOOGLE_AUTH_URL: `http://127.0.0.1:${MOCK_PORT}/auth`,
+        ADMIN_EMAILS: 'admin@fixbroken.ai'
       },
       stdio: ['ignore', 'pipe', 'pipe']
     });
@@ -130,6 +131,23 @@ async function main() {
     });
     check('duplicate email rejected 409', dupReg.status === 409, `got ${dupReg.status}`);
 
+    // security regressions (QA review 2026-07-08)
+    const adminGrab = await fetch(`${BASE}/auth/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'admin@fixbroken.ai', password: 'attacker-password' })
+    });
+    check('admin email registration blocked 403', adminGrab.status === 403, `got ${adminGrab.status}`);
+
+    const preLoginSid = j.header();
+    const relog = await fetch(`${BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Cookie: j.header() },
+      body: JSON.stringify({ email: 'pw@example.com', password: 'longenough-pass' })
+    });
+    j.absorb(relog);
+    check('session ID regenerated on login', j.header() !== preLoginSid, 'sid unchanged (fixation)');
+
     // --- Google SSO code flow ----------------------------------------------
     const g = jar();
     const start = await fetch(`${BASE}/auth/google?next=/jobs/`, { redirect: 'manual' });
@@ -159,6 +177,17 @@ async function main() {
 
     const me2 = await (await fetch(`${BASE}/auth/me`, { headers: { Cookie: g.header() } })).json();
     check('SSO session set, email lowercased', me2.user && me2.user.email === 'sso.person@example.com', JSON.stringify(me2));
+
+    // open-redirect regression: backslash next must fall back to /account/
+    const evil2 = await fetch(`${BASE}/auth/google?next=${encodeURIComponent('/\\evil.com')}`, {
+      redirect: 'manual', headers: { Cookie: g.header() }
+    });
+    g.absorb(evil2);
+    const evilState = new URL(evil2.headers.get('location')).searchParams.get('state');
+    const evilCb = await fetch(`${BASE}/auth/google/callback?code=abc&state=${evilState}`, {
+      redirect: 'manual', headers: { Cookie: g.header() }
+    });
+    check('backslash next rejected (no open redirect)', evilCb.headers.get('location') === '/account/', evilCb.headers.get('location'));
   } finally {
     app.kill();
     mock.close();

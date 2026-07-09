@@ -12,8 +12,13 @@ const express = require('express');
 const crypto = require('crypto');
 const {
   hashPassword, verifyPassword, requireJson, rateLimit,
-  cleanEmail, cleanName, safeNext, publicUser, isAdmin
+  cleanEmail, cleanName, safeNext, publicUser, isAdmin, isAdminEmail, loginSession
 } = require('../lib/auth');
+
+// Pre-computed hash so login costs the same scrypt work whether or not the
+// email exists / has a password — closes the timing oracle on user enumeration.
+let DUMMY_HASH = null;
+hashPassword('dummy-timing-equalizer').then((h) => { DUMMY_HASH = h; });
 
 const GOOGLE_AUTH_URL = process.env.GOOGLE_AUTH_URL || 'https://accounts.google.com/o/oauth2/v2/auth';
 const GOOGLE_TOKEN_URL = process.env.GOOGLE_TOKEN_URL || 'https://oauth2.googleapis.com/token';
@@ -56,6 +61,12 @@ module.exports = function authRoutes(db) {
       if (password.length < 10 || password.length > 200) {
         return res.status(400).json({ ok: false, error: 'weak_password' });
       }
+      // Admin emails may only enter via Google SSO. Without this, anyone could
+      // register an unclaimed ADMIN_EMAILS address with their own password and
+      // inherit admin (emails are not otherwise ownership-verified).
+      if (isAdminEmail(email)) {
+        return res.status(403).json({ ok: false, error: 'sso_required' });
+      }
       const existing = await db.query('SELECT id FROM users WHERE email = $1', [email]);
       if (existing.rowCount > 0) {
         return res.status(409).json({ ok: false, error: 'email_taken' });
@@ -65,9 +76,10 @@ module.exports = function authRoutes(db) {
         'INSERT INTO users (email, name, password_hash) VALUES ($1, $2, $3) RETURNING id, email, name',
         [email, name, hash]
       );
-      req.session.user = publicUser(inserted.rows[0]);
-      res.status(201).json({ ok: true, user: req.session.user });
+      const user = await loginSession(req, inserted.rows[0]);
+      res.status(201).json({ ok: true, user });
     } catch (e) {
+      if (e.code === '23505') return res.status(409).json({ ok: false, error: 'email_taken' });
       console.error('register failed:', e.message);
       res.status(500).json({ ok: false, error: 'server_error' });
     }
@@ -82,10 +94,13 @@ module.exports = function authRoutes(db) {
         'SELECT id, email, name, password_hash FROM users WHERE email = $1', [email]
       );
       const row = result.rows[0];
-      const valid = row ? await verifyPassword(password, row.password_hash) : false;
-      if (!valid) return res.status(401).json({ ok: false, error: 'invalid_credentials' });
-      req.session.user = publicUser(row);
-      res.json({ ok: true, user: req.session.user });
+      // Always burn the scrypt cost, even for unknown emails / SSO-only rows.
+      const valid = await verifyPassword(password, (row && row.password_hash) || DUMMY_HASH);
+      if (!row || !row.password_hash || !valid) {
+        return res.status(401).json({ ok: false, error: 'invalid_credentials' });
+      }
+      const user = await loginSession(req, row);
+      res.json({ ok: true, user });
     } catch (e) {
       console.error('login failed:', e.message);
       res.status(500).json({ ok: false, error: 'server_error' });
@@ -182,7 +197,7 @@ module.exports = function authRoutes(db) {
           user = inserted.rows[0];
         }
       }
-      req.session.user = publicUser(user);
+      await loginSession(req, user);
       res.redirect(safeNext(pending.next, '/account/'));
     } catch (e) {
       fail(e.message);

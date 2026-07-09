@@ -7,7 +7,7 @@
 //   GET  /api/me/applications  the caller's applications
 
 const express = require('express');
-const { requireAuth, requireAdmin, requireJson, rateLimit } = require('../lib/auth');
+const { requireAuth, requireAdmin, requireJson, rateLimit, isAdmin } = require('../lib/auth');
 
 const JOB_FIELDS = 'id, slug, title, summary, description, location, job_type, status, created_at';
 
@@ -139,6 +139,9 @@ module.exports = function jobsRoutes(db) {
       );
       res.status(201).json({ ok: true, application: inserted.rows[0] });
     } catch (e) {
+      // Concurrent double-submit: the UNIQUE(job_id, user_id) constraint is
+      // the real guard — surface it as the same 409 the pre-check gives.
+      if (e.code === '23505') return res.status(409).json({ ok: false, error: 'already_applied' });
       console.error('apply failed:', e.message);
       res.status(500).json({ ok: false, error: 'server_error' });
     }
