@@ -740,8 +740,56 @@ app.post('/api/free/voice-lint', function(req, res) {
 app.get("/console", function(req, res) { res.redirect(301, "/free/"); });
 app.get("/console/*", function(req, res) { res.redirect(301, req.originalUrl.replace(/^\/console/, "/free")); });
 
+// ---------------------------------------------------------------------------
+// Accounts + jobs — only active when DATABASE_URL is set.
+//   DATABASE_URL=memory        → pg-mem dev harness (data resets on restart)
+//   DATABASE_URL=postgres://…  → managed Postgres (set DATABASE_SSL=true if
+//                                the host requires TLS)
+// Also uses: SESSION_SECRET, GOOGLE_CLIENT_ID/SECRET, BASE_URL, ADMIN_EMAILS.
+// ---------------------------------------------------------------------------
+const db = require('./lib/db');
+if (db.enabled) {
+  const session = require('express-session');
+  if (!process.env.SESSION_SECRET) {
+    console.warn('SESSION_SECRET not set — using a random per-boot secret (sessions reset on restart)');
+  }
+  const sessionOpts = {
+    secret: process.env.SESSION_SECRET || require('crypto').randomBytes(32).toString('hex'),
+    resave: false,
+    saveUninitialized: false,
+    name: 'fb.sid',
+    cookie: {
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: 'auto', // secure over TLS (Nginx sets X-Forwarded-Proto; trust proxy is on)
+      maxAge: 30 * 24 * 60 * 60 * 1000
+    }
+  };
+  if (!db.memory) {
+    const PgSession = require('connect-pg-simple')(session);
+    sessionOpts.store = new PgSession({ pool: db.pool, tableName: 'session' });
+  }
+  app.use(session(sessionOpts));
+  app.use(require('./routes/auth')(db));
+  app.use(require('./routes/jobs')(db));
+} else {
+  app.use(['/auth', '/api/jobs', '/api/me'], (_req, res) => {
+    res.status(503).json({ ok: false, error: 'accounts_offline' });
+  });
+}
+
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.listen(PORT, HOST, function() {
-  console.log('fixbroken listening on http://' + HOST + ':' + PORT);
+async function start() {
+  if (db.enabled) {
+    await db.migrate();
+  }
+  app.listen(PORT, HOST, function() {
+    console.log('fixbroken listening on http://' + HOST + ':' + PORT);
+  });
+}
+
+start().catch((e) => {
+  console.error('boot failed:', e);
+  process.exit(1);
 });
