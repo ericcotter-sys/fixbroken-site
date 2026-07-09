@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Jobs | fixbroken.ai</title>
+<meta name="description" content="Open roles at fixbroken.ai. Posted when we need someone. No recruiters.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:title" content="Jobs | fixbroken.ai">
+<meta property="og:description" content="Open roles at fixbroken.ai.">
+<meta property="og:url" content="https://fixbroken.ai/jobs/">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+</head>
+<body class="fb-shell">
+<div class="fb-grid-bg"></div>
+
+<nav class="fb-nav">
+  <div class="fb-nav__inner">
+    <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+    <button class="fb-nav__burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="fb-nav__links">
+      <a class="fb-nav__link" href="/">Home</a>
+      <a class="fb-nav__link" href="/work/">Work</a>
+      <a class="fb-nav__link" href="/design/">Design</a>
+      <a class="fb-nav__link" href="/free/">Free shit</a>
+      <a class="fb-nav__link" href="/#signal">Signal</a>
+    </div>
+  </div>
+</nav>
+<script>(function(){var n=document.querySelector('.fb-nav'),b=n&&n.querySelector('.fb-nav__burger');if(!b)return;b.addEventListener('click',function(){var o=n.classList.toggle('fb-nav--open');b.setAttribute('aria-expanded',o)});n.addEventListener('click',function(e){if(e.target.classList.contains('fb-nav__link')){n.classList.remove('fb-nav--open');b.setAttribute('aria-expanded','false')}});document.addEventListener('click',function(e){if(!n.contains(e.target)){n.classList.remove('fb-nav--open');b.setAttribute('aria-expanded','false')}})})();</script>
+
+<main class="fb-container" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-8));max-width:760px;">
+
+  <section style="padding-bottom:var(--fb-s-6);">
+    <span class="fb-kicker">Jobs</span>
+    <h1 class="fb-display" style="font-size:var(--fb-fs-48);margin-bottom:var(--fb-s-2);">Open roles.</h1>
+    <p class="fb-lede" style="max-width:52ch;margin:0;">Fixbroken runs lean. When we need someone, the role shows up here. No recruiters, no ghost listings.</p>
+  </section>
+
+  <div id="jb-session" class="fb-row" style="gap:var(--fb-s-3);align-items:center;padding-bottom:var(--fb-s-5);display:none;">
+    <span class="fb-status fb-status--on"><span class="fb-status__dot"></span><span id="jb-session-email"></span></span>
+    <a href="/account/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);text-decoration:none;">account →</a>
+  </div>
+
+  <!-- listings -->
+  <section class="fb-section fb-section--tight">
+    <div id="jb-list" class="fb-stack" style="gap:var(--fb-s-4);"></div>
+
+    <div id="jb-empty" class="fb-panel" style="display:none;border-left:3px solid var(--fb-hairline);">
+      <div class="fb-stack" style="padding:24px 28px;gap:var(--fb-s-2);">
+        <span class="fb-label">// nothing open</span>
+        <p style="margin:0;color:var(--fb-text-dim);font-size:var(--fb-fs-15);line-height:var(--fb-lh-relaxed);">No open roles right now. That changes without warning — check back, or send a signal from the <a href="/#signal" style="color:var(--fb-signal);">homepage</a> if you think we should know about you anyway.</p>
+      </div>
+    </div>
+
+    <div id="jb-offline" class="fb-panel" style="display:none;border-left:3px solid var(--fb-amber);">
+      <div class="fb-stack" style="padding:24px 28px;gap:var(--fb-s-2);">
+        <span class="fb-label fb-label--amber">// board offline</span>
+        <p style="margin:0;color:var(--fb-text-dim);font-size:var(--fb-fs-15);line-height:var(--fb-lh-relaxed);">The board is down for maintenance. Check back shortly.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="fb-footer" style="margin-top:var(--fb-s-16);">
+    <div class="fb-footer__row">
+      <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);">Jobs · fixbroken.ai</span>
+      <a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Powered by FixBroken OS</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var me = null;          // session user or null
+  var myApps = {};        // slug -> true
+
+  var ERRORS = {
+    already_applied: 'You already applied to this role.',
+    bad_link: 'Link must start with http:// or https://.',
+    rate_limited: 'Too many submissions. Wait a bit.',
+    auth_required: 'Sign in first.',
+    not_found: 'This role just closed.',
+    server_error: 'Something broke on our side. Try again.'
+  };
+
+  function el(tag, cls, style, text) {
+    var node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (style) node.style.cssText = style;
+    if (text != null) node.textContent = text;
+    return node;
+  }
+
+  function metaLine(job) {
+    return [job.location, job.job_type, new Date(job.created_at).toISOString().slice(0, 10)]
+      .filter(Boolean).join(' · ');
+  }
+
+  function applyForm(job, mount) {
+    mount.textContent = '';
+    if (myApps[job.slug]) {
+      var done = el('div', 'fb-row', 'gap:var(--fb-s-3);align-items:center;');
+      done.appendChild(el('span', 'fb-chip', '', 'applied'));
+      done.appendChild(el('span', 'fb-mono', 'color:var(--fb-text-mute);font-size:var(--fb-fs-12);', 'Application in. You\'ll hear back either way.'));
+      mount.appendChild(done);
+      return;
+    }
+    if (!me) {
+      var cta = el('a', 'fb-cta', '', 'Sign in to apply');
+      cta.href = '/account/?next=' + encodeURIComponent('/jobs/#' + job.slug);
+      mount.appendChild(cta);
+      return;
+    }
+    var form = el('form', 'fb-stack', 'gap:var(--fb-s-3);');
+
+    var noteField = el('div', 'fb-field');
+    var noteLabel = el('label', 'fb-field__label', '', 'Why you');
+    noteLabel.setAttribute('for', 'note-' + job.slug);
+    var note = el('textarea', 'fb-textarea');
+    note.id = 'note-' + job.slug;
+    note.rows = 4;
+    note.maxLength = 2000;
+    note.placeholder = 'Three sentences beat three paragraphs.';
+    noteField.appendChild(noteLabel); noteField.appendChild(note);
+
+    var linkField = el('div', 'fb-field');
+    var linkLabel = el('label', 'fb-field__label', '', 'Link (portfolio · GitHub · LinkedIn)');
+    linkLabel.setAttribute('for', 'link-' + job.slug);
+    var link = el('input', 'fb-input');
+    link.id = 'link-' + job.slug;
+    link.type = 'url';
+    link.maxLength = 300;
+    link.placeholder = 'https://';
+    linkField.appendChild(linkLabel); linkField.appendChild(link);
+
+    var btn = el('button', 'fb-cta fb-cta--matrix', '', 'Submit application');
+    btn.type = 'submit';
+    var err = el('span', 'fb-mono', 'display:none;font-size:var(--fb-fs-12);color:var(--fb-coral);');
+
+    form.appendChild(noteField); form.appendChild(linkField); form.appendChild(btn); form.appendChild(err);
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      err.style.display = 'none';
+      var linkVal = link.value.trim();
+      if (linkVal && !/^https?:\/\//i.test(linkVal)) {
+        err.textContent = ERRORS.bad_link; err.style.display = ''; return;
+      }
+      btn.disabled = true; btn.textContent = 'Sending…';
+      fetch('/api/jobs/' + encodeURIComponent(job.slug) + '/apply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ note: note.value.trim(), link: linkVal })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.ok) { myApps[job.slug] = true; applyForm(job, mount); }
+        else {
+          if (d.error === 'already_applied') { myApps[job.slug] = true; applyForm(job, mount); return; }
+          err.textContent = ERRORS[d.error] || ERRORS.server_error; err.style.display = '';
+          btn.disabled = false; btn.textContent = 'Submit application';
+        }
+      }).catch(function () {
+        err.textContent = ERRORS.server_error; err.style.display = '';
+        btn.disabled = false; btn.textContent = 'Submit application';
+      });
+    });
+    mount.appendChild(form);
+  }
+
+  function renderJob(job) {
+    var panel = el('article', 'fb-panel');
+    panel.id = job.slug;
+    var inner = el('div', 'fb-stack', 'padding:24px 28px;gap:var(--fb-s-3);');
+
+    inner.appendChild(el('span', 'fb-label fb-label--signal', '', metaLine(job)));
+    inner.appendChild(el('h2', '', 'margin:0;font-size:var(--fb-fs-24);color:var(--fb-text-loud);', job.title));
+    if (job.summary) {
+      inner.appendChild(el('p', '', 'margin:0;color:var(--fb-text-dim);font-size:var(--fb-fs-15);line-height:var(--fb-lh-relaxed);', job.summary));
+    }
+
+    if (job.description) {
+      var toggle = el('button', 'fb-cta', '', 'Full brief');
+      toggle.type = 'button';
+      var desc = el('div', 'fb-stack', 'display:none;gap:var(--fb-s-2);');
+      job.description.split(/\n{2,}/).forEach(function (para) {
+        desc.appendChild(el('p', '', 'margin:0;color:var(--fb-text-dim);font-size:var(--fb-fs-14);line-height:var(--fb-lh-relaxed);white-space:pre-line;', para));
+      });
+      toggle.addEventListener('click', function () {
+        var open = desc.style.display !== 'none';
+        desc.style.display = open ? 'none' : '';
+        toggle.textContent = open ? 'Full brief' : 'Collapse brief';
+      });
+      inner.appendChild(toggle);
+      inner.appendChild(desc);
+    }
+
+    var mount = el('div', '', 'padding-top:var(--fb-s-2);');
+    applyForm(job, mount);
+    inner.appendChild(mount);
+
+    panel.appendChild(inner);
+    return panel;
+  }
+
+  function render(jobs) {
+    var list = document.getElementById('jb-list');
+    list.textContent = '';
+    if (!jobs.length) {
+      document.getElementById('jb-empty').style.display = '';
+      return;
+    }
+    jobs.forEach(function (job) { list.appendChild(renderJob(job)); });
+    // deep link: /jobs/#slug scrolls to the role
+    if (location.hash) {
+      var target = document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target) target.scrollIntoView();
+    }
+  }
+
+  // boot: session → my applications → listings
+  fetch('/auth/me').then(function (r) {
+    if (r.status === 503) { document.getElementById('jb-offline').style.display = ''; return null; }
+    return r.json();
+  }).then(function (d) {
+    if (d === null) return null;
+    me = d && d.user;
+    if (me) {
+      document.getElementById('jb-session').style.display = '';
+      document.getElementById('jb-session-email').textContent = me.email;
+      return fetch('/api/me/applications').then(function (r) { return r.json(); }).then(function (a) {
+        (a.applications || []).forEach(function (app) { myApps[app.slug] = true; });
+      }).catch(function () {});
+    }
+  }).then(function (skip) {
+    if (skip === null) return;
+    return fetch('/api/jobs').then(function (r) { return r.json(); }).then(function (d) {
+      if (d.ok) render(d.jobs || []);
+      else document.getElementById('jb-offline').style.display = '';
+    });
+  }).catch(function () {
+    document.getElementById('jb-offline').style.display = '';
+  });
+})();
+</script>
+</body>
+</html>
