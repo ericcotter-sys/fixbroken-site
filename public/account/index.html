@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Account | fixbroken.ai</title>
+<meta name="description" content="Sign in or create a fixbroken.ai account. Email + password or Google.">
+<meta name="theme-color" content="#05070a">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<meta property="og:title" content="Account | fixbroken.ai">
+<meta property="og:description" content="Sign in or create a fixbroken.ai account.">
+<meta property="og:url" content="https://fixbroken.ai/account/">
+<link rel="stylesheet" href="/design/fixbroken-os.css">
+</head>
+<body class="fb-shell">
+<div class="fb-grid-bg"></div>
+
+<nav class="fb-nav">
+  <div class="fb-nav__inner">
+    <a href="/" class="fb-nav__brand">fixbroken.ai</a>
+    <button class="fb-nav__burger" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <div class="fb-nav__links">
+      <a class="fb-nav__link" href="/">Home</a>
+      <a class="fb-nav__link" href="/work/">Work</a>
+      <a class="fb-nav__link" href="/design/">Design</a>
+      <a class="fb-nav__link" href="/free/">Free shit</a>
+      <a class="fb-nav__link" href="/#signal">Signal</a>
+    </div>
+  </div>
+</nav>
+<script>(function(){var n=document.querySelector('.fb-nav'),b=n&&n.querySelector('.fb-nav__burger');if(!b)return;b.addEventListener('click',function(){var o=n.classList.toggle('fb-nav--open');b.setAttribute('aria-expanded',o)});n.addEventListener('click',function(e){if(e.target.classList.contains('fb-nav__link')){n.classList.remove('fb-nav--open');b.setAttribute('aria-expanded','false')}});document.addEventListener('click',function(e){if(!n.contains(e.target)){n.classList.remove('fb-nav--open');b.setAttribute('aria-expanded','false')}})})();</script>
+
+<main class="fb-container" style="padding-top:calc(var(--fb-nav-h) + var(--fb-s-8));max-width:560px;">
+
+  <section style="padding-bottom:var(--fb-s-6);">
+    <span class="fb-kicker">Account</span>
+    <h1 class="fb-display" style="font-size:var(--fb-fs-48);margin-bottom:var(--fb-s-2);" id="ac-title">Sign in.</h1>
+    <p class="fb-lede" style="max-width:48ch;margin:0;" id="ac-lede">One account for everything on fixbroken.ai. Email and password, or Google.</p>
+  </section>
+
+  <!-- system banner (errors / notices) -->
+  <div id="ac-banner" class="fb-panel fb-panel--tight" style="display:none;border-left:3px solid var(--fb-coral);margin-bottom:var(--fb-s-4);">
+    <span class="fb-mono" style="font-size:var(--fb-fs-13);color:var(--fb-coral);" id="ac-banner-text"></span>
+  </div>
+
+  <!-- ======================= auth panel (signed out) ===================== -->
+  <section id="ac-auth" class="fb-panel" style="display:none;">
+    <div class="fb-stack" style="padding:24px 28px;gap:var(--fb-s-5);">
+
+      <div class="fb-row" style="gap:var(--fb-s-2);" role="tablist" aria-label="Sign in or create account">
+        <button id="ac-tab-signin" class="fb-cta" role="tab" aria-selected="true" type="button">Sign in</button>
+        <button id="ac-tab-register" class="fb-cta" role="tab" aria-selected="false" type="button" style="opacity:0.6;">Create account</button>
+      </div>
+
+      <a class="fb-cta fb-cta--solid" href="/auth/google" id="ac-google" style="text-align:center;">Continue with Google</a>
+
+      <div class="fb-row" style="gap:var(--fb-s-3);align-items:center;">
+        <div class="fb-divider" style="flex:1;margin:0;"></div>
+        <span class="fb-mono" style="font-size:var(--fb-fs-11);color:var(--fb-text-mute);">or email</span>
+        <div class="fb-divider" style="flex:1;margin:0;"></div>
+      </div>
+
+      <form id="ac-form" class="fb-stack" style="gap:var(--fb-s-4);" novalidate>
+        <div class="fb-field" id="ac-field-name" style="display:none;">
+          <label class="fb-field__label" for="ac-name">Name</label>
+          <input class="fb-input" id="ac-name" name="name" type="text" placeholder="first · last" autocomplete="name" maxlength="120">
+        </div>
+        <div class="fb-field">
+          <label class="fb-field__label" for="ac-email">Email <span style="color:var(--fb-pink);">*</span></label>
+          <input class="fb-input" id="ac-email" name="email" type="email" placeholder="you@domain" autocomplete="email" required>
+          <span class="fb-mono" data-err="email" style="display:none;font-size:var(--fb-fs-11);color:var(--fb-coral);">That email doesn't parse.</span>
+        </div>
+        <div class="fb-field">
+          <label class="fb-field__label" for="ac-password">Password <span style="color:var(--fb-pink);">*</span></label>
+          <input class="fb-input" id="ac-password" name="password" type="password" autocomplete="current-password" required minlength="10">
+          <span class="fb-mono" id="ac-pw-hint" style="display:none;font-size:var(--fb-fs-11);color:var(--fb-text-mute);">10+ characters. A sentence works.</span>
+          <span class="fb-mono" data-err="password" style="display:none;font-size:var(--fb-fs-11);color:var(--fb-coral);">Too short — 10 characters minimum.</span>
+        </div>
+        <button class="fb-cta fb-cta--matrix" id="ac-submit" type="submit">Sign in with email</button>
+        <span class="fb-mono" data-err="form" style="display:none;font-size:var(--fb-fs-12);color:var(--fb-coral);"></span>
+      </form>
+
+    </div>
+  </section>
+
+  <!-- ======================= account panel (signed in) =================== -->
+  <section id="ac-account" class="fb-panel" style="display:none;">
+    <div class="fb-stack" style="padding:24px 28px;gap:var(--fb-s-5);">
+      <div>
+        <span class="fb-status fb-status--on"><span class="fb-status__dot"></span>signed in</span>
+      </div>
+      <div class="fb-stack fb-stack--tight">
+        <span class="fb-label">operator</span>
+        <span class="fb-mono" id="ac-user-name" style="color:var(--fb-text-loud);font-size:var(--fb-fs-18);"></span>
+        <span class="fb-mono" id="ac-user-email" style="color:var(--fb-text-dim);font-size:var(--fb-fs-13);"></span>
+      </div>
+      <div class="fb-stack fb-stack--tight" id="ac-apps-wrap" style="display:none;">
+        <span class="fb-label">your applications</span>
+        <div class="fb-stack fb-stack--tight" id="ac-apps"></div>
+      </div>
+      <div class="fb-row" style="gap:var(--fb-s-3);">
+        <a class="fb-cta" href="/jobs/">Open roles</a>
+        <button class="fb-cta fb-cta--coral" id="ac-signout" type="button">Sign out</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= offline panel ================================ -->
+  <section id="ac-offline" class="fb-panel" style="display:none;border-left:3px solid var(--fb-amber);">
+    <div class="fb-stack" style="padding:24px 28px;gap:var(--fb-s-3);">
+      <span class="fb-label fb-label--amber">// accounts offline</span>
+      <p style="margin:0;color:var(--fb-text-dim);font-size:var(--fb-fs-15);line-height:var(--fb-lh-relaxed);">Account systems are down for maintenance. Nothing you had is lost. Check back shortly.</p>
+    </div>
+  </section>
+
+  <footer class="fb-footer" style="margin-top:var(--fb-s-16);">
+    <div class="fb-footer__row">
+      <span class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);">Account · fixbroken.ai</span>
+      <a href="/design/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-11);text-decoration:none;">Powered by FixBroken OS</a>
+    </div>
+  </footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var qs = new URLSearchParams(location.search);
+  var next = /^\/(?!\/)/.test(qs.get('next') || '') ? qs.get('next') : null;
+  var mode = 'signin';
+
+  var ERRORS = {
+    invalid_email: 'That email doesn\'t parse.',
+    weak_password: 'Password too short — 10 characters minimum.',
+    email_taken: 'That email already has an account. Sign in instead.',
+    invalid_credentials: 'Wrong email or password.',
+    rate_limited: 'Too many attempts. Wait a few minutes.',
+    google_sso_not_configured: 'Google sign-in isn\'t wired up yet. Use email.',
+    server_error: 'Something broke on our side. Try again.',
+    google: 'Google sign-in didn\'t complete. Try again or use email.'
+  };
+
+  function banner(msg) {
+    $('ac-banner').style.display = msg ? '' : 'none';
+    $('ac-banner-text').textContent = msg || '';
+  }
+  function fieldError(name, show, msg) {
+    var el = document.querySelector('[data-err="' + name + '"]');
+    if (!el) return;
+    el.style.display = show ? '' : 'none';
+    if (msg) el.textContent = msg;
+  }
+  function show(panel) {
+    ['ac-auth', 'ac-account', 'ac-offline'].forEach(function (id) {
+      $(id).style.display = id === panel ? '' : 'none';
+    });
+  }
+
+  function setMode(m) {
+    mode = m;
+    var reg = m === 'register';
+    $('ac-tab-signin').setAttribute('aria-selected', String(!reg));
+    $('ac-tab-register').setAttribute('aria-selected', String(reg));
+    $('ac-tab-signin').style.opacity = reg ? '0.6' : '1';
+    $('ac-tab-register').style.opacity = reg ? '1' : '0.6';
+    $('ac-field-name').style.display = reg ? '' : 'none';
+    $('ac-pw-hint').style.display = reg ? '' : 'none';
+    $('ac-password').setAttribute('autocomplete', reg ? 'new-password' : 'current-password');
+    $('ac-submit').textContent = reg ? 'Create account' : 'Sign in with email';
+    $('ac-title').textContent = reg ? 'Create account.' : 'Sign in.';
+    fieldError('email', false); fieldError('password', false); fieldError('form', false);
+  }
+  $('ac-tab-signin').addEventListener('click', function () { setMode('signin'); });
+  $('ac-tab-register').addEventListener('click', function () { setMode('register'); });
+
+  if (next) $('ac-google').href = '/auth/google?next=' + encodeURIComponent(next);
+  if (qs.get('error')) banner(ERRORS[qs.get('error')] || ERRORS.server_error);
+
+  function renderAccount(user) {
+    show('ac-account');
+    $('ac-title').textContent = 'You\'re in.';
+    $('ac-lede').textContent = 'Signed in as ' + user.email + '.';
+    $('ac-user-name').textContent = user.name || '(no name on file)';
+    $('ac-user-email').textContent = user.email;
+    fetch('/api/me/applications').then(function (r) { return r.json(); }).then(function (d) {
+      if (!d.ok || !d.applications || !d.applications.length) return;
+      $('ac-apps-wrap').style.display = '';
+      var wrap = $('ac-apps');
+      wrap.textContent = '';
+      d.applications.forEach(function (a) {
+        var row = document.createElement('div');
+        row.className = 'fb-row';
+        row.style.cssText = 'gap:var(--fb-s-3);align-items:center;flex-wrap:wrap;';
+        var chip = document.createElement('span');
+        chip.className = 'fb-chip';
+        chip.textContent = a.status;
+        var link = document.createElement('a');
+        link.href = '/jobs/#' + encodeURIComponent(a.slug);
+        link.className = 'fb-mono';
+        link.style.cssText = 'color:var(--fb-text);font-size:var(--fb-fs-14);text-decoration:none;';
+        link.textContent = a.title;
+        row.appendChild(chip); row.appendChild(link);
+        wrap.appendChild(row);
+      });
+    }).catch(function () {});
+  }
+
+  $('ac-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    fieldError('email', false); fieldError('password', false); fieldError('form', false);
+    var email = $('ac-email').value.trim();
+    var password = $('ac-password').value;
+    var bad = false;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { fieldError('email', true); bad = true; }
+    if (password.length < 10) { fieldError('password', true); bad = true; }
+    if (bad) return;
+
+    var btn = $('ac-submit');
+    btn.disabled = true;
+    var label = btn.textContent;
+    btn.textContent = 'Working…';
+
+    var payload = { email: email, password: password };
+    if (mode === 'register') payload.name = $('ac-name').value.trim();
+
+    fetch(mode === 'register' ? '/auth/register' : '/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(function (r) { return r.json().then(function (d) { return { s: r.status, d: d }; }); })
+      .then(function (res) {
+        if (res.d.ok) {
+          if (next) { location.href = next; return; }
+          banner(null);
+          renderAccount(res.d.user);
+        } else {
+          fieldError('form', true, ERRORS[res.d.error] || ERRORS.server_error);
+        }
+      })
+      .catch(function () { fieldError('form', true, ERRORS.server_error); })
+      .finally(function () { btn.disabled = false; btn.textContent = label; });
+  });
+
+  $('ac-signout').addEventListener('click', function () {
+    fetch('/auth/logout', { method: 'POST' }).then(function () {
+      show('ac-auth');
+      setMode('signin');
+      $('ac-title').textContent = 'Sign in.';
+      $('ac-lede').textContent = 'One account for everything on fixbroken.ai. Email and password, or Google.';
+    });
+  });
+
+  // boot: figure out session state
+  fetch('/auth/me').then(function (r) {
+    if (r.status === 503) { show('ac-offline'); return null; }
+    return r.json();
+  }).then(function (d) {
+    if (!d) return;
+    if (d.user) { renderAccount(d.user); }
+    else { show('ac-auth'); setMode('signin'); }
+  }).catch(function () { show('ac-offline'); });
+})();
+</script>
+</body>
+</html>

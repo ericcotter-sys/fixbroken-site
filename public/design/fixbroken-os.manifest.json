@@ -2,7 +2,7 @@
   "$schema": "https://fixbroken.ai/design/fixbroken-os.manifest.schema.json",
   "name": "FixBroken OS",
   "version": "0.1.0",
-  "generated": "2026-07-07T05:27:55.156Z",
+  "generated": "2026-07-09T04:23:13.893Z",
   "source": {
     "css": "/design/fixbroken-os.css",
     "brand": "/design/brand.md",
