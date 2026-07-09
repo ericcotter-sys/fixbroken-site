@@ -771,7 +771,48 @@ if (db.enabled) {
   }
   app.use(session(sessionOpts));
   app.use(require('./routes/auth')(db));
-  app.use(require('./routes/jobs')(db));
+
+  // Owner email when an application lands — same transporter/chrome as /contact.
+  // No-op when SMTP is unconfigured; never blocks or fails the apply request.
+  const notifyApplication = async (entry) => {
+    if (!transporter || !process.env.MAIL_TO) {
+      console.log('application received (SMTP not configured, no mail):', entry.slug, entry.email);
+      return;
+    }
+    const text = [
+      'NEW APPLICATION',
+      '',
+      `Role:  ${entry.jobTitle}`,
+      `Name:  ${entry.name || '(not provided)'}`,
+      `Email: ${entry.email}`,
+      `Link:  ${entry.link || '(none)'}`,
+      '',
+      '---',
+      '',
+      entry.note || '(no note)',
+      '',
+      `https://fixbroken.ai/jobs/#${entry.slug}`
+    ].join('\n');
+    const inner = `
+      <tr><td style="padding:24px 28px 16px 28px;border-bottom:1px solid #2a3442;">
+        <span style="font-family:${EMAIL_FONT_MONO};font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:#00d4ff;">▸ new application · <span style="color:#ffffff;">${esc(entry.jobTitle)}</span></span>
+      </td></tr>
+      <tr><td style="padding:20px 28px;">
+        <p style="margin:0 0 12px 0;font-family:${EMAIL_FONT_MONO};font-size:13px;color:#e4eaf2;">${esc(entry.name || '(no name)')} · ${esc(entry.email)}</p>
+        ${entry.link ? `<p style="margin:0 0 12px 0;font-family:${EMAIL_FONT_MONO};font-size:13px;"><a href="${esc(entry.link)}" style="color:#00d4ff;">${esc(entry.link)}</a></p>` : ''}
+        <p style="margin:0;font-family:${EMAIL_FONT_SANS};font-size:15px;line-height:1.6;color:#e4eaf2;white-space:pre-line;">${esc(entry.note || '(no note)')}</p>
+      </td></tr>`;
+    await transporter.sendMail({
+      from: mailFrom(),
+      to: process.env.MAIL_TO,
+      replyTo: entry.email,
+      subject: `[jobs] ${entry.jobTitle} — ${entry.email}`,
+      text,
+      html: emailFrame(`New application · ${entry.jobTitle}`, inner)
+    });
+  };
+
+  app.use(require('./routes/jobs')(db, { notifyApplication }));
 } else {
   app.use(['/auth', '/api/jobs', '/api/me'], (_req, res) => {
     res.status(503).json({ ok: false, error: 'accounts_offline' });

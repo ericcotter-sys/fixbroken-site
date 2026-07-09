@@ -23,18 +23,38 @@ function cleanText(raw, max) {
   return s || null;
 }
 
-module.exports = function jobsRoutes(db) {
+module.exports = function jobsRoutes(db, opts) {
   const router = express.Router();
   const applyLimiter = rateLimit({ windowMs: 60 * 60 * 1000, max: 30 });
+  const notifyApplication = (opts && opts.notifyApplication) || null;
 
-  router.get('/api/jobs', async (_req, res) => {
+  router.get('/api/jobs', async (req, res) => {
     try {
-      const result = await db.query(
-        `SELECT ${JOB_FIELDS} FROM jobs WHERE status = 'open' ORDER BY created_at DESC, id DESC`
-      );
+      // Admins can request every status (?all=1) for the manage view.
+      const wantAll = req.query.all === '1' && isAdmin(req);
+      const result = wantAll
+        ? await db.query(`SELECT ${JOB_FIELDS} FROM jobs ORDER BY created_at DESC, id DESC`)
+        : await db.query(`SELECT ${JOB_FIELDS} FROM jobs WHERE status = 'open' ORDER BY created_at DESC, id DESC`);
       res.json({ ok: true, jobs: result.rows });
     } catch (e) {
       console.error('jobs list failed:', e.message);
+      res.status(500).json({ ok: false, error: 'server_error' });
+    }
+  });
+
+  router.get('/api/jobs/:id/applications', requireAdmin, async (req, res) => {
+    try {
+      const id = parseInt(req.params.id, 10);
+      if (!Number.isInteger(id)) return res.status(400).json({ ok: false, error: 'bad_id' });
+      const result = await db.query(
+        `SELECT a.id, a.note, a.link, a.status, a.created_at, u.name, u.email
+           FROM applications a JOIN users u ON u.id = a.user_id
+          WHERE a.job_id = $1 ORDER BY a.created_at DESC, a.id DESC`,
+        [id]
+      );
+      res.json({ ok: true, applications: result.rows });
+    } catch (e) {
+      console.error('job applications failed:', e.message);
       res.status(500).json({ ok: false, error: 'server_error' });
     }
   });
@@ -119,7 +139,7 @@ module.exports = function jobsRoutes(db) {
   router.post('/api/jobs/:slug/apply', requireAuth, applyLimiter, requireJson, async (req, res) => {
     try {
       const job = await db.query(
-        "SELECT id FROM jobs WHERE slug = $1 AND status = 'open'", [req.params.slug]
+        "SELECT id, title FROM jobs WHERE slug = $1 AND status = 'open'", [req.params.slug]
       );
       if (job.rowCount === 0) return res.status(404).json({ ok: false, error: 'not_found' });
       const jobId = job.rows[0].id;
@@ -137,6 +157,17 @@ module.exports = function jobsRoutes(db) {
          VALUES ($1, $2, $3, $4) RETURNING id, job_id, note, link, status, created_at`,
         [jobId, userId, cleanText(req.body.note, 2000), link]
       );
+      // Owner notification — fire-and-forget; a mail failure never fails the apply.
+      if (notifyApplication) {
+        notifyApplication({
+          jobTitle: job.rows[0].title,
+          slug: req.params.slug,
+          name: req.session.user.name,
+          email: req.session.user.email,
+          note: inserted.rows[0].note,
+          link: inserted.rows[0].link
+        }).catch((err) => console.error('application notify failed:', err.message));
+      }
       res.status(201).json({ ok: true, application: inserted.rows[0] });
     } catch (e) {
       // Concurrent double-submit: the UNIQUE(job_id, user_id) constraint is

@@ -64,7 +64,9 @@ module.exports = function authRoutes(db) {
       // Admin emails may only enter via Google SSO. Without this, anyone could
       // register an unclaimed ADMIN_EMAILS address with their own password and
       // inherit admin (emails are not otherwise ownership-verified).
-      if (isAdminEmail(email)) {
+      // ALLOW_ADMIN_PASSWORD=true is a DEV-HARNESS escape hatch (pg-mem has no
+      // Google) — never set it in production.
+      if (isAdminEmail(email) && process.env.ALLOW_ADMIN_PASSWORD !== 'true') {
         return res.status(403).json({ ok: false, error: 'sso_required' });
       }
       const existing = await db.query('SELECT id FROM users WHERE email = $1', [email]);

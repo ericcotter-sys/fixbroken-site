@@ -44,6 +44,46 @@
     <a href="/account/" class="fb-mono" style="color:var(--fb-text-mute);font-size:var(--fb-fs-12);text-decoration:none;">account →</a>
   </div>
 
+  <!-- admin: post a role (visible only to ADMIN_EMAILS sessions) -->
+  <section id="jb-admin" class="fb-panel fb-panel--signal" style="display:none;margin-bottom:var(--fb-s-6);">
+    <div class="fb-stack" style="padding:24px 28px;gap:var(--fb-s-4);">
+      <span class="fb-label fb-label--signal">// admin · post a role</span>
+      <form id="jb-admin-form" class="fb-stack" style="gap:var(--fb-s-3);" novalidate>
+        <div class="fb-field">
+          <label class="fb-field__label" for="jba-title">Title <span style="color:var(--fb-pink);">*</span></label>
+          <input class="fb-input" id="jba-title" type="text" maxlength="140" required>
+        </div>
+        <div class="fb-field">
+          <label class="fb-field__label" for="jba-summary">Summary (one line)</label>
+          <input class="fb-input" id="jba-summary" type="text" maxlength="300">
+        </div>
+        <div class="fb-field">
+          <label class="fb-field__label" for="jba-description">Full brief</label>
+          <textarea class="fb-textarea" id="jba-description" rows="5" maxlength="8000"></textarea>
+        </div>
+        <div class="fb-row" style="gap:var(--fb-s-3);flex-wrap:wrap;">
+          <div class="fb-field" style="flex:1;min-width:160px;">
+            <label class="fb-field__label" for="jba-location">Location</label>
+            <input class="fb-input" id="jba-location" type="text" maxlength="120" placeholder="Remote (US)">
+          </div>
+          <div class="fb-field" style="flex:1;min-width:160px;">
+            <label class="fb-field__label" for="jba-type">Type</label>
+            <input class="fb-input" id="jba-type" type="text" maxlength="60" placeholder="Contract">
+          </div>
+          <div class="fb-field" style="flex:1;min-width:120px;">
+            <label class="fb-field__label" for="jba-status">Status</label>
+            <select class="fb-input" id="jba-status">
+              <option value="open">open</option>
+              <option value="draft">draft</option>
+            </select>
+          </div>
+        </div>
+        <button class="fb-cta fb-cta--matrix" id="jba-submit" type="submit">Post role</button>
+        <span class="fb-mono" id="jba-err" style="display:none;font-size:var(--fb-fs-12);color:var(--fb-coral);"></span>
+      </form>
+    </div>
+  </section>
+
   <!-- listings -->
   <section class="fb-section fb-section--tight">
     <div id="jb-list" class="fb-stack" style="gap:var(--fb-s-4);"></div>
@@ -75,6 +115,7 @@
 (function () {
   'use strict';
   var me = null;          // session user or null
+  var admin = false;      // session is in ADMIN_EMAILS
   var myApps = {};        // slug -> true
 
   var ERRORS = {
@@ -168,6 +209,59 @@
     mount.appendChild(form);
   }
 
+  function adminControls(job) {
+    var bar = el('div', 'fb-row', 'gap:var(--fb-s-3);align-items:center;flex-wrap:wrap;border-top:1px solid var(--fb-hairline);padding-top:var(--fb-s-3);');
+    bar.appendChild(el('span', 'fb-chip', '', job.status));
+
+    var flip = el('button', 'fb-cta fb-cta--coral', '', job.status === 'open' ? 'Close role' : 'Open role');
+    flip.type = 'button';
+    flip.addEventListener('click', function () {
+      flip.disabled = true;
+      fetch('/api/jobs/' + job.id, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: job.status === 'open' ? 'closed' : 'open' })
+      }).then(function (r) { return r.json(); }).then(function (d) {
+        if (d.ok) loadJobs(); else flip.disabled = false;
+      }).catch(function () { flip.disabled = false; });
+    });
+    bar.appendChild(flip);
+
+    var appsBtn = el('button', 'fb-cta', '', 'Applications');
+    appsBtn.type = 'button';
+    var appsBox = el('div', 'fb-stack fb-stack--tight', 'display:none;padding-top:var(--fb-s-2);width:100%;');
+    appsBtn.addEventListener('click', function () {
+      if (appsBox.style.display !== 'none') { appsBox.style.display = 'none'; return; }
+      appsBox.style.display = '';
+      appsBox.textContent = 'loading…';
+      fetch('/api/jobs/' + job.id + '/applications').then(function (r) { return r.json(); }).then(function (d) {
+        appsBox.textContent = '';
+        if (!d.ok) { appsBox.textContent = 'failed to load'; return; }
+        if (!d.applications.length) {
+          appsBox.appendChild(el('span', 'fb-mono', 'font-size:var(--fb-fs-12);color:var(--fb-text-mute);', 'No applications yet.'));
+          return;
+        }
+        d.applications.forEach(function (a) {
+          var row = el('div', 'fb-stack fb-stack--tight', 'border-left:2px solid var(--fb-hairline);padding-left:var(--fb-s-3);margin-bottom:var(--fb-s-2);');
+          row.appendChild(el('span', 'fb-mono', 'font-size:var(--fb-fs-13);color:var(--fb-text);', (a.name || '(no name)') + ' · ' + a.email + ' · ' + new Date(a.created_at).toISOString().slice(0, 10)));
+          if (a.link) {
+            var lk = el('a', 'fb-mono', 'font-size:var(--fb-fs-12);color:var(--fb-signal);word-break:break-all;', a.link);
+            lk.href = a.link; lk.rel = 'noopener noreferrer'; lk.target = '_blank';
+            row.appendChild(lk);
+          }
+          if (a.note) row.appendChild(el('p', '', 'margin:0;font-size:var(--fb-fs-13);color:var(--fb-text-dim);line-height:var(--fb-lh-relaxed);white-space:pre-line;', a.note));
+          appsBox.appendChild(row);
+        });
+      }).catch(function () { appsBox.textContent = 'failed to load'; });
+    });
+    bar.appendChild(appsBtn);
+
+    var wrap = el('div', 'fb-stack', 'gap:0;');
+    wrap.appendChild(bar);
+    wrap.appendChild(appsBox);
+    return wrap;
+  }
+
   function renderJob(job) {
     var panel = el('article', 'fb-panel');
     panel.id = job.slug;
@@ -195,9 +289,13 @@
       inner.appendChild(desc);
     }
 
-    var mount = el('div', '', 'padding-top:var(--fb-s-2);');
-    applyForm(job, mount);
-    inner.appendChild(mount);
+    if (job.status === 'open') {
+      var mount = el('div', '', 'padding-top:var(--fb-s-2);');
+      applyForm(job, mount);
+      inner.appendChild(mount);
+    }
+
+    if (admin) inner.appendChild(adminControls(job));
 
     panel.appendChild(inner);
     return panel;
@@ -218,6 +316,48 @@
     }
   }
 
+  function loadJobs() {
+    return fetch('/api/jobs' + (admin ? '?all=1' : '')).then(function (r) { return r.json(); }).then(function (d) {
+      if (d.ok) render(d.jobs || []);
+      else document.getElementById('jb-offline').style.display = '';
+    });
+  }
+
+  // admin: post-a-role form
+  document.getElementById('jb-admin-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var err = document.getElementById('jba-err');
+    err.style.display = 'none';
+    var title = document.getElementById('jba-title').value.trim();
+    if (!title) { err.textContent = 'Title required.'; err.style.display = ''; return; }
+    var btn = document.getElementById('jba-submit');
+    btn.disabled = true; btn.textContent = 'Posting…';
+    fetch('/api/jobs', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        title: title,
+        summary: document.getElementById('jba-summary').value.trim(),
+        description: document.getElementById('jba-description').value.trim(),
+        location: document.getElementById('jba-location').value.trim(),
+        job_type: document.getElementById('jba-type').value.trim(),
+        status: document.getElementById('jba-status').value
+      })
+    }).then(function (r) { return r.json(); }).then(function (d) {
+      if (d.ok) {
+        document.getElementById('jb-admin-form').reset();
+        loadJobs();
+      } else {
+        err.textContent = d.error === 'admin_only' ? 'Admin session required.' : 'Post failed. Check the fields.';
+        err.style.display = '';
+      }
+    }).catch(function () {
+      err.textContent = ERRORS.server_error; err.style.display = '';
+    }).finally(function () {
+      btn.disabled = false; btn.textContent = 'Post role';
+    });
+  });
+
   // boot: session → my applications → listings
   fetch('/auth/me').then(function (r) {
     if (r.status === 503) { document.getElementById('jb-offline').style.display = ''; return null; }
@@ -225,6 +365,8 @@
   }).then(function (d) {
     if (d === null) return null;
     me = d && d.user;
+    admin = !!(d && d.admin);
+    if (admin) document.getElementById('jb-admin').style.display = '';
     if (me) {
       document.getElementById('jb-session').style.display = '';
       document.getElementById('jb-session-email').textContent = me.email;
@@ -234,10 +376,7 @@
     }
   }).then(function (skip) {
     if (skip === null) return;
-    return fetch('/api/jobs').then(function (r) { return r.json(); }).then(function (d) {
-      if (d.ok) render(d.jobs || []);
-      else document.getElementById('jb-offline').style.display = '';
-    });
+    return loadJobs();
   }).catch(function () {
     document.getElementById('jb-offline').style.display = '';
   });
