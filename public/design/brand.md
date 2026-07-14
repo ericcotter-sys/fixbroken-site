@@ -68,7 +68,7 @@ Short. Direct. Operator tone.
 | Warn | amber | `--fb-amber` |
 | Error | red | `--fb-red` |
 
-**Pink is the operator's mark.** Used sparingly on fixbroken.ai (the flagship) for hero highlights, signature CTAs, and key human moments. The classic cyan + pink TRON pairing. Tenant sites (VUMO, future clients) do NOT use pink — that's what makes the flagship feel like the flagship.
+**Pink is the operator's mark.** Used sparingly on fixbroken.ai (the flagship) for hero highlights, signature CTAs, and key human moments. The classic cyan + pink TRON pairing. Tenant sites (client projects) do NOT use pink — that's what makes the flagship feel like the flagship.
 
 Full swatches + tokens live in `/design/` (the style guide).
 
@@ -87,8 +87,8 @@ Documented in `/design/`:
 ## Rules for using this brand
 
 1. **Default is FixBroken OS.** Every page inherits it unless explicitly overridden.
-2. **Overrides are scoped.** Projects (VUMO, future clients) can override tokens via a wrapper class, but never redefine `.fb-*` globally.
-3. **VUMO exception.** VUMO may soften the palette for dealer / customer approachability. Typography and spacing stay FixBroken.
+2. **Overrides are scoped.** Projects (client subsites) can override tokens via a wrapper class, but never redefine `.fb-*` globally.
+3. **Tenant exception.** A tenant site may soften the palette for its own customer approachability. Typography and spacing stay FixBroken.
 4. **Mobile is first-class.** Every component must be reviewed at 375px before shipping.
 5. **Neon is a signal, not a decoration.** If you add glow, it should mean something.
 

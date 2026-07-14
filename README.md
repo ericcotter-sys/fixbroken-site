@@ -1,8 +1,6 @@
-# vumo-fixbroken-site
+# fixbroken-site
 
-Source for **https://fixbroken.ai** — Eric Cotter's consulting site and the home of **FixBroken OS**, the global design system used across the entire tenant tree (vumo.fixbroken.ai and future client subsites).
-
-> Repo name is `vumo-` for historical reasons. Content is broader than VUMO. Rename incoming.
+Source for **https://fixbroken.ai** — Eric Cotter's consulting site and the home of **FixBroken OS**, the global design system used across the entire tenant tree (client subsites).
 
 ## Stack
 

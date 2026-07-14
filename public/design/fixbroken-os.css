@@ -2,16 +2,16 @@
    FixBroken OS — Global Design System
    --------------------------------------------------------------------------
    Source of truth: fixbroken.ai/design/fixbroken-os.css
-   Imported by:     fixbroken.ai + all tenant subsites (vumo.fixbroken.ai, etc.)
+   Imported by:     fixbroken.ai + all tenant subsites (tenant subsites)
    Maintained by:   Eric Cotter
-   Last touched:    see git log for vumo-fixbroken-site repo
+   Last touched:    see git log for the fixbroken-site repo
 
    RULES FOR FUTURE AGENTS:
    1. This file is the foundation. Do not fork it into each project.
    2. Tokens at the top are the contract. Add new tokens by extending, never
       by renaming existing ones.
    3. Components are prefixed `.fb-*`. Do not add non-prefixed global classes.
-   4. Project overrides (VUMO, future clients) live in their own stylesheet,
+   4. Project overrides (tenant sites) live in their own stylesheet,
       loaded AFTER this one. They may override tokens via :root scoping or
       write component overrides targeting their own wrapper class.
    5. Mobile rules live at the bottom. Do not introduce width-based rules
@@ -66,7 +66,7 @@
   /* ------ Color: pink (fixbroken signature — the operator's mark) -------- */
   /* Cyan + pink is the classic TRON/neon pairing. Pink is used sparingly
      as the brand fingerprint on fixbroken.ai (the flagship). Tenant sites
-     like VUMO should not use pink — it's the operator's color. */
+     like a tenant site should not use pink — it's the operator's color. */
   --fb-pink:         #ff3ec9;
   --fb-pink-bright:  #ff6bd8;
   --fb-pink-dim:     #c4309a;
